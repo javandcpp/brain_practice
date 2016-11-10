@@ -121,40 +121,40 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
     }
 
 
-    public class EscalaImagen extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        public EscalaImagen() {
-//            Mandalas2Activity.this = arg1;
-            super();
-        }
-
-        public boolean onScale(ScaleGestureDetector detector) {
-            float v7 = 3.75f;
-            float v6 = 0.75f;
-            float v4 = detector.getScaleFactor();
-            float v0 = Mandalas2Activity.this.imagen.getScaleX();
-            float v1 = Mandalas2Activity.this.imagen.getScaleY();
-            float v2 = v0 * v4;
-            float v3 = v1 * v4;
-            if (v2 >= v7 || v3 >= v7) {
-                v4 = 0.99f;
-            }
-
-            if (v2 <= v6 || v3 <= v6) {
-                v4 = 1.01f;
-            }
-
-            Mandalas2Activity.this.imagen.setScaleX(v0 * v4);
-            Mandalas2Activity.this.imagen.setScaleY(v1 * v4);
-            return true;
-        }
-
-        public boolean onScaleBegin(ScaleGestureDetector detector) {
-            return true;
-        }
-
-        public void onScaleEnd(ScaleGestureDetector detector) {
-        }
-    }
+//    public class EscalaImagen extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+//        public EscalaImagen() {
+////            Mandalas2Activity.this = arg1;
+//            super();
+//        }
+//
+//        public boolean onScale(ScaleGestureDetector detector) {
+//            float v7 = 3.75f;
+//            float v6 = 0.75f;
+//            float v4 = detector.getScaleFactor();
+//            float v0 = Mandalas2Activity.this.imagen.getScaleX();
+//            float v1 = Mandalas2Activity.this.imagen.getScaleY();
+//            float v2 = v0 * v4;
+//            float v3 = v1 * v4;
+//            if (v2 >= v7 || v3 >= v7) {
+//                v4 = 0.99f;
+//            }
+//
+//            if (v2 <= v6 || v3 <= v6) {
+//                v4 = 1.01f;
+//            }
+//
+//            Mandalas2Activity.this.imagen.setScaleX(v0 * v4);
+//            Mandalas2Activity.this.imagen.setScaleY(v1 * v4);
+//            return true;
+//        }
+//
+//        public boolean onScaleBegin(ScaleGestureDetector detector) {
+//            return true;
+//        }
+//
+//        public void onScaleEnd(ScaleGestureDetector detector) {
+//        }
+//    }
 
     class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
         int distanciaX;
@@ -182,7 +182,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             this.distanciaX = ((int) distanceX);
             this.distanciaY = ((int) distanceY);
-            Mandalas2Activity.this.imagen.scrollBy(((int) distanceX), ((int) distanceY));
+//            Mandalas2Activity.this.imagen.scrollBy(((int) distanceX), ((int) distanceY));
             return true;
         }
 
@@ -467,18 +467,9 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         this.setContentView(R.layout.activity_mandalas2);
         this.prefs = new GrabarPreferencias(((Context) this));
         this.efectos = this.prefs.getEfectos();
-        this.findViewById(R.id.nextPaleta).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.anim = AnimationUtils.loadAnimation(Mandalas2Activity.this.getApplicationContext(),
-                        R.anim.swipe_right_to_left);
-                Mandalas2Activity.this.vflip.startAnimation(Mandalas2Activity.this.anim);
-                if (Mandalas2Activity.this.efectos) {
-                    Mandalas2Activity.this.fx.EfectoAlTocar();
-                }
+        prenderEfectos();
+        initView();
 
-                Mandalas2Activity.this.vflip.showNext();
-            }
-        });
         final Button color = (Button) findViewById(R.id.color);
         color.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -508,17 +499,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
                 Mandalas2Activity.this.newColor = -1;
             }
         });
-        Button btn = (Button) findViewById(R.id.buttoncolorpick);
-        btn.setBackgroundColor(newColor);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (Mandalas2Activity.this.efectos) {
-                    Mandalas2Activity.this.fx.EfectoAlTocar();
-                }
 
-                Mandalas2Activity.this.getColor(v);
-            }
-        });
         this.findViewById(R.id.aIndice2).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Mandalas2Activity.this.startActivity(new Intent(Mandalas2Activity.this.getApplicationContext(),
@@ -544,19 +525,9 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
                 Mandalas2Activity.this.centrarImagen();
             }
         });
-        Mandalas2Activity.goterito = (Button) this.findViewById(R.id.gotero);
-        Mandalas2Activity.goterito.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (Mandalas2Activity.this.eyedropper) {
-                    Mandalas2Activity.goterito.setBackgroundResource(R.drawable.pick);
-                    Mandalas2Activity.this.eyedropper = false;
-                } else {
-                    Mandalas2Activity.goterito.setBackgroundResource(R.drawable.pick1);
-                    Mandalas2Activity.this.eyedropper = true;
-                }
-            }
-        });
-        this.prenderEfectos();
+
+
+
         View v5 = this.findViewById(R.id.efectos);
         if (this.efectos) {
             ((Button) v5).setBackgroundResource(R.drawable.soundon);
@@ -617,6 +588,25 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         this.apprater.app_launched(((Context) this));
     }
 
+    /**
+     * View 初始化
+     */
+    private void initView() {
+
+
+
+
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.e("TAG", "------------------------>" + "onResume");
+        this.numpaleta = 0;
+        if (!this.runningImagen) {
+            this.cargarImagen();
+        }
+        gesture();
+    }
 
     public void onDestroy() {
         Log.e("TAG", "------------------------------>>" + "onDestroy");
@@ -630,16 +620,9 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
     }
 
 
-    public void onResume() {
-        super.onResume();
-        Log.e("TAG", "------------------------>" + "onResume");
-
-        this.numpaleta = 0;
-        if (!this.runningImagen) {
-            this.cargarImagen();
-        }
 
 
+    private void gesture() {
         this.gestureDetector = new GestureDetector(((Context) this), new MyGestureDetector());
 //        this.scaleGestureDetector = new ScaleGestureDetector(((Context)this), new EscalaImagen());
         this.scaleGestureListener = new View.OnTouchListener() {
@@ -649,7 +632,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
                         Mandalas2Activity.this.gestureDetector.onTouchEvent(event);
                         return true;
                     }
-
 //                    Mandalas2Activity.this.scaleGestureDetector.onTouchEvent(event);
                 } catch (Exception v0) {
                 }
@@ -752,7 +734,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
                 if (this.svg.getDocumentWidth() == -1f) {
                     return;
                 }
-
                 this.svg.setDocumentWidth(((float) this.anchocanvas));
                 this.svg.setDocumentHeight(((float) this.anchocanvas));
                 this.svg.setDocumentPreserveAspectRatio(PreserveAspectRatio.STRETCH);

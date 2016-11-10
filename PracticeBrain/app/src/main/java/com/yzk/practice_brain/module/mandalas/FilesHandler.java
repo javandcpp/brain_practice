@@ -67,7 +67,7 @@ public class FilesHandler {
     public void SaveDrawing(String tipo, ImageView imagen, String mandalaTag) {
         File destDir = null;
         String dirName = Environment.getExternalStorageDirectory().getPath();
-        String fileName = String.valueOf(mandalaTag) + ".png";
+        String fileName = String.valueOf(mandalaTag) + ".png".replace(".png.png",".png");
         if(tipo == "temp") {
             destDir = new File(String.valueOf(dirName) + "/Mandalas2/Temp");
         }

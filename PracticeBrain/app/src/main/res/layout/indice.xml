@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/fondos"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/LinearIndice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondos"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@id/imagenTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:padding="15.0sp" />
+    </LinearLayout>
+
+    <GridView
+        android:id="@id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:horizontalSpacing="10.0dip"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10.0dip" />
+</LinearLayout>

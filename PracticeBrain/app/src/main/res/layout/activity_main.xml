@@ -8,11 +8,11 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:clipToPadding="true"
-    tools:context="com.yzk.practicebrain.activity.MainActivity">
+    tools:context="com.yzk.practice_brain.activity.MainActivity">
 
-    <com.yzk.practicebrain.ui.EaseTitleBar
+    <com.yzk.practice_brain.ui.EaseTitleBar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.yzk.practicebrain.ui.EaseTitleBar>
+        android:layout_height="wrap_content"></com.yzk.practice_brain.ui.EaseTitleBar>
     <TextView
         android:id="@+id/sample_text"
         android:textColor="#FF0000"

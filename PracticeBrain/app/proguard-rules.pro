@@ -207,5 +207,11 @@
 -keep enum com.facebook.** {*;}
 
 
+#svg
+-keepclasseswithmembers class com.caverock.androidsvg.** {*;}
+-keep class com.caverock.** {*;}
+-dontwarn com.caverock.**
+
+
 
 

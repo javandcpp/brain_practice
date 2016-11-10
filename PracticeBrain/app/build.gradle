@@ -6,8 +6,8 @@ android {
 
 
     defaultConfig {
-        applicationId "com.yzk.practicebrain"
-        minSdkVersion 11
+        applicationId "com.yzk.practice_brain"
+        minSdkVersion 13
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -30,15 +30,15 @@ android {
 
         debug {
 //            // No debug config
-            storeFile file("./keystore/yizhikang.jks")
+            storeFile file("./keystore/brain.jks")
             storePassword "123456"
-            keyAlias "yizhikang"
+            keyAlias "brain"
             keyPassword "123456"
         }
         release {
-            storeFile file("./keystore/yizhikang.jks")
+            storeFile file("./keystore/brain.jks")
             storePassword "123456"
-            keyAlias "yizhikang"
+            keyAlias "brain"
             keyPassword "123456"
         }
     }
@@ -57,7 +57,7 @@ android {
 //          versionNameSuffix ""
             minifyEnabled true
             zipAlignEnabled true
-            shrinkResources true
+//            shrinkResources true
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -67,7 +67,7 @@ android {
             minifyEnabled true
             zipAlignEnabled true
             // 移除无用的resource文件
-            shrinkResources true
+//            shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -78,6 +78,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
 
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
@@ -90,5 +91,8 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.caverock:androidsvg:1.2.2-beta-1'
+//    compile 'de.greenrobot:androidsvg:1.2.2-beta-1-tweaked-2'
     compile project(':volley-master')
 }

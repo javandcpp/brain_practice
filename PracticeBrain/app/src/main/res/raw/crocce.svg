@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="429.94px" height="423.25px" viewBox="0 0 429.94 423.25" xml:space="preserve">
+<g>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="8.0571" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.97,419.22c116.17,0,210.94-93.24,210.94-207.58c0-114.34-94.77-207.61-210.94-207.61C98.8,4.03,4.03,97.29,4.03,211.63
+		C4.03,325.98,98.8,419.22,214.97,419.22L214.97,419.22z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.97,407.14c109.41,0,198.63-87.83,198.63-195.5c0-107.67-89.22-195.5-198.63-195.5S16.34,103.97,16.34,211.63
+		C16.34,319.3,105.56,407.14,214.97,407.14L214.97,407.14z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M117.05,118.75c33.69-136.59,184.93-85.47,190.94-4.73c89.89,11.78,135.02,155.74,3.66,188.67c2.4,76.45-153.23,142.45-190.43,4.86
+		C-20.83,274.79,38.98,120.01,117.05,118.75L117.05,118.75z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M111.24,113.6c35.71-144.53,195.95-90.44,202.32-4.99c95.26,12.46,143.1,164.79,3.88,199.62c2.55,80.89-162.37,150.71-201.78,5.14
+		C-34.87,278.71,28.51,114.96,111.24,113.6L111.24,113.6z"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		214.15,33.98 214.48,185.67 207.14,186.87 202.15,189.17 196.78,193.55 193.75,118.77 186.12,108.92 175.54,100.82 166.73,98.78 
+		159.7,97.05 147.68,99.37 155.31,88.07 167.62,75.9 179.95,66.36 189.04,63.75 194.61,49.54 202.53,40.87 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		35.66,211.28 189.33,210.93 190.55,218.2 192.88,223.13 197.32,228.43 121.55,231.43 111.57,238.96 103.37,249.4 101.31,258.09 
+		99.55,265.03 101.9,276.9 90.46,269.37 78.13,257.22 68.46,245.04 65.82,236.07 51.43,230.57 42.64,222.76 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		215.28,387.48 214.93,235.78 222.29,234.58 227.28,232.28 232.65,227.9 235.69,302.69 243.32,312.54 253.9,320.64 262.68,322.67 
+		269.73,324.4 281.75,322.08 274.12,333.38 261.81,345.55 249.48,355.1 240.39,357.7 234.82,371.91 226.88,380.58 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		393.78,210.17 240.1,210.52 238.88,203.25 236.55,198.32 232.12,193.03 307.88,190.03 317.84,182.5 326.06,172.05 328.13,163.38 
+		329.88,156.42 327.53,144.56 338.97,152.09 351.3,164.24 360.97,176.41 363.61,185.39 377.99,190.88 386.79,198.72 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		214.15,33.98 214.7,185.67 221.71,186.7 226.88,188.93 232.23,193.03 235.26,118.26 242.89,108.41 253.45,100.29 262.26,98.28 
+		269.31,96.52 281.33,98.84 273.7,87.55 261.37,75.4 249.06,65.83 239.97,63.23 234.38,49.04 226.46,40.35 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		35.66,211.28 189.33,210.74 190.37,203.82 192.64,198.72 196.78,193.44 121.02,190.44 111.06,182.91 102.84,172.49 100.79,163.8 
+		99.02,156.84 101.37,144.97 89.93,152.5 77.6,164.68 67.93,176.83 65.29,185.8 50.91,191.32 42.11,199.13 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		215.28,387.48 214.7,235.78 207.72,234.75 202.55,232.52 197.21,228.43 194.17,303.21 186.54,313.04 175.98,321.16 167.18,323.18 
+		160.12,324.93 148.1,322.61 155.73,333.9 168.04,346.05 180.37,355.62 189.47,358.23 195.03,372.41 202.97,381.1 	"/>
+	
+		<polygon fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		393.78,210.17 240.1,210.74 239.06,217.63 236.8,222.73 232.65,228.01 308.39,231.01 318.37,238.54 326.6,248.96 328.64,257.65 
+		330.41,264.62 328.06,276.48 339.5,268.95 351.81,256.8 361.51,244.63 364.15,235.65 378.52,230.13 387.32,222.32 	"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.7,236.55c14,0,25.39-11.6,25.39-25.81c0-14.23-11.4-25.81-25.39-25.81c-13.97,0-25.39,11.58-25.39,25.81
+		C189.31,224.95,200.73,236.55,214.7,236.55L214.7,236.55z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.7,216.96c3.48,0,6.32-2.8,6.32-6.22c0-3.44-2.84-6.24-6.32-6.24c-3.46,0-6.3,2.8-6.3,6.24
+		C208.41,214.15,211.24,216.96,214.7,216.96L214.7,216.96z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.7,226.52c8.83,0,15.99-7.09,15.99-15.78c0-8.71-7.16-15.78-15.99-15.78c-8.8,0-15.99,7.07-15.99,15.78
+		C198.71,219.43,205.9,226.52,214.7,226.52L214.7,226.52z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.7,228.4c9.58,0,17.41-7.95,17.41-17.67c0-9.74-7.83-17.69-17.41-17.69c-9.58,0-17.39,7.95-17.39,17.69
+		C197.32,220.46,205.12,228.4,214.7,228.4L214.7,228.4z"/>
+	
+		<path fill-rule="evenodd" fill="#FFFFFE" stroke="#000000" stroke-width="3.0286" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
+		M214.7,221.05c5.59,0,10.16-4.64,10.16-10.31c0-5.69-4.57-10.33-10.16-10.33c-5.59,0-10.14,4.64-10.14,10.33
+		C204.57,216.41,209.12,221.05,214.7,221.05L214.7,221.05z"/>
+</g>
+</svg>

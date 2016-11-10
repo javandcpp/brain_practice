@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="indicePadre">
+        <item>relax</item>
+        <item>discover</item>
+        <item>natural</item>
+        <item>happiness</item>
+        <item>patience</item>
+    </string-array>
+    <string-array name="relax">
+        <item>myimage</item>
+        <item>rays</item>
+        <item>ladder</item>
+        <item>lotus</item>
+        <item>stars</item>
+        <item>star</item>
+        <item>arcs</item>
+        <item>labyrinth</item>
+        <item>geometric</item>
+        <item>geometric_2</item>
+        <item>crocce</item>
+        <item>galicia</item>
+        <item>heraldic</item>
+
+    </string-array>
+    <string-array name="discover">
+        <item>squares</item>
+        <item>horse</item>
+        <item>wish</item>
+        <item>peces</item>
+        <item>octopus</item>
+        <item>two_moons</item>
+        <item>vegetables</item>
+    </string-array>
+    <string-array name="natural">
+        <item>birds</item>
+        <item>pigeons</item>
+        <item>dragonfly</item>
+        <item>leaves</item>
+        <item>grass</item>
+        <item>baobabs</item>
+        <item>rocks</item>
+    </string-array>
+    <string-array name="happiness">
+        <item>cupcakes</item>
+        <item>coffee</item>
+        <item>canoas</item>
+        <item>heart_flower</item>
+        <item>candies</item>
+        <item>pizza</item>
+        <item>full_sun</item>
+    </string-array>
+    <string-array name="patience">
+        <item>happy</item>
+        <item>butterflies</item>
+        <item>unicorns</item>
+        <item>waiting</item>
+        <item>earth</item>
+        <item>leaves_2</item>
+    </string-array>
+</resources>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/rLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:id="@id/barramenu1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#ffffffff"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@id/buttoncolorpick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0sp"
+            android:layout_marginRight="10.0sp"
+            android:layout_marginTop="10.0sp"
+            android:background="@drawable/colorpicker"
+            android:paddingLeft="10.0sp"
+            android:paddingRight="10.0sp"
+            android:paddingTop="10.0sp" />
+
+        <ViewFlipper
+            android:id="@id/vf1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@id/nextPaleta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/rightbuttonstate"
+            android:gravity="right" />
+
+        <Button
+            android:id="@id/gotero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0sp"
+            android:layout_marginTop="10.0sp"
+            android:background="@drawable/pick"
+            android:paddingLeft="10.0sp"
+            android:paddingTop="10.0sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@id/framelayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ffffffff"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@id/imagen2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/app_name"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:id="@id/barramenu2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#ffffffff"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@id/publicidad"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical" />
+
+            <HorizontalScrollView
+                android:id="@id/horizontalsv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@id/barrabotones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#ffffffff"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@id/aIndice2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/leftbuttonstate"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@+id/color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:text="color"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/rotation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/rotatearrow"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/rotation2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/rotatearrow2"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/centrado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/centrar"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/efectos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/soundon"
+                        android:onClick="onToggleEfectClicked"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/musica"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/musicoff"
+                        android:onClick="onToggleMusicClicked"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/grabar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/save"
+                        android:paddingLeft="10.0sp" />
+
+                    <Button
+                        android:id="@id/gomaborrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10.0sp"
+                        android:background="@drawable/goma"
+                        android:paddingLeft="10.0sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@id/TextoNombreMandala"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="30.0dip"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/violeta"
+            android:textSize="30.0sp" />
+    </FrameLayout>
+    <Button
+
+        android:onClick="save"
+        android:layout_width="wrap_content"
+        android:text="save"
+
+        android:layout_height="wrap_content" />
+</RelativeLayout>

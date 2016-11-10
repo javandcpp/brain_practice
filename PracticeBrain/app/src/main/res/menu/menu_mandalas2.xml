@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@id/action_ayuda" android:title="@string/ayuda" android:showAsAction="never" />
+    <item android:id="@id/aboutcolors" android:title="@string/sobrecolores" android:showAsAction="never" />
+    <item android:id="@id/aboutshapes" android:title="@string/sobreformas" android:showAsAction="never" />
+    <item android:icon="@drawable/ic_action_share" android:id="@id/menu_mandala_share" android:title="@string/compartir" android:showAsAction="ifRoom" />
+    <item android:id="@id/action_aindice_mandalas" android:title="@string/aIndice" />
+    <item android:icon="@drawable/ic_salir" android:id="@id/action_salir" android:title="@string/salir" android:showAsAction="never" />
+</menu>

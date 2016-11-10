@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/fondos"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/LinearSub"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondos"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@id/aIndice3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10.0sp"
+            android:background="@drawable/leftbuttonstate"
+            android:gravity="center_vertical"
+            android:paddingLeft="10.0sp" />
+
+        <ImageView
+            android:id="@id/imagenTemp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:padding="15.0sp"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <GridView
+        android:id="@id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/LinearSub"
+        android:gravity="center"
+        android:horizontalSpacing="10.0dip"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10.0dip" />
+</RelativeLayout>

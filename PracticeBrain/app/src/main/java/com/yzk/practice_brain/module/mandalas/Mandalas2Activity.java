@@ -617,6 +617,9 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         if (this.fx != null) {
             this.fx = null;
         }
+        if (this.b != null) {
+            this.b.recycle();
+        }
     }
 
 
@@ -679,9 +682,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         Log.e("TAG", "------------------------>" + "onStop");
         ImageView v1 = null;
         super.onStop();
-        if (this.b != null) {
-            this.b.recycle();
-        }
+
 
         if (this.imagen != null) {
             this.imagen = null;

@@ -419,7 +419,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         Log.e("TAG", "------------------------------>>" + "set image");
         if (this.handler.comprobarTemp()) {
             String v11 = this.handler.devolverNombreTemp();
-            this.mandalaTag = new File(v11).getName();
+            this.mandalaTag = new File(v11).getName()+".png";
             Log.e("TAG", "------------------------------>>" + "set image:" + mandalaTag);
             this.b = BitmapFactory.decodeFile(v11, v13);
             this.imagen.setImageBitmap(this.b);

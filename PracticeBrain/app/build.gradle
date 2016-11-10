@@ -1,0 +1,94 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+
+    defaultConfig {
+        applicationId "com.yzk.practicebrain"
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+//签名配置
+    signingConfigs {
+
+        debug {
+//            // No debug config
+            storeFile file("./keystore/yizhikang.jks")
+            storePassword "123456"
+            keyAlias "yizhikang"
+            keyPassword "123456"
+        }
+        release {
+            storeFile file("./keystore/yizhikang.jks")
+            storePassword "123456"
+            keyAlias "yizhikang"
+            keyPassword "123456"
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+        checkReleaseBuilds false
+    }
+
+    buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+//          versionNameSuffix ""
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled true
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    testCompile 'junit:junit:4.12'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+//    compile 'com.facebook.fresco:fresco:0.9.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile project(':volley-master')
+}

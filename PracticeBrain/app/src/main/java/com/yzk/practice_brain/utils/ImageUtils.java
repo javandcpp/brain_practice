@@ -21,6 +21,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.os.Build;
@@ -28,6 +29,8 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.util.Log;
+import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -40,6 +43,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static com.yzk.practice_brain.R.id.imageView;
 
 /**
  * <pre>
@@ -1504,5 +1509,20 @@ public class ImageUtils {
         byte[] bytes = baos.toByteArray();
         if (recycle && !src.isRecycled()) src.recycle();
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+    }
+
+    public static String getImageColorValue(Bitmap bitmap, int x, int y) {
+        final String[] resultValue = new String[1];
+        int color = bitmap.getPixel(x, y);
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        int a = Color.alpha(color);
+        int rgb = Color.rgb(r, g, b);
+
+
+        resultValue[0] = Integer.toHexString(rgb);
+        Log.e("TAG",x+":"+y+":"+resultValue[0]);
+        return resultValue[0];
     }
 }

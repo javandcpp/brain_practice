@@ -37,6 +37,7 @@ import com.caverock.androidsvg.PreserveAspectRatio;
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 import com.yzk.practice_brain.R;
+import com.yzk.practice_brain.utils.ImageUtils;
 
 import java.io.File;
 import java.util.Random;
@@ -221,6 +222,25 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
                 }
                 Mandalas2Activity.this.fd.floodFill(Mandalas2Activity.this.b, this.point, oldColor, Mandalas2Activity.this.newColor);
                 Mandalas2Activity.this.imagen.invalidate();
+
+                String imageColorValue1 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 193, 210);
+                String imageColorValue2 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 454, 157);
+                String imageColorValue3 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 705, 223);
+                String imageColorValue4 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 743, 469);
+                String imageColorValue5 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 453, 469);
+                String imageColorValue6 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 459, 798);
+                String imageColorValue7 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 210, 708);
+                String imageColorValue8 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 177, 469);
+                String imageColorValue9 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 700, 715);
+                Log.e("TAG",imageColorValue1);
+                Log.e("TAG",imageColorValue2);
+                Log.e("TAG",imageColorValue3);
+                Log.e("TAG",imageColorValue4);
+                Log.e("TAG",imageColorValue5);
+                Log.e("TAG",imageColorValue6);
+                Log.e("TAG",imageColorValue7);
+                Log.e("TAG",imageColorValue8);
+                Log.e("TAG",imageColorValue9);
             }
 
             return true;
@@ -312,14 +332,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
     }
 
 
-    private void ads() {
-//        this.adView = new AdView(((Context)this));
-//        this.adView.setAdUnitId("ca-app-pub-0815276588564171/1181378103");
-//        this.adView.setAdSize(AdSize.SMART_BANNER);
-//        this.findViewById(2131165199).addView(this.adView);
-//        this.adView.loadAd(new Builder().addTestDevice("D3E1141FE77945F61166D3E4B21B66D4").addTestDevice(
-//                "64C65EF40443349A729FF4121EA8759F").build());
-    }
 
     public void animarConEscala(View v) {
         this.anim = AnimationUtils.loadAnimation(this.getApplicationContext(), R.anim.animcolores);

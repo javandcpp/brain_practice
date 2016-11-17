@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  */
 public class LogUtil {
     private static final boolean DEBUG = isDebugBuild();
-    public static final String TAG = "brain";
+    public static final String TAG = "practice_brain";
 
     public static void e(String msg) {
         if (DEBUG)

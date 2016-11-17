@@ -175,4 +175,10 @@
     <color name="circuloext">#ffe7e5d8</color>
     <color name="bordecirculoext">#ff1e6292</color>
 
+
+    <color name="yellow_ffd56d">#ffffd56d</color>
+    <color name="color51bf87">#ff51bf87</color>
+    <color name="color2aaccd">#ff2aaccd</color>
+    <color name="colore36e7c">#ffe36e7c</color>
+
 </resources>

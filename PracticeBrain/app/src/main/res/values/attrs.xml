@@ -8,6 +8,7 @@
         <attr name="titleBarRightImage" format="reference"/>
         <attr name="titleBarBackground" format="reference|color"/>
         <attr name="titleBarRightText" format="string"></attr>
+        <attr name="titleBarLeftText" format="string"></attr>
     </declare-styleable>
 
     <attr name="adSize" format="string" />

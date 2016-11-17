@@ -58,4 +58,16 @@
     <string name="compartir">Compartir</string>
     <string name="sobrecolores">Sobre los Colores</string>
     <string name="sobreformas">Sobre las formas</string>
+
+
+
+    <string name="home_title_text">全脑教育酷 • 记软件</string>
+
+    <string name="home_title_left_text">我的积分%d</string>
+    <string name="home_1_text">21天训练</string>
+    <string name="home_2_text">90天养成良好习惯</string>
+    <string name="home_3_text">综合训练</string>
+    <string name="home_4_text">教育资讯</string>
+
+    <string name="practice_21_day_title_right_text">帮助说明</string>
 </resources>

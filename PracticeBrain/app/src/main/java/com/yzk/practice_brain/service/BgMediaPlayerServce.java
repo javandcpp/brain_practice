@@ -35,6 +35,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private int curVolume;
     private int stepVolume;
     private boolean isPause;
+    private boolean isSilent;
 
     private void initMediaPlayer() {
         if (mMediaPlayer != null) {
@@ -81,12 +82,12 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void getMediaResource() {
         mAssetManager = getAssets();
         try {
-            AssetFileDescriptor fileOne = mAssetManager.openFd("music3.mp3");
-            AssetFileDescriptor fileTwo = mAssetManager.openFd("music2.mp3");
-            AssetFileDescriptor fileThree = mAssetManager.openFd("music1.mp3");
-            mMedaiList.add(fileOne);
-            mMedaiList.add(fileTwo);
-            mMedaiList.add(fileThree);
+            for (int i = 1; i < 21; i++) {
+
+                String musicName = "music" + i + ".mp3";
+                AssetFileDescriptor fileDescriptor = mAssetManager.openFd(musicName);
+                mMedaiList.add(fileDescriptor);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -199,18 +200,20 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
      * service close volume
      */
     private void serviceCloseVolume() {
-        if (null != mMediaPlayer) {
+            isSilent=!isSilent;
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
-        }
     }
 
     /**
      * open volume
      */
     private void serviceOpenVolume() {
-        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 2, 0);
-        curVolume = maxVolume / 2;
+        if (isSilent) {
+            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 2, 0);
+            curVolume = maxVolume / 2;
+            isSilent=!isSilent;
+        }
 
     }
 
@@ -296,7 +299,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         ++currentCursor;
-        if (currentCursor > mMedaiList.size()-1) {
+        if (currentCursor > mMedaiList.size() - 1) {
             currentCursor = 0;
         }
         BgMediaPlayerServce.this.servicePlay();

@@ -23,7 +23,7 @@ import java.util.List;
  * Created by android on 11/18/16.
  */
 
-public class MediaPlayerServce extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+public class BgMediaPlayerServce extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
 
     private MediaPlayer mMediaPlayer;
@@ -71,7 +71,7 @@ public class MediaPlayerServce extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtil.d(MediaPlayerServce.class.getSimpleName() + " onCreate");
+        LogUtil.d(BgMediaPlayerServce.class.getSimpleName() + " onCreate");
         mMedaiList = new ArrayList<>();
         getMediaResource();
         initMediaPlayer();
@@ -107,7 +107,7 @@ public class MediaPlayerServce extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtil.d(MediaPlayerServce.class.getSimpleName() + " onDestroy");
+        LogUtil.d(BgMediaPlayerServce.class.getSimpleName() + " onDestroy");
         destroyMediaPlayer();
     }
 
@@ -228,8 +228,8 @@ public class MediaPlayerServce extends Service implements MediaPlayer.OnCompleti
     private class MediaBinder extends IMediaInterface.Stub {
 
 
-        private MediaPlayerServce getService() {
-            return MediaPlayerServce.this;
+        private BgMediaPlayerServce getService() {
+            return BgMediaPlayerServce.this;
         }
 
 
@@ -299,7 +299,7 @@ public class MediaPlayerServce extends Service implements MediaPlayer.OnCompleti
         if (currentCursor > mMedaiList.size()-1) {
             currentCursor = 0;
         }
-        MediaPlayerServce.this.servicePlay();
+        BgMediaPlayerServce.this.servicePlay();
         LogUtil.e("mediaplayer completion play,ready for next music and current cursor:" + currentCursor);
     }
 

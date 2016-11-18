@@ -10,7 +10,7 @@ import android.os.IBinder;
 
 import com.yzk.practice_brain.IMediaInterface;
 import com.yzk.practice_brain.log.LogUtil;
-import com.yzk.practice_brain.service.MediaPlayerServce;
+import com.yzk.practice_brain.service.BgMediaPlayerServce;
 
 /**
  * Created by android on 9/10/15.
@@ -61,7 +61,7 @@ public class GlobalApplication extends BaseApplication {
 
 
     public boolean startService(){
-        intent = new Intent(GlobalApplication.instance, MediaPlayerServce.class);
+        intent = new Intent(GlobalApplication.instance, BgMediaPlayerServce.class);
         startService(intent);
        return bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
     };

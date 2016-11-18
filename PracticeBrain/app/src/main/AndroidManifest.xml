@@ -63,7 +63,7 @@
             android:name=".module.mandalas.Aboutshapes"
             android:screenOrientation="landscape" />
         <!--<activity android:name=".module.mandalas.TestActivity"></activity>-->
-        <service android:name=".service.MediaPlayerServce"
+        <service android:name=".service.BgMediaPlayerServce"
             android:exported="true"
             android:process=":remote">
             <intent-filter android:priority="1000">

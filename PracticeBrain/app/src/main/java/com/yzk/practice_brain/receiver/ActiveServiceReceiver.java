@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.log.LogUtil;
-import com.yzk.practice_brain.service.MediaPlayerServce;
+import com.yzk.practice_brain.service.BgMediaPlayerServce;
 import com.yzk.practice_brain.utils.AppUtils;
 
 import rx.Observable;
@@ -33,9 +33,9 @@ public class ActiveServiceReceiver extends BroadcastReceiver {
 
                     if (!isServiceRunning) {
                         GlobalApplication.instance.startService();
-                        LogUtil.d(MediaPlayerServce.class.getCanonicalName() + " start");
+                        LogUtil.d(BgMediaPlayerServce.class.getCanonicalName() + " start");
                     } else {
-                        LogUtil.d(MediaPlayerServce.class.getCanonicalName() + " is running");
+                        LogUtil.d(BgMediaPlayerServce.class.getCanonicalName() + " is running");
                     }
                 }
 
@@ -46,7 +46,7 @@ public class ActiveServiceReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onNext(String s) {
-                    isServiceRunning=AppUtils.isServiceRunning(GlobalApplication.instance, MediaPlayerServce.class.getSimpleName());
+                    isServiceRunning=AppUtils.isServiceRunning(GlobalApplication.instance, BgMediaPlayerServce.class.getSimpleName());
                 }
             });
         }

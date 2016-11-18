@@ -1,0 +1,54 @@
+package com.yzk.practice_brain.receiver;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+import com.yzk.practice_brain.application.GlobalApplication;
+import com.yzk.practice_brain.log.LogUtil;
+import com.yzk.practice_brain.service.MediaPlayerServce;
+import com.yzk.practice_brain.utils.AppUtils;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+
+/**
+ * Created by android on 11/18/16.
+ */
+
+public class ActiveServiceReceiver extends BroadcastReceiver {
+
+    private boolean isServiceRunning;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        String action = intent.getAction();
+        if (null != action && (action.equals(Intent.ACTION_TIME_TICK) || action.equals(Intent.ACTION_BOOT_COMPLETED))) {
+
+            Observable.just("").observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(new Subscriber<String>() {
+                @Override
+                public void onCompleted() {
+
+                    if (!isServiceRunning) {
+                        GlobalApplication.instance.startService();
+                        LogUtil.d(MediaPlayerServce.class.getCanonicalName() + " start");
+                    } else {
+                        LogUtil.d(MediaPlayerServce.class.getCanonicalName() + " is running");
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogUtil.e(e.toString());
+                }
+
+                @Override
+                public void onNext(String s) {
+                    isServiceRunning=AppUtils.isServiceRunning(GlobalApplication.instance, MediaPlayerServce.class.getSimpleName());
+                }
+            });
+        }
+    }
+}

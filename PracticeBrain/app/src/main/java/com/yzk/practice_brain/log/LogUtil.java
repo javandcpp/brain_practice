@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  *
  */
 public class LogUtil {
-    private static final boolean DEBUG = isDebugBuild();
+    private static final boolean DEBUG = true;
     public static final String TAG = "practice_brain";
 
     public static void e(String msg) {

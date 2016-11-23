@@ -11,6 +11,7 @@ public class PracticeEntity implements Serializable {
     public boolean locked=true;
     public int normalResId;
     public int unlockResId;
+    public int index;
 
 
 }

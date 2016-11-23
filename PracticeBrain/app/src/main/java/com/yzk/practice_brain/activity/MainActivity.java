@@ -4,33 +4,43 @@ package com.yzk.practice_brain.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.constants.Constants;
+import com.yzk.practice_brain.preference.PreferenceHelper;
 
+import butterknife.Bind;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseFragmentActivity {
+
+
+    @Bind(R.id.left_image)
+    ImageButton titleLeftImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PreferenceHelper.writeInt(Constants.TWENTY_ONE,1);
     }
 
     @Override
     protected void uIViewInit() {
 
+        titleLeftImage.setSelected(true);
 
     }
+//    R.id.play,R.id.pause,R.id.stop,R.id.closeVolume,R.id.openVolume
 
-
-    @OnClick({R.id.rlone, R.id.rltwo, R.id.rlthree, R.id.rlfour,R.id.play,R.id.pause,R.id.stop,R.id.closeVolume,R.id.openVolume})
+    @OnClick({R.id.rlone, R.id.rltwo, R.id.rlthree, R.id.rlfour})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -46,44 +56,44 @@ public class MainActivity extends BaseFragmentActivity {
                 intent.setClass(this, EducationNewsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.play:
-                try {
-                    GlobalApplication.instance.getiMediaInterface().play();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case R.id.stop:
-                try {
-                    GlobalApplication.instance.getiMediaInterface().stop();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case R.id.pause:
-                try {
-                    GlobalApplication.instance.getiMediaInterface().pause();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.closeVolume:
-                try {
-                    GlobalApplication.instance.getiMediaInterface().closeVolume();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case R.id.openVolume:
-                try {
-                    GlobalApplication.instance.getiMediaInterface().openVolume();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
+//            case R.id.play:
+//                try {
+//                    GlobalApplication.instance.getiMediaInterface().play();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//
+//            case R.id.stop:
+//                try {
+//                    GlobalApplication.instance.getiMediaInterface().stop();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//
+//            case R.id.pause:
+//                try {
+//                    GlobalApplication.instance.getiMediaInterface().pause();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//            case R.id.closeVolume:
+//                try {
+//                    GlobalApplication.instance.getiMediaInterface().closeVolume();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//
+//            case R.id.openVolume:
+//                try {
+//                    GlobalApplication.instance.getiMediaInterface().openVolume();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
         }
 
 

@@ -1,6 +1,7 @@
 package com.yzk.practice_brain.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.yzk.practice_brain.R;
+import com.yzk.practice_brain.activity.TwentyOneEnterActivity;
 import com.yzk.practice_brain.bean.PracticeEntity;
 
 import java.util.List;
@@ -47,7 +49,7 @@ public class GridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         if (null == view) {
             viewHolder = new ViewHolder();
             view = mInflater.inflate(R.layout.layout_grid_item, null);
@@ -61,9 +63,28 @@ public class GridAdapter extends BaseAdapter {
 
         if (practiceEntity.locked) {
             viewHolder.imageView.setImageResource(practiceEntity.normalResId);
+            viewHolder.imageView.setEnabled(false);
         } else {
             viewHolder.imageView.setImageResource(practiceEntity.unlockResId);
+            viewHolder.imageView.setEnabled(true);
         }
+        viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PracticeEntity practiceEntity1 = mDataList.get(i);
+                Intent intent=null;
+                if (0==practiceEntity1.index){
+//                    intent=new Intent(mContext,);
+                }else{
+                    intent=new Intent(mContext, TwentyOneEnterActivity.class);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
+
+        int width = viewHolder.imageView.getWidth();
+
+
 
         return view;
     }

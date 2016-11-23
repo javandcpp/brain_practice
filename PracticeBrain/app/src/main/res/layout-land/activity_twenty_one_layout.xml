@@ -31,7 +31,7 @@
             android:background="@drawable/twenty_one_background"
             android:paddingBottom="10dp"
             android:layout_height="match_parent">
-            <GridView
+            <com.yzk.practice_brain.ui.UnScrollGridView
                 android:id="@+id/gridview"
                 android:numColumns="8"
                 android:overScrollMode="never"

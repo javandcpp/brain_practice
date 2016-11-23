@@ -18,49 +18,50 @@
         app:titleBarTitle="@string/home_title_text"></com.yzk.practice_brain.ui.EaseTitleBar>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:layout_height="40dp">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@color/white"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_height="40dp">-->
 
-        <Button
-            android:id="@+id/play"
-            android:layout_width="wrap_content"
-            android:text="play"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/pause"
-            android:layout_width="wrap_content"
-            android:text="pause"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/stop"
-            android:text="stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!--<Button-->
+            <!--android:id="@+id/play"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:text="play"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Button-->
+            <!--android:id="@+id/pause"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:text="pause"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Button-->
+            <!--android:id="@+id/stop"-->
+            <!--android:text="stop"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
 
-        <Button
-            android:id="@+id/closeVolume"
-            android:layout_width="wrap_content"
-            android:text="close volume"
-            android:layout_height="wrap_content" />
+        <!--<Button-->
+            <!--android:id="@+id/closeVolume"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:text="close volume"-->
+            <!--android:layout_height="wrap_content" />-->
 
-        <Button
-            android:id="@+id/openVolume"
-            android:layout_width="wrap_content"
-            android:text="open volume"
-            android:layout_height="wrap_content" />
+        <!--<Button-->
+            <!--android:id="@+id/openVolume"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:text="open volume"-->
+            <!--android:layout_height="wrap_content" />-->
 
-        <SeekBar
-            android:layout_width="200dp"
-            android:max="1"
-            android:progress="0"
-            android:layout_marginLeft="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_height="10dp" />
+        <!--<SeekBar-->
+            <!--android:layout_width="200dp"-->
+            <!--android:max="1"-->
+            <!--android:progress="0"-->
+            <!--android:layout_marginLeft="50dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_height="10dp" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 
     <LinearLayout

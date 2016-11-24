@@ -40,7 +40,6 @@ import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.utils.ImageUtils;
 
 import java.io.File;
-import java.util.Random;
 
 public class Mandalas2Activity extends Activity implements Animation.AnimationListener, ColorPicker.OnColorChangedListener {
 
@@ -183,7 +182,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             this.distanciaX = ((int) distanceX);
             this.distanciaY = ((int) distanceY);
-//            Mandalas2Activity.this.imagen.scrollBy(((int) distanceX), ((int) distanceY));
             return true;
         }
 
@@ -344,9 +342,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         this.mandalaTag = v10.hasExtra("numero-archivoGuardado") ? v10.getStringExtra("numero-archivoGuardado")
                 : v10.getStringExtra("mandala-tag");
 
-
-//        this.handler.comprobarTempyMostrarDibujo(this.imagen);
-
         this.flayout = (FrameLayout) this.findViewById(R.id.framelayout);
         BitmapFactory.Options v13 = new BitmapFactory.Options();
         v13.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -482,24 +477,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         prenderEfectos();
         initView();
 
-        final Button color = (Button) findViewById(R.id.color);
-        color.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Random random = new Random();
-                Random random1 = new Random();
-                int i = random.nextInt(9);
-                int j = random.nextInt(8);
-
-                if (Mandalas2Activity.this.efectos) {
-                    Mandalas2Activity.this.fx.EfectoAlTocar();
-                }
-
-                Mandalas2Activity.this.newColor = v0[i][j];
-                color.setBackgroundColor(newColor);
-            }
-        });
 
         this.imagen = (ImageView) this.findViewById(R.id.imagen2);
         final View v1 = this.findViewById(R.id.gomaborrar);
@@ -540,44 +517,9 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
 
 
 
-        View v5 = this.findViewById(R.id.efectos);
-        if (this.efectos) {
-            ((Button) v5).setBackgroundResource(R.drawable.soundon);
-        } else {
-            ((Button) v5).setBackgroundResource(R.drawable.soundoff);
-        }
 
-        ((Button) v5).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity v1 = Mandalas2Activity.this;
-                boolean v0 = Mandalas2Activity.this.efectos ? false : true;
-                v1.efectos = v0;
-                if (Mandalas2Activity.this.efectos) {
-                    Mandalas2Activity.this.prenderEfectos();
-                    v.setBackgroundResource(R.drawable.soundon);
-                } else {
-                    Mandalas2Activity.this.fx.clickStop();
-                    Mandalas2Activity.this.fx = null;
-                    v.setBackgroundResource(R.drawable.soundoff);
-                }
-            }
-        });
-        this.findViewById(R.id.musica).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity v1 = Mandalas2Activity.this;
-                boolean v0 = Mandalas2Activity.this.tocaMusica ? false : true;
-                v1.tocaMusica = v0;
-                if (Mandalas2Activity.this.tocaMusica) {
-                    Mandalas2Activity.this.prenderLluvia();
-                    Mandalas2Activity.this.s.PlayMusic();
-                    v.setBackgroundResource(R.drawable.musicon);
-                } else {
-                    Mandalas2Activity.this.s.StopMusic();
-                    v.setBackgroundResource(R.drawable.musicoff);
-                    Mandalas2Activity.this.s = null;
-                }
-            }
-        });
+
+
         this.findViewById(R.id.grabar).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Mandalas2Activity.this.animarConEscala(v);

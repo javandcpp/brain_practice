@@ -29,20 +29,19 @@
             android:layout_marginRight="160dp"
             android:layout_width="match_parent"
             android:background="@drawable/twenty_one_background"
-            android:paddingBottom="10dp"
             android:layout_height="match_parent">
             <com.yzk.practice_brain.ui.UnScrollGridView
                 android:id="@+id/gridview"
                 android:numColumns="8"
                 android:overScrollMode="never"
-                android:layout_alignParentBottom="true"
+                android:layout_marginTop="52dp"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="1dp"
+                android:verticalSpacing="15dp"
                 android:horizontalSpacing="1dp"
+                android:layout_marginLeft="3dp"
                 android:scrollbars="none"
                 android:layout_width="match_parent"
-                android:layout_margin="10dp"
-                android:layout_height="250dp"/>
+                android:layout_height="320dp"/>
 
         </RelativeLayout>
 

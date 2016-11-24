@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.preference.PreferenceHelper;
+import com.yzk.practice_brain.utils.SizeUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -21,8 +24,14 @@ import butterknife.OnClick;
 public class MainActivity extends BaseFragmentActivity {
 
 
-    @Bind(R.id.left_image)
-    ImageButton titleLeftImage;
+    @Bind(R.id.right_image)
+    ImageButton rightImage;
+
+    @Bind(R.id.right_layout)
+    RelativeLayout relativeLayout;
+
+    private boolean rightSelected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +43,15 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected void uIViewInit() {
-
-        titleLeftImage.setSelected(true);
+        ViewGroup.LayoutParams layoutParams = relativeLayout.getLayoutParams();
+        layoutParams.width=SizeUtils.dp2px(this,35);
+        relativeLayout.setLayoutParams(layoutParams);
+        rightImage.setSelected(rightSelected);
 
     }
 //    R.id.play,R.id.pause,R.id.stop,R.id.closeVolume,R.id.openVolume
 
-    @OnClick({R.id.rlone, R.id.rltwo, R.id.rlthree, R.id.rlfour})
+    @OnClick({R.id.rlone, R.id.rltwo, R.id.rlthree, R.id.rlfour,R.id.right_layout})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -55,6 +66,9 @@ public class MainActivity extends BaseFragmentActivity {
             case R.id.rlfour:
                 intent.setClass(this, EducationNewsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.right_layout:
+                rightImage.setSelected(!rightImage.isSelected());
                 break;
 //            case R.id.play:
 //                try {

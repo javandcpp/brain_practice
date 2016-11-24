@@ -1,16 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.yzk.practice_brain.ui.EaseTitleBar
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:titleBarLeftImage="@drawable/titlebar_left_arrow"
-        app:titleBarTitle="21天训练"
         app:titleBarRightImage="@drawable/title_bar_sound_selector"
-        android:layout_height="wrap_content"></com.yzk.practice_brain.ui.EaseTitleBar>
+        app:titleBarTitle="21天训练" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/hone_background_one">
+
+
+        <TextView
+            android:id="@+id/tvDayNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:shadowColor="@color/gray"
+            android:shadowDx="1"
+            android:shadowDy="-2"
+            android:shadowRadius="1"
+            android:text="第\n一\n天"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/home_icon_one" />
+
+                <TextView
+                    android:textColor="@color/grey_666666"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="18dp"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowColor="@color/gray"
+                    android:shadowRadius="1"
+                    android:layout_height="wrap_content"
+                    android:text="学习讲解训练" />
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout2"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/home_icon_two" />
+
+                <TextView
+                    android:textColor="@color/grey_666666"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="18dp"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowColor="@color/gray"
+                    android:shadowRadius="1"
+                    android:layout_height="wrap_content"
+                    android:text="舒尔特表训练" />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="18dp"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/home_icon_three" />
+
+                <TextView
+                    android:textColor="@color/grey_666666"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="18dp"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowColor="@color/gray"
+                    android:shadowRadius="1"
+                    android:layout_height="wrap_content"
+                    android:text="曼陀罗训练" />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="18dp"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/home_icon_four" />
+
+                <TextView
+                    android:textColor="@color/grey_666666"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="18dp"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowColor="@color/gray"
+                    android:shadowRadius="2"
+                    android:layout_height="wrap_content"
+                    android:text="图片记忆训练" />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/home_icon_five" />
+
+                <TextView
+                    android:textColor="@color/grey_666666"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="18dp"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowColor="@color/gray"
+                    android:shadowRadius="2"
+                    android:layout_height="wrap_content"
+                    android:text="记忆训练" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
 
 
 </LinearLayout>

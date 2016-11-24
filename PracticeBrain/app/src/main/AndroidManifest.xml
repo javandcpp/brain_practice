@@ -41,6 +41,21 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".activity.EducationNewsActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".activity.TwentyOneEnterActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.ImageRemeberPracticeActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.SuTablePracticeActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.ImageAndVoiceActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.MandalasActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.RemeberPracticeActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.MandalaEnterActivity"
+            android:screenOrientation="landscape"/>
+
 
         <activity
             android:name=".module.mandalas.Indice"

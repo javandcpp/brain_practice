@@ -32,5 +32,13 @@ public class PreferenceHelper {
         return getSharedPreference().getInt(key,-1);
     }
 
+    public static void writeBool(String key,boolean value){
+        getSharedPreference().edit().putBoolean(key,value).apply();
+    }
+
+    public static boolean getBool(String key){
+        return getSharedPreference().getBoolean(key,false);
+    }
+
 
 }

@@ -29,6 +29,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +44,7 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".activity.TwentyOneEnterActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.ImageRemeberPracticeActivity"
+        <activity android:name=".activity.ImageRemeberPracticeEnterActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".activity.SuTablePracticeActivity"
             android:screenOrientation="landscape"/>
@@ -54,6 +55,12 @@
         <activity android:name=".activity.RemeberPracticeActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".activity.MandalaEnterActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name=".activity.ImageRemeberPracticeActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name=".activity.RemeberPracticeEnterActivity"
             android:screenOrientation="landscape"/>
 
 

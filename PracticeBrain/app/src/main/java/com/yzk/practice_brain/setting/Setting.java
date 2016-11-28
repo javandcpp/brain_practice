@@ -40,8 +40,11 @@ public class Setting {
      */
     public static boolean setSystemKeyBoardVoice(int keyBoardVoice) {
 
-        return Settings.System.putInt(GlobalApplication.instance.getContentResolver(), Settings.System.SOUND_EFFECTS_ENABLED, 1);
+        return Settings.System.putInt(GlobalApplication.instance.getContentResolver(), Settings.System.SOUND_EFFECTS_ENABLED, keyBoardVoice);
     }
+
+
+
 
 
 

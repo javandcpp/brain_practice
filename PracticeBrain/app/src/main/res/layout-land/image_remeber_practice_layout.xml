@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background">
+
+            <FrameLayout
+                android:layout_width="510dp"
+                android:layout_height="450dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/frame"
+                android:paddingTop="80dp">
+
+                <GridView
+                    android:id="@+id/leftGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:numColumns="4"
+                    android:scrollbars="none" />
+
+            </FrameLayout>
+
+
+            <GridView
+                android:id="@+id/rightGrid"
+                android:layout_width="390dp"
+                android:layout_height="300dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="80dp"
+                android:layout_marginLeft="10dp"
+                android:numColumns="4"
+                android:scrollbars="none" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tvHint"
+            android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:text="错误次数:0" />
+
+
+        <com.yzk.practice_brain.ui.Controller
+            android:id="@+id/controlPanel"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            app:orientation="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:background="@drawable/home_blue_btn"
+            android:layout_gravity="right"
+            android:textColor="@color/white"
+            android:text="规则"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+

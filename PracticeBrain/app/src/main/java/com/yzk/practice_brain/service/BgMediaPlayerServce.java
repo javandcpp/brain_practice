@@ -35,7 +35,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private int curVolume;
     private int stepVolume;
     private boolean isPause;
-    private boolean isSilent;
+    public boolean isSilent;
 
     private void initMediaPlayer() {
         if (mMediaPlayer != null) {
@@ -202,6 +202,8 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void serviceCloseVolume() {
             isSilent=!isSilent;
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+
+
     }
 
     /**
@@ -289,9 +291,24 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         }
 
         @Override
+        public boolean isPlaying() throws RemoteException {
+            if (null!=mMediaPlayer&&mMediaPlayer.isPlaying()){
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean isSilent() throws RemoteException {
+            return getService().isSilent;
+        }
+
+        @Override
         public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
 
         }
+
+
 
 
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.RemoteException;
 
 import com.yzk.practice_brain.IMediaInterface;
 import com.yzk.practice_brain.log.LogUtil;
@@ -44,6 +45,11 @@ public class GlobalApplication extends BaseApplication {
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 iMediaInterface = (IMediaInterface.Stub.asInterface(iBinder));
                 LogUtil.e("service Connected");
+                try {
+                    iMediaInterface.play();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

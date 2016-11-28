@@ -120,7 +120,7 @@ public class SubIndice extends Activity {
                 } else {
                     Intent v1 = new Intent(SubIndice.this.getApplicationContext(), Mandalas2Activity
                             .class);
-                    v1.putExtra("mandala-tag", String.valueOf(v2));
+                    v1.putExtra("mandala-tag", "myimage");
                     SubIndice.this.startActivity(v1);
                 }
             }

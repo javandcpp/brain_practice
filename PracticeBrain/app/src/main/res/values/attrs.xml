@@ -38,4 +38,8 @@
         <!-- Location of the SVG document. -->
         <attr name="svg" format="reference|string"/>
     </declare-styleable>
+
+    <declare-styleable name="Controller">
+        <attr name="orientation" format="integer"/>
+    </declare-styleable>
 </resources>

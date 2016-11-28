@@ -4,6 +4,7 @@ package com.yzk.practice_brain.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
@@ -130,7 +131,6 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void showTips() {
-
         AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle("提醒")
                 .setMessage("是否退出程序")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -140,6 +140,11 @@ public class MainActivity extends BaseFragmentActivity {
                         intent.addCategory(Intent.CATEGORY_HOME);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        try {
+                            GlobalApplication.instance.getiMediaInterface().stop();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                         GlobalApplication.instance.exitApp();
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }

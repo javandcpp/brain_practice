@@ -1,12 +1,10 @@
 package com.yzk.practice_brain.module.mandalas;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -26,143 +24,170 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.caverock.androidsvg.PreserveAspectRatio;
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 import com.yzk.practice_brain.R;
+import com.yzk.practice_brain.application.GlobalApplication;
+import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.utils.ImageUtils;
 
 import java.io.File;
 
-public class Mandalas2Activity extends Activity implements Animation.AnimationListener, ColorPicker.OnColorChangedListener {
+import butterknife.Bind;
+import butterknife.OnClick;
 
-    public static int[][] v0 = new int[9][8];
+import static android.graphics.Color.parseColor;
 
-    static {
-        v0[0][0] = Color.parseColor("#760605");
-        v0[0][1] = Color.parseColor("#83111f");
-        v0[0][2] = Color.parseColor("#981a1e");
-        v0[0][3] = Color.parseColor("#aa1c25");
-        v0[0][4] = Color.parseColor("#bb0724");
-        v0[0][5] = Color.parseColor("#d44929");
-        v0[0][6] = Color.parseColor("#f33004");
-        v0[0][7] = Color.parseColor("#f7531d");
-        v0[1][0] = Color.parseColor("#ee4a28");
-        v0[1][1] = Color.parseColor("#cb5934");
-        v0[1][2] = Color.parseColor("#f89920");
-        v0[1][3] = Color.parseColor("#f5a014");
-        v0[1][4] = Color.parseColor("#ee9e03");
-        v0[1][5] = Color.parseColor("#f79120");
-        v0[1][6] = Color.parseColor("#f9c32f");
-        v0[1][7] = Color.parseColor("#efd905");
-        v0[2][0] = Color.parseColor("#ffc41c");
-        v0[2][1] = Color.parseColor("#c9a644");
-        v0[2][2] = Color.parseColor("#d8c73a");
-        v0[2][3] = Color.parseColor("#fee301");
-        v0[2][4] = Color.parseColor("#f4e989");
-        v0[2][5] = Color.parseColor("#febf0d");
-        v0[2][6] = Color.parseColor("#fbd44f");
-        v0[2][7] = Color.parseColor("#fae1a4");
-        v0[3][0] = Color.parseColor("#18744b");
-        v0[3][1] = Color.parseColor("#008235");
-        v0[3][2] = Color.parseColor("#67b04c");
-        v0[3][3] = Color.parseColor("#b3d734");
-        v0[3][4] = Color.parseColor("#87bc82");
-        v0[3][5] = Color.parseColor("#5ab751");
-        v0[3][6] = Color.parseColor("#9f9d27");
-        v0[3][7] = Color.parseColor("#f3f918");
-        v0[4][0] = Color.parseColor("#0054aa");
-        v0[4][1] = Color.parseColor("#0089de");
-        v0[4][2] = Color.parseColor("#a4b9e5");
-        v0[4][3] = Color.parseColor("#007ec3");
-        v0[4][4] = Color.parseColor("#cbedfb");
-        v0[4][5] = Color.parseColor("#0e398b");
-        v0[4][6] = Color.parseColor("#0378ce");
-        v0[4][7] = Color.parseColor("#437090");
-        v0[5][0] = Color.parseColor("#3d106e");
-        v0[5][1] = Color.parseColor("#602c91");
-        v0[5][2] = Color.parseColor("#8773b2");
-        v0[5][3] = Color.parseColor("#997ab8");
-        v0[5][4] = Color.parseColor("#b678c6");
-        v0[5][5] = Color.parseColor("#dc4fff");
-        v0[5][6] = Color.parseColor("#d59ae4");
-        v0[5][7] = Color.parseColor("#ece0ef");
-        v0[6][0] = Color.parseColor("#760076");
-        v0[6][1] = Color.parseColor("#932393");
-        v0[6][2] = Color.parseColor("#c330c3");
-        v0[6][3] = Color.parseColor("#ff00ff");
-        v0[6][4] = Color.parseColor("#e223e2");
-        v0[6][5] = Color.parseColor("#ff68ff");
-        v0[6][6] = Color.parseColor("#feaefe");
-        v0[6][7] = Color.parseColor("#e7cde7");
-        v0[7][0] = Color.parseColor("#ff0000");
-        v0[7][1] = Color.parseColor("#ffff00");
-        v0[7][2] = Color.parseColor("#00ff00");
-        v0[7][3] = Color.parseColor("#00ffff");
-        v0[7][4] = Color.parseColor("#0000ff");
-        v0[7][5] = Color.parseColor("#ff00ff");
-        v0[7][6] = Color.parseColor("#626262");
-        v0[7][7] = Color.parseColor("#f1690e");
-        v0[8][0] = Color.parseColor("#f1690e");
-        v0[8][1] = Color.parseColor("#feee00");
-        v0[8][2] = Color.parseColor("#009045");
-        v0[8][3] = Color.parseColor("#11febe");
-        v0[8][4] = Color.parseColor("#009bdb");
-        v0[8][5] = Color.parseColor("#5b400a");
-        v0[8][6] = Color.parseColor("#a28356");
-        v0[8][7] = Color.parseColor("#db9600");
+public class Mandalas2Activity extends BaseFragmentActivity implements Animation.AnimationListener, ColorPicker.OnColorChangedListener, Controller.ControllerCallBack {
+    private final float MAXSCALE;
+    private int MAX_SAVING_FILES;
+    private final float MINSCALE;
+    private final int SUSTITUTONEGRO;
+    private Animation anim;
+    private AppRater apprater;
+    private Bitmap b;
+    public Canvas canvas;
+    private CustomDrawableView cdv;
+    private boolean comprobarasync;
+    private PictureDrawable d;
+    private Drawable dibujo;
+    private Metricas dim;
+    private Drawable drawable;
+    public boolean efectos;
+    private String extFile;
+    private boolean eyedropper;
+    private FloodFill fd;
+    private EfectosSonoros fx;
+    private GestureDetector gestureDetector;
+    private static Button goterito;
+    private Boolean gradient;
+    private FilesHandler handler;
+    private ImageView imagen;
+    private String mDrawableName;
+    private int mandalaGroup;
+    private int mandalaIdNum;
+    private int mandalaMax;
+    private String mandalaName;
+    private int mandalaNum;
+    private String mandalaString;
+    private String mandalaTag;
+    private MemoryManager mem;
+    private Menu menu;
+    private String mess;
+    private int newColor = parseColor("#ffff0000");
+    private int numpaleta;
+    private int oldColor;
+    private GrabarPreferencias prefs;
+    private int proximoValor;
+    private String raiz;
+    private boolean runningImagen;
+    private boolean runningPaletas;
+    private Sonidos s;
+    private ScaleGestureDetector scaleGestureDetector;
+    private View.OnTouchListener scaleGestureListener;
+    private SVG svg;
+    public Path svgparsdtopath;
+    public boolean tocaMusica;
+
+    private final String AREA01 = "ff00ff00";//x=108,y=108
+    private final String AREA02 = "ff0000ff";//x=236,y=94
+    private final String AREA03 = "ffff0000";//x=350,y=112
+    private final String AREA04 = "ff0000ff";//x=367,y=225
+    private final String AREA05 = "fffff100";//x=360,y=353
+    private final String AREA06 = "ffff0000";//x=234,y=388
+    private final String AREA07 = "ff0000ff";//x=101,y=349
+    private final String AREA08 = "ffff0000";//x=75,y=225
+    private final String AREA09 = "fffff100";//x=238,y=238
+
+
+    @Bind(R.id.redPen)
+    ImageButton redPen;
+
+    @Bind(R.id.greenPen)
+    ImageButton greenPen;
+
+    @Bind(R.id.yellowPen)
+    ImageButton yellowPen;
+
+    @Bind(R.id.bluePen)
+    ImageButton bluePen;
+    private Controller controller;
+
+    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.redPen:
+                redPen.setSelected(true);
+                greenPen.setSelected(!redPen.isSelected());
+                yellowPen.setSelected(!redPen.isSelected());
+                bluePen.setSelected(!redPen.isSelected());
+                newColor = parseColor("#ffff0000");
+                break;
+            case R.id.greenPen:
+                greenPen.setSelected(true);
+
+                redPen.setSelected(!greenPen.isSelected());
+                yellowPen.setSelected(!greenPen.isSelected());
+                bluePen.setSelected(!greenPen.isSelected());
+                newColor = parseColor("#ff00ff00");
+                break;
+            case R.id.yellowPen:
+                yellowPen.setSelected(true);
+                redPen.setSelected(!yellowPen.isSelected());
+                greenPen.setSelected(!yellowPen.isSelected());
+                bluePen.setSelected(!yellowPen.isSelected());
+                newColor = parseColor("#fffff100");
+                break;
+            case R.id.bluePen:
+                bluePen.setSelected(true);
+                redPen.setSelected(!bluePen.isSelected());
+                yellowPen.setSelected(!bluePen.isSelected());
+                greenPen.setSelected(!bluePen.isSelected());
+                newColor = parseColor("#ff0000ff");
+                break;
+        }
+    }
+
+    @Override
+    public void controll(View view) {
+        switch (view.getId()) {
+            case R.id.retry:
+                retry();
+                break;
+            case R.id.back:
+                finish();
+                break;
+            case R.id.play:
+            try {
+                if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
+                    ((ImageButton) view).setSelected(false);
+                    GlobalApplication.instance.getiMediaInterface().pause();
+                } else {
+                    ((ImageButton) view).setSelected(true);
+                    GlobalApplication.instance.getiMediaInterface().play();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+                break;
+        }
     }
 
 
-//    public class EscalaImagen extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-//        public EscalaImagen() {
-////            Mandalas2Activity.this = arg1;
-//            super();
-//        }
-//
-//        public boolean onScale(ScaleGestureDetector detector) {
-//            float v7 = 3.75f;
-//            float v6 = 0.75f;
-//            float v4 = detector.getScaleFactor();
-//            float v0 = Mandalas2Activity.this.imagen.getScaleX();
-//            float v1 = Mandalas2Activity.this.imagen.getScaleY();
-//            float v2 = v0 * v4;
-//            float v3 = v1 * v4;
-//            if (v2 >= v7 || v3 >= v7) {
-//                v4 = 0.99f;
-//            }
-//
-//            if (v2 <= v6 || v3 <= v6) {
-//                v4 = 1.01f;
-//            }
-//
-//            Mandalas2Activity.this.imagen.setScaleX(v0 * v4);
-//            Mandalas2Activity.this.imagen.setScaleY(v1 * v4);
-//            return true;
-//        }
-//
-//        public boolean onScaleBegin(ScaleGestureDetector detector) {
-//            return true;
-//        }
-//
-//        public void onScaleEnd(ScaleGestureDetector detector) {
-//        }
-//    }
-
-    class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
+    private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
         int distanciaX;
         int distanciaY;
         private Point point;
 
         MyGestureDetector() {
-//            Mandalas2Activity.this = arg2;
             super();
             this.distanciaX = 0;
             this.distanciaY = 0;
@@ -204,100 +229,58 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
             this.point = new Point(v5, v6);
             if (v6 < v0 && v5 < v4) {
                 Mandalas2Activity.this.oldColor = Mandalas2Activity.this.b.getPixel(v5, v6);
-                if (Mandalas2Activity.this.efectos) {
-                    Mandalas2Activity.this.fx.EfectoAlTocar();
-                }
 
-                if (Mandalas2Activity.this.eyedropper) {
-                    Mandalas2Activity.this.newColor = Mandalas2Activity.this.b.getPixel(v5, v6);
-                    Mandalas2Activity.goterito.setBackgroundResource(R.drawable.pick);
-                    Mandalas2Activity.this.eyedropper = false;
-                    return true;
-                }
 
-                if (Mandalas2Activity.this.newColor == Color.parseColor("#FF000000")) {
-                    Mandalas2Activity.this.newColor = Mandalas2Activity.this.SUSTITUTONEGRO;
-                }
                 Mandalas2Activity.this.fd.floodFill(Mandalas2Activity.this.b, this.point, oldColor, Mandalas2Activity.this.newColor);
                 Mandalas2Activity.this.imagen.invalidate();
 
-                String imageColorValue1 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 193, 210);
-                String imageColorValue2 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 454, 157);
-                String imageColorValue3 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 705, 223);
-                String imageColorValue4 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 743, 469);
-                String imageColorValue5 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 453, 469);
-                String imageColorValue6 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 459, 798);
-                String imageColorValue7 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 210, 708);
-                String imageColorValue8 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 177, 469);
-                String imageColorValue9 = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 700, 715);
-                Log.e("TAG",imageColorValue1);
-                Log.e("TAG",imageColorValue2);
-                Log.e("TAG",imageColorValue3);
-                Log.e("TAG",imageColorValue4);
-                Log.e("TAG",imageColorValue5);
-                Log.e("TAG",imageColorValue6);
-                Log.e("TAG",imageColorValue7);
-                Log.e("TAG",imageColorValue8);
-                Log.e("TAG",imageColorValue9);
+
+                compareColor();
+
             }
 
             return true;
         }
     }
 
-    final float MAXSCALE;
-    int MAX_SAVING_FILES;
-    final float MINSCALE;
-    private static final String MY_AD_UNIT_ID = "ca-app-pub-0815276588564171/1181378103";
-    final int SUSTITUTONEGRO;
-    //    private AdView adView;
-    Animation anim;
-    AppRater apprater;
-    private Bitmap b;
-    public Canvas canvas;
-    CustomDrawableView cdv;
-    boolean comprobarasync;
-    PictureDrawable d;
-    Drawable dibujo;
-    private Metricas dim;
-    Drawable drawable;
-    public boolean efectos;
-    String extFile;
-    boolean eyedropper;
-    FloodFill fd;
-    private FrameLayout flayout;
-    EfectosSonoros fx;
-    private GestureDetector gestureDetector;
-    private static Button goterito;
-    Boolean gradient;
-    private FilesHandler handler;
-    private ImageView imagen;
-    private String mDrawableName;
-    int mandalaGroup;
-    int mandalaIdNum;
-    int mandalaMax;
-    String mandalaName;
-    int mandalaNum;
-    String mandalaString;
-    String mandalaTag;
-    MemoryManager mem;
-    Menu menu;
-    String mess;
-    private int newColor;
-    private int numpaleta;
-    private int oldColor;
-    GrabarPreferencias prefs;
-    int proximoValor;
-    String raiz;
-    boolean runningImagen;
-    boolean runningPaletas;
-    Sonidos s;
-    private ScaleGestureDetector scaleGestureDetector;
-    private View.OnTouchListener scaleGestureListener;
-    SVG svg;
-    public Path svgparsdtopath;
-    public boolean tocaMusica;
-    ViewFlipper vflip;
+
+    /**
+     * AREA01 = "ff00ff00";//x=108,y=108
+     * AREA02 = "ff0000ff";//x=236,y=94
+     * AREA03 = "ffff0000";//x=350,y=112
+     * AREA04 = "ff0000ff";//x=367,y=225
+     * AREA05 = "fffff100";//x=360,y=353
+     * AREA06 = "ffff0000";//x=234,y=388
+     * AREA07 = "ff0000ff";//x=101,y=349
+     * AREA08 = "ffff0000";//x=75,y=225
+     * AREA09 = "fffff100";//x=238,y=238
+     */
+    private void compareColor() {
+        String area01_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 108, 108);
+        String area02_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 236, 94);
+        String area03_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 350, 112);
+        String area04_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 367, 225);
+        String area05_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 360, 353);
+        String area06_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 234, 388);
+        String area07_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 101, 349);
+        String area08_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 75, 225);
+        String area09_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 238, 238);
+
+        String white = "ffffffff";
+        if (!area01_value.equals(white) && !area02_value.equals(white) && !area03_value.equals(white) && !area04_value.equals(white) &&
+                !area05_value.equals(white) && !area06_value.equals(white) && !area07_value.equals(white) && !area08_value.equals(white) && !area09_value.equals(white)) {
+
+            if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
+                    && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
+                Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "闯关失败", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
 
     public Mandalas2Activity() {
         super();
@@ -317,8 +300,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         this.handler = new FilesHandler();
         this.mDrawableName = "mandala";
         this.numpaleta = 0;
-        this.SUSTITUTONEGRO = Color.parseColor("#121211");
-        this.newColor = -65536;
+        this.SUSTITUTONEGRO = parseColor("#121211");
         this.oldColor = -1;
         this.eyedropper = false;
         this.gradient = Boolean.valueOf(false);
@@ -330,11 +312,10 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
     }
 
 
-
-    public void animarConEscala(View v) {
-        this.anim = AnimationUtils.loadAnimation(this.getApplicationContext(), R.anim.animcolores);
-        v.startAnimation(this.anim);
-    }
+//    public void animarConEscala(View v) {
+//        this.anim = AnimationUtils.loadAnimation(this.getApplicationContext(), R.anim.animcolores);
+//        v.startAnimation(this.anim);
+//    }
 
     private void cargarImagen() {
         this.runningImagen = true;
@@ -342,7 +323,6 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         this.mandalaTag = v10.hasExtra("numero-archivoGuardado") ? v10.getStringExtra("numero-archivoGuardado")
                 : v10.getStringExtra("mandala-tag");
 
-        this.flayout = (FrameLayout) this.findViewById(R.id.framelayout);
         BitmapFactory.Options v13 = new BitmapFactory.Options();
         v13.inPreferredConfig = Bitmap.Config.ARGB_8888;
         v13.inPurgeable = true;
@@ -410,9 +390,9 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
 //        setImage();
         this.mandalaTag = this.mandalaTag.replace(".png", "");
 
-        View v8 = this.findViewById(R.id.TextoNombreMandala);
-        ((TextView) v8).setText(this.mandalaTag.replace("_", " ").replace(".png", ""));
-        ((TextView) v8).startAnimation(AnimationUtils.loadAnimation(this.getApplicationContext(), R.anim.animmandalatag));
+//        View v8 = this.findViewById(R.id.TextoNombreMandala);
+//        ((TextView) v8).setText(this.mandalaTag.replace("_", " ").replace(".png", ""));
+//        ((TextView) v8).startAnimation(AnimationUtils.loadAnimation(this.getApplicationContext(), R.anim.animmandalatag));
     }
 
 
@@ -426,7 +406,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         Log.e("TAG", "------------------------------>>" + "set image");
         if (this.handler.comprobarTemp()) {
             String v11 = this.handler.devolverNombreTemp();
-            this.mandalaTag = new File(v11).getName()+".png";
+            this.mandalaTag = new File(v11).getName() + ".png";
             Log.e("TAG", "------------------------------>>" + "set image:" + mandalaTag);
             this.b = BitmapFactory.decodeFile(v11, v13);
             this.imagen.setImageBitmap(this.b);
@@ -450,8 +430,8 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         try {
             display.getSize(v1);
         } catch (NoSuchMethodError v0) {
-            v1.x = display.getWidth()-100;
-            v1.y = display.getHeight()-100;
+            v1.x = display.getWidth() - 100;
+            v1.y = display.getHeight() - 100;
         }
 
         return v1;
@@ -468,6 +448,16 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
     }
 
 
+    /**
+     * 重试
+     */
+    private void retry() {
+        this.numpaleta = 0;
+        cargarImagen();
+        gesture();
+    }
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "------------------------------>>" + "onCreate");
@@ -477,67 +467,63 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         prenderEfectos();
         initView();
 
-
         this.imagen = (ImageView) this.findViewById(R.id.imagen2);
         final View v1 = this.findViewById(R.id.gomaborrar);
-        ((Button) v1).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.anim = AnimationUtils.loadAnimation(Mandalas2Activity.this.getApplicationContext(),
-                        R.anim.animcolores);
-                v1.startAnimation(Mandalas2Activity.this.anim);
-                Mandalas2Activity.this.newColor = -1;
-            }
-        });
-
-        this.findViewById(R.id.aIndice2).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.startActivity(new Intent(Mandalas2Activity.this.getApplicationContext(),
-                        Indice.class));
-            }
-        });
-        this.findViewById(R.id.rotation).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.anim = AnimationUtils.loadAnimation(Mandalas2Activity.this.getApplicationContext(),
-                        R.anim.rotate);
-                Mandalas2Activity.this.imagen.startAnimation(Mandalas2Activity.this.anim);
-            }
-        });
-        this.findViewById(R.id.rotation2).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.anim = AnimationUtils.loadAnimation(Mandalas2Activity.this.getApplicationContext(),
-                        R.anim.rotate2);
-                Mandalas2Activity.this.imagen.startAnimation(Mandalas2Activity.this.anim);
-            }
-        });
-        this.findViewById(R.id.centrado).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.centrarImagen();
-            }
-        });
+        redPen.setSelected(true);
+        newColor = parseColor("#ffff0000");
 
 
+        this.numpaleta = 0;
+        if (!this.runningImagen) {
+            this.cargarImagen();
+        }
+        gesture();
+//
+//        this.findViewById(R.id.aIndice2).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Mandalas2Activity.this.startActivity(new Intent(Mandalas2Activity.this.getApplicationContext(),
+//                        Indice.class));
+//            }
+//        });
+//        this.findViewById(R.id.rotation).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Mandalas2Activity.this.anim = AnimationUtils.loadAnimation(Mandalas2Activity.this.getApplicationContext(),
+//                        R.anim.rotate);
+//                Mandalas2Activity.this.imagen.startAnimation(Mandalas2Activity.this.anim);
+//            }
+//        });
+//        this.findViewById(R.id.rotation2).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Mandalas2Activity.this.anim = AnimationUtils.loadAnimation(Mandalas2Activity.this.getApplicationContext(),
+//                        R.anim.rotate2);
+//                Mandalas2Activity.this.imagen.startAnimation(Mandalas2Activity.this.anim);
+//            }
+//        });
+//        this.findViewById(R.id.centrado).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Mandalas2Activity.this.centrarImagen();
+//            }
+//        });
 
 
-
-
-        this.findViewById(R.id.grabar).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Mandalas2Activity.this.animarConEscala(v);
-                if (new File(String.valueOf(Mandalas2Activity.this.raiz) + "/Mandalas2/MyGalery").listFiles()
-                        .length < Mandalas2Activity.this.MAX_SAVING_FILES) {
-                    Mandalas2Activity.this.centrarImagen();
-                    Mandalas2Activity.this.handler.SaveDrawing("miGaleria", Mandalas2Activity.this.imagen,
-                            Mandalas2Activity.this.mandalaTag);
-                } else if (Mandalas2Activity.this.handler.ComprobarDuplicidadGallery(Mandalas2Activity.
-                        this.mandalaTag)) {
-                    Mandalas2Activity.this.centrarImagen();
-                    Mandalas2Activity.this.handler.SaveDrawing("miGaleria", Mandalas2Activity.this.imagen,
-                            Mandalas2Activity.this.mandalaTag);
-                } else {
-                    new DialogsHandler(Mandalas2Activity.this).infoLimiteGrabado(Mandalas2Activity.this);
-                }
-            }
-        });
+//        this.findViewById(R.id.grabar).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Mandalas2Activity.this.animarConEscala(v);
+//                if (new File(String.valueOf(Mandalas2Activity.this.raiz) + "/Mandalas2/MyGalery").listFiles()
+//                        .length < Mandalas2Activity.this.MAX_SAVING_FILES) {
+//                    Mandalas2Activity.this.centrarImagen();
+//                    Mandalas2Activity.this.handler.SaveDrawing("miGaleria", Mandalas2Activity.this.imagen,
+//                            Mandalas2Activity.this.mandalaTag);
+//                } else if (Mandalas2Activity.this.handler.ComprobarDuplicidadGallery(Mandalas2Activity.
+//                        this.mandalaTag)) {
+//                    Mandalas2Activity.this.centrarImagen();
+//                    Mandalas2Activity.this.handler.SaveDrawing("miGaleria", Mandalas2Activity.this.imagen,
+//                            Mandalas2Activity.this.mandalaTag);
+//                } else {
+//                    new DialogsHandler(Mandalas2Activity.this).infoLimiteGrabado(Mandalas2Activity.this);
+//                }
+//            }
+//        });
         this.apprater = new AppRater(((Context) this));
         this.apprater.app_launched(((Context) this));
     }
@@ -546,8 +532,8 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
      * View 初始化
      */
     private void initView() {
-
-
+        controller = (Controller) findViewById(R.id.controlPanel);
+        controller.setClickCallBack(this);
 
 
     }
@@ -555,28 +541,33 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
     public void onResume() {
         super.onResume();
         Log.e("TAG", "------------------------>" + "onResume");
-        this.numpaleta = 0;
-        if (!this.runningImagen) {
-            this.cargarImagen();
-        }
-        gesture();
+
     }
 
     public void onDestroy() {
         Log.e("TAG", "------------------------------>>" + "onDestroy");
         super.onDestroy();
+
+        this.runningImagen = false;
+        this.runningPaletas = false;
+        this.gestureDetector = null;
+        this.scaleGestureListener = null;
+        this.apprater = null;
+
         if ((this.tocaMusica) && this.s != null) {
             this.s = null;
         }
         if (this.fx != null) {
             this.fx = null;
         }
+        if (this.imagen != null) {
+            this.imagen = null;
+        }
         if (this.b != null) {
             this.b.recycle();
         }
+
     }
-
-
 
 
     private void gesture() {
@@ -610,26 +601,22 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         super.onPause();
 
         handler.SaveDrawing("temp", imagen, mandalaTag);
-        if (this.tocaMusica) {
-            this.tocaMusica = false;
-            if (this.s != null) {
-                this.s.StopMusic();
-            }
-        }
+
 
         if (this.prefs != null) {
             this.prefs.setEfectos(Boolean.valueOf(this.efectos));
         }
 
-        if (this.vflip != null) {
-            this.vflip = null;
-        }
+    }
 
-        this.runningImagen = false;
-        this.runningPaletas = false;
-        this.gestureDetector = null;
-        this.scaleGestureListener = null;
-        this.apprater = null;
+    @Override
+    protected void uIViewInit() {
+
+    }
+
+    @Override
+    protected void uIViewDataApply() {
+
     }
 
     public void onStop() {
@@ -638,14 +625,11 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
         super.onStop();
 
 
-        if (this.imagen != null) {
-            this.imagen = null;
-        }
-
-        if (this.prefs != null) {
-            this.prefs = null;
-        }
+//        if (this.prefs != null) {
+//            this.prefs = null;
+//        }
     }
+
 
     private void prenderEfectos() {
         this.fx = new EfectosSonoros(((Context) this));
@@ -703,6 +687,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
 
         /**
          * 绘制矩形
+         *
          * @return
          */
         private RectF drawRectF() {
@@ -711,6 +696,7 @@ public class Mandalas2Activity extends Activity implements Animation.AnimationLi
 
         /**
          * 绘制
+         *
          * @return
          */
         protected void onDraw(Canvas canvas) {

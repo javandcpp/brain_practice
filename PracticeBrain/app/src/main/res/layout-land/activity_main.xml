@@ -192,7 +192,7 @@
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="3"
-                android:text="@string/home_3_text"
+                android:text="@string/home_4_text"
                 android:textColor="@color/colore36e7c"
                 android:textSize="18sp" />
 

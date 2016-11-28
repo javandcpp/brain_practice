@@ -55,13 +55,42 @@ public class TwentyOneEnterActivity extends BaseFragmentActivity {
                 startActivity(intent);
                 break;
             case R.id.layout5:
-                intent=new Intent(this,RemeberPracticeActivity.class);
+                intent=new Intent(this,RemeberPracticeEnterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.left_layout:
                 finish();
                 break;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }

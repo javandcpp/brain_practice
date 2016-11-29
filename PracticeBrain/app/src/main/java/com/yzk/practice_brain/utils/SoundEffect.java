@@ -3,6 +3,7 @@ package com.yzk.practice_brain.utils;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
@@ -20,7 +21,12 @@ public class SoundEffect {
     private final SoundPool sp;
 
     private SoundEffect() {
-        sp = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
+
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            sp = new SoundPool.Builder().setMaxStreams(6).build();
+        }else {
+            sp = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
+        }
         spMap = new HashMap<Integer, Integer>();
         spMap.put(1, sp.load(GlobalApplication.instance, R.raw.correct_voice, 1));
         spMap.put(2, sp.load(GlobalApplication.instance, R.raw.fail_voice, 1));

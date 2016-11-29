@@ -1,58 +1,56 @@
 package com.yzk.practice_brain.module.mandalas;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.yzk.practice_brain.R;
+import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.utils.SoundEffect;
 
-public class TestActivity extends Activity {
+import butterknife.OnClick;
+
+public class TestActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
-
-        initView();
     }
 
-    private void initView() {
-        final ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        final Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int action = motionEvent.getAction();
-                switch(action){
-
-                    case MotionEvent.ACTION_DOWN:
-
-                        int x= (int) motionEvent.getX();
-                        int y= (int) motionEvent.getY();
-                        int color = bitmap.getPixel(x, y);
-
-                        int r = Color.red(color);
-                        int g = Color.green(color);
-                        int b = Color.blue(color);
-                        int a = Color.alpha(color);
-                        int rgb = Color.rgb(r, g, b);
-
-                        Log.e("TAG",x+":"+y+":"+ Integer.toHexString(rgb));
-
-                        break;
-                }
-
-
-                return true;
-            }
-        });
+    @OnClick({R.id.one,R.id.two,R.id.three,R.id.four,R.id.five,R.id.six})
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.one:
+                SoundEffect.getInstance().play(1);
+                break;
+            case R.id.two:
+                SoundEffect.getInstance().play(2);
+                break;
+            case R.id.three:
+                SoundEffect.getInstance().play(3);
+                break;
+            case R.id.four:
+                SoundEffect.getInstance().play(4);
+                break;
+            case R.id.five:
+                SoundEffect.getInstance().play(5);
+                break;
+            case R.id.six:
+                SoundEffect.getInstance().play(6);
+                break;
+        }
     }
+
+
+    @Override
+    protected void uIViewInit() {
+
+    }
+
+    @Override
+    protected void uIViewDataApply() {
+
+    }
+
+
 }

@@ -81,12 +81,16 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
 
     }
 
-    @OnClick(R.id.left_layout)
+    @OnClick({R.id.left_layout,R.id.right_layout})
     public void click(View view){
         switch (view.getId()){
             case R.id.left_layout:
                 finish();
                 break;
+            case R.id.right_layout:
+
+                break;
+
         }
     }
 }

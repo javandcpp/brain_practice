@@ -46,10 +46,11 @@ public class GlobalApplication extends BaseApplication {
                 iMediaInterface = (IMediaInterface.Stub.asInterface(iBinder));
                 LogUtil.e("service Connected");
                 try {
-                    iMediaInterface.play();
+                    GlobalApplication.instance.getiMediaInterface().play();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+
             }
 
             @Override

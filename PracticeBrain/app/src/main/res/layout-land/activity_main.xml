@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleBarLeftText="@string/home_title_left_text"
-        app:titleBarRightImage="@drawable/title_bar_sound_selector"
+        app:titleBarRightImage="@drawable/btn_voiceable_selector"
         app:titleBarTitle="@string/home_title_text"></com.yzk.practice_brain.ui.EaseTitleBar>
 
 

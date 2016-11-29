@@ -13,7 +13,10 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.yzk.practice_brain.IMediaInterface;
+import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.log.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,9 +53,9 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         // 初始化音量大概为最大音量的1/2
         curVolume = maxVolume / 2;
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,curVolume, 0);
         // 每次调整的音量大概为最大音量的1/6
         stepVolume = maxVolume / 6;
-
 //        mMediaPlayer.set
         /* 监听播放是否完成 */
         mMediaPlayer.setOnCompletionListener(this);
@@ -82,7 +85,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void getMediaResource() {
         mAssetManager = getAssets();
         try {
-            for (int i = 1; i < 21; i++) {
+            for (int i = 1; i < 4; i++) {
 
                 String musicName = "music" + i + ".mp3";
                 AssetFileDescriptor fileDescriptor = mAssetManager.openFd(musicName);
@@ -200,8 +203,9 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
      * service close volume
      */
     private void serviceCloseVolume() {
-            isSilent=!isSilent;
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        isSilent = true;
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
 
 
     }
@@ -212,9 +216,11 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void serviceOpenVolume() {
         if (isSilent) {
             int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            LogUtil.e("voice volume :" + maxVolume);
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 2, 0);
             curVolume = maxVolume / 2;
-            isSilent=!isSilent;
+            isSilent = false;
+
         }
 
     }
@@ -266,6 +272,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
          */
         @Override
         public void closeVolume() throws RemoteException {
+            EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
             getService().serviceCloseVolume();
         }
 
@@ -277,6 +284,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
          */
         @Override
         public void openVolume() throws RemoteException {
+
             getService().serviceOpenVolume();
         }
 
@@ -292,7 +300,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
 
         @Override
         public boolean isPlaying() throws RemoteException {
-            if (null!=mMediaPlayer&&mMediaPlayer.isPlaying()){
+            if (null != mMediaPlayer && mMediaPlayer.isPlaying()) {
                 return true;
             }
             return false;
@@ -307,8 +315,6 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
 
         }
-
-
 
 
     }

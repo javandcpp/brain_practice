@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleBarLeftImage="@drawable/titlebar_left_arrow"
-        app:titleBarRightImage="@drawable/title_bar_sound_selector"
+        app:titleBarRightImage="@drawable/btn_voiceable_selector"
         app:titleBarTitle="21天训练" />
 
 

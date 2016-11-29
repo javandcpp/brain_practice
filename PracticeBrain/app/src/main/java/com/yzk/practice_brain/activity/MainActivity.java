@@ -4,6 +4,7 @@ package com.yzk.practice_brain.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
@@ -15,9 +16,13 @@ import android.widget.RelativeLayout;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.utils.SizeUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -32,27 +37,38 @@ public class MainActivity extends BaseFragmentActivity {
     RelativeLayout relativeLayout;
 
     private boolean rightSelected;
+    private static Handler mHanlder = new Handler();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        PreferenceHelper.writeInt(Constants.TWENTY_ONE,1);
+        PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
     }
+
+
+    @Subscribe(threadMode=ThreadMode.MAIN)
+    public void onEventMainThread(BackgroudMusicEvent.MusicVoiceEvent musicVoiceEvent){
+        if (musicVoiceEvent.play){
+            rightImage.setSelected(false);
+        }else{
+            rightImage.setSelected(true);
+        }
+    }
+
 
     @Override
     protected void uIViewInit() {
         ViewGroup.LayoutParams layoutParams = relativeLayout.getLayoutParams();
-        layoutParams.width=SizeUtils.dp2px(this,35);
+        layoutParams.width = SizeUtils.dp2px(this, 35);
         relativeLayout.setLayoutParams(layoutParams);
         rightImage.setSelected(rightSelected);
 
     }
 //    R.id.play,R.id.pause,R.id.stop,R.id.closeVolume,R.id.openVolume
 
-    @OnClick({R.id.rlone, R.id.rltwo, R.id.rlthree, R.id.rlfour,R.id.right_layout})
+    @OnClick({R.id.rlone, R.id.rltwo, R.id.rlthree, R.id.rlfour, R.id.right_layout})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -69,7 +85,17 @@ public class MainActivity extends BaseFragmentActivity {
                 startActivity(intent);
                 break;
             case R.id.right_layout:
-                rightImage.setSelected(!rightImage.isSelected());
+                try {
+                    if (GlobalApplication.instance.getiMediaInterface().isSilent()) {
+                        GlobalApplication.instance.getiMediaInterface().openVolume();
+                        rightImage.setSelected(false);
+                    } else {
+                        GlobalApplication.instance.getiMediaInterface().closeVolume();
+                        rightImage.setSelected(true);
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 break;
 //            case R.id.play:
 //                try {

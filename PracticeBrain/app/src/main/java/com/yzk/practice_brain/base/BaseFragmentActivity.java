@@ -14,6 +14,9 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.stack.ActivityStack;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.ButterKnife;
 
 
@@ -29,6 +32,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityStack.add(this);
+        EventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -73,11 +77,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
-        ButterKnife.unbind(this);
         super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
         activityDestroy();
         ActivityStack.remove(this);
     }
+
 
     @Override
     protected void onResume() {
@@ -114,6 +120,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
      */
 
     public  void onWindowHasFocus(boolean hasFocus){};
+
+    @Subscribe
+    public void onEvent(String object){}
 
 
 }

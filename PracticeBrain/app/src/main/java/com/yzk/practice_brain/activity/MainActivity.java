@@ -180,7 +180,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     private void showTips() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle("提醒")
-                .setMessage("是否退出程序")
+                .setMessage("是否退出应用程序")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {

@@ -113,16 +113,16 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 
 
     @Bind(R.id.redPen)
-    ImageButton redPen;
+    Button redPen;
 
     @Bind(R.id.greenPen)
-    ImageButton greenPen;
+    Button greenPen;
 
     @Bind(R.id.yellowPen)
-    ImageButton yellowPen;
+    Button yellowPen;
 
     @Bind(R.id.bluePen)
-    ImageButton bluePen;
+    Button bluePen;
     private Controller controller;
 
     @Bind(R.id.tvScore)
@@ -132,32 +132,32 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     public void click(View view) {
         switch (view.getId()) {
             case R.id.redPen:
-                redPen.setSelected(true);
-                greenPen.setSelected(!redPen.isSelected());
-                yellowPen.setSelected(!redPen.isSelected());
-                bluePen.setSelected(!redPen.isSelected());
+                redPen.setBackgroundResource(R.drawable.home_red_seleted);
+                greenPen.setBackgroundResource(R.drawable.home_green_normal);
+                yellowPen.setBackgroundResource(R.drawable.home_yellow_normal);
+                bluePen.setBackgroundResource(R.drawable.home_blue_normal);
                 newColor = parseColor("#ffff0000");
                 break;
             case R.id.greenPen:
-                greenPen.setSelected(true);
+                greenPen.setBackgroundResource(R.drawable.home_green_seleted);
 
-                redPen.setSelected(!greenPen.isSelected());
-                yellowPen.setSelected(!greenPen.isSelected());
-                bluePen.setSelected(!greenPen.isSelected());
+                redPen.setBackgroundResource(R.drawable.home_red_normal);
+                yellowPen.setBackgroundResource(R.drawable.home_yellow_normal);
+                bluePen.setBackgroundResource(R.drawable.home_blue_normal);
                 newColor = parseColor("#ff00ff00");
                 break;
             case R.id.yellowPen:
-                yellowPen.setSelected(true);
-                redPen.setSelected(!yellowPen.isSelected());
-                greenPen.setSelected(!yellowPen.isSelected());
-                bluePen.setSelected(!yellowPen.isSelected());
+                yellowPen.setBackgroundResource(R.drawable.home_yellow_seleted);
+                redPen.setBackgroundResource(R.drawable.home_red_normal);
+                greenPen.setBackgroundResource(R.drawable.home_green_normal);
+                bluePen.setBackgroundResource(R.drawable.home_blue_normal);
                 newColor = parseColor("#fffff100");
                 break;
             case R.id.bluePen:
-                bluePen.setSelected(true);
-                redPen.setSelected(!bluePen.isSelected());
-                yellowPen.setSelected(!bluePen.isSelected());
-                greenPen.setSelected(!bluePen.isSelected());
+                bluePen.setBackgroundResource(R.drawable.home_blue_seleted);
+                redPen.setBackgroundResource(R.drawable.home_red_normal);
+                yellowPen.setBackgroundResource(R.drawable.home_yellow_normal);
+                greenPen.setBackgroundResource(R.drawable.home_green_normal);
                 newColor = parseColor("#ff0000ff");
                 break;
             case R.id.finish:
@@ -498,7 +498,11 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 
         this.imagen = (ImageView) this.findViewById(R.id.imagen2);
         final View v1 = this.findViewById(R.id.gomaborrar);
-        redPen.setSelected(true);
+        redPen.setBackgroundResource(R.drawable.home_red_seleted);
+        yellowPen.setBackgroundResource(R.drawable.home_yellow_normal);
+        greenPen.setBackgroundResource(R.drawable.home_green_normal);
+        bluePen.setBackgroundResource(R.drawable.home_blue_normal);
+
         newColor = parseColor("#ffff0000");
 
 

@@ -42,4 +42,6 @@
     <declare-styleable name="Controller">
         <attr name="orientation" format="integer"/>
     </declare-styleable>
+
+
 </resources>

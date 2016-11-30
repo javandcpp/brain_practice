@@ -9,8 +9,8 @@
     <RelativeLayout
         android:layout_width="700dp"
         android:layout_height="500dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginRight="120dp"
+        android:layout_marginLeft="135dp"
+        android:layout_marginRight="135dp"
         android:layout_centerInParent="true"
         android:background="@drawable/blackboard_big"
         >
@@ -41,6 +41,18 @@
         android:text="开始训练"
         android:textColor="@color/white"
         android:textSize="18sp" />
+    <Button
+        android:id="@+id/rule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/home_blue_btn"
+        android:text="规则"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
 
 
 </RelativeLayout>

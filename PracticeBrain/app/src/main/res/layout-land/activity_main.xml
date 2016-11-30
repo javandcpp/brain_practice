@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="true"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context="com.yzk.practice_brain.activity.MainActivity">
+    android:layout_height="match_parent">
 
-    <com.yzk.practice_brain.ui.EaseTitleBar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleBarLeftText="@string/home_title_left_text"
-        app:titleBarRightImage="@drawable/btn_voiceable_selector"
-        app:titleBarTitle="@string/home_title_text"></com.yzk.practice_brain.ui.EaseTitleBar>
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context="com.yzk.practice_brain.activity.MainActivity">
+
+        <com.yzk.practice_brain.ui.EaseTitleBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleBarLeftText="@string/home_title_left_text"
+            app:titleBarRightImage="@drawable/btn_voiceable_selector"
+            app:titleBarTitle="@string/home_title_text"></com.yzk.practice_brain.ui.EaseTitleBar>
 
 
-    <!--<LinearLayout-->
+        <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->
         <!--android:background="@color/white"-->
         <!--android:orientation="horizontal"-->
@@ -26,178 +31,181 @@
         <!--android:layout_height="40dp">-->
 
         <!--<Button-->
-            <!--android:id="@+id/play"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:text="play"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/play"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:text="play"-->
+        <!--android:layout_height="wrap_content" />-->
         <!--<Button-->
-            <!--android:id="@+id/pause"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:text="pause"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/pause"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:text="pause"-->
+        <!--android:layout_height="wrap_content" />-->
         <!--<Button-->
-            <!--android:id="@+id/stop"-->
-            <!--android:text="stop"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/stop"-->
+        <!--android:text="stop"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
         <!--<Button-->
-            <!--android:id="@+id/closeVolume"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:text="close volume"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/closeVolume"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:text="close volume"-->
+        <!--android:layout_height="wrap_content" />-->
 
         <!--<Button-->
-            <!--android:id="@+id/openVolume"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:text="open volume"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/openVolume"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:text="open volume"-->
+        <!--android:layout_height="wrap_content" />-->
 
         <!--<SeekBar-->
-            <!--android:layout_width="200dp"-->
-            <!--android:max="1"-->
-            <!--android:progress="0"-->
-            <!--android:layout_marginLeft="50dp"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_height="10dp" />-->
+        <!--android:layout_width="200dp"-->
+        <!--android:max="1"-->
+        <!--android:progress="0"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_height="10dp" />-->
 
-    <!--</LinearLayout>-->
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/home_background_1"
-        android:gravity="center"
-        android:orientation="vertical">
+        <!--</LinearLayout>-->
 
 
-        <RelativeLayout
-            android:id="@+id/rlone"
-            android:layout_width="320dp"
-            android:layout_height="93dp"
-            android:background="@drawable/home_bin">
-
-            <ImageView
-                android:id="@+id/iv1"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/home_twenty_one" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="35dp"
-                android:layout_toRightOf="@id/iv1"
-                android:shadowColor="@color/gray"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:text="@string/home_1_text"
-                android:textColor="@color/yellow_ffd56d"
-                android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/home_background_1"
+            android:gravity="center"
+            android:orientation="vertical">
 
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlone"
+                android:layout_width="320dp"
+                android:layout_height="93dp"
+                android:background="@drawable/home_bin">
+
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/home_twenty_one" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_toRightOf="@id/iv1"
+                    android:shadowColor="@color/gray"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="3"
+                    android:text="@string/home_1_text"
+                    android:textColor="@color/yellow_ffd56d"
+                    android:textSize="18sp" />
 
 
-        <RelativeLayout
-            android:id="@+id/rltwo"
-            android:layout_width="320dp"
-            android:layout_height="93dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/home_bin">
-
-            <ImageView
-                android:id="@+id/iv2"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/home_ninety" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="35dp"
-                android:layout_toRightOf="@id/iv2"
-                android:shadowColor="@color/gray"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:text="@string/home_2_text"
-                android:textColor="@color/color51bf87"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
+            </RelativeLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/rlthree"
-            android:layout_width="320dp"
-            android:layout_height="93dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/home_bin">
+            <RelativeLayout
+                android:id="@+id/rltwo"
+                android:layout_width="320dp"
+                android:layout_height="93dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/home_bin">
 
-            <ImageView
-                android:id="@+id/iv3"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/home_synthesized" />
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/home_ninety" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="35dp"
-                android:layout_toRightOf="@id/iv3"
-                android:shadowColor="@color/gray"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:text="@string/home_3_text"
-                android:textColor="@color/color2aaccd"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_toRightOf="@id/iv2"
+                    android:shadowColor="@color/gray"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="3"
+                    android:text="@string/home_2_text"
+                    android:textColor="@color/color51bf87"
+                    android:textSize="18sp" />
 
-
-        <RelativeLayout
-            android:id="@+id/rlfour"
-            android:layout_width="320dp"
-            android:layout_height="93dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/home_bin">
-
-            <ImageView
-                android:id="@+id/iv4"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/home_education" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="35dp"
-                android:layout_toRightOf="@id/iv4"
-                android:shadowColor="@color/gray"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:text="@string/home_4_text"
-                android:textColor="@color/colore36e7c"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
+            </RelativeLayout>
 
 
+            <RelativeLayout
+                android:id="@+id/rlthree"
+                android:layout_width="320dp"
+                android:layout_height="93dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/home_bin">
+
+                <ImageView
+                    android:id="@+id/iv3"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/home_synthesized" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_toRightOf="@id/iv3"
+                    android:shadowColor="@color/gray"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="3"
+                    android:text="@string/home_3_text"
+                    android:textColor="@color/color2aaccd"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlfour"
+                android:layout_width="320dp"
+                android:layout_height="93dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/home_bin">
+
+                <ImageView
+                    android:id="@+id/iv4"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/home_education" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_toRightOf="@id/iv4"
+                    android:shadowColor="@color/gray"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="3"
+                    android:text="@string/home_4_text"
+                    android:textColor="@color/colore36e7c"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <include layout="@layout/loading_layout" />
+</FrameLayout>

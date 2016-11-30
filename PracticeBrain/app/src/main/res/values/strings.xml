@@ -70,4 +70,8 @@
     <string name="home_4_text">教育资讯</string>
 
     <string name="practice_21_day_title_right_text">帮助说明</string>
+
+
+    <string name="net_error">请检查网络连接</string>
+    <string name="request_error">获取数据失败</string>
 </resources>

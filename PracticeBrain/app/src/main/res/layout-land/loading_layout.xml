@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <com.yzk.practice_brain.ui.CircularProgressView
+        android:id="@+id/loading"
+        android:layout_width="50dp"
+        android:visibility="gone"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        app:angleAnimationDurationMillis="@integer/circular_default_angleAnimationDurationMillis"
+        app:border="@dimen/circular_default_border_width"
+        android:layout_gravity="center"
+        app:colorSequence="@array/circular_default_color_sequence"
+        app:sweepAnimationDurationMillis="@integer/circular_default_sweepAnimationDuration" />
+
+</merge>

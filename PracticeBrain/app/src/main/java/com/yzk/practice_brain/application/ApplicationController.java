@@ -64,7 +64,6 @@ public class ApplicationController extends GlobalApplication {
 
     public <T> void addToRequestQueue(Request<T> req) {
         // set the default tag if tag is empty
-        req.setTag(TAG);
         getRequestQueue().add(req);
     }
 

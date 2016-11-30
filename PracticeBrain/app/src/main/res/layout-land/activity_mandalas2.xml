@@ -37,36 +37,35 @@
     <LinearLayout
         android:id="@+id/llayout"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:layout_marginRight="5dp"
         android:layout_alignParentRight="true"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <Button
             android:id="@+id/redPen"
-            android:layout_width="wrap_content"
+            android:background="@null"
+            android:layout_width="match_parent"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/mandala_red_pen_selector"
             android:layout_height="wrap_content" />
-        <ImageButton
+        <Button
             android:id="@+id/yellowPen"
             android:layout_width="wrap_content"
+            android:background="@null"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/mandala_yellow_pen_selector"
             android:layout_height="wrap_content" />
-        <ImageButton
+        <Button
             android:id="@+id/greenPen"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/mandala_green_pen_selector"
             android:layout_height="wrap_content" />
-        <ImageButton
+        <Button
             android:id="@+id/bluePen"
             android:layout_width="wrap_content"
+            android:background="@null"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/mandala_blue_pen_selector"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

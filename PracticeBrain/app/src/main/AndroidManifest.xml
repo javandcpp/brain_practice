@@ -14,7 +14,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".application.GlobalApplication"
+        android:name=".application.ApplicationController"
         android:theme="@style/AppTheme">
         <!--<activity-->
             <!--android:name=".module.mandalas.Caratula"-->

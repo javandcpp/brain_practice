@@ -21,6 +21,8 @@ interface IMediaInterface {
 
     boolean isPlaying();
 
+    boolean isPause();
+
     boolean isSilent();
 
     void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,

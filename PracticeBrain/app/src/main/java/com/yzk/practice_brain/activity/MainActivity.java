@@ -45,6 +45,30 @@ public class MainActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
+
+
+        mHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (null!= GlobalApplication.instance.getiMediaInterface()&&!GlobalApplication.instance.getiMediaInterface().isPlaying()&&!GlobalApplication.instance.getiMediaInterface().isPause()) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    GlobalApplication.instance.getiMediaInterface().play();
+                                } catch (RemoteException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 100);
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        },300);
+
     }
 
 
@@ -136,8 +160,6 @@ public class MainActivity extends BaseFragmentActivity {
 //                }
 //                break;
         }
-
-
     }
 
     @Override

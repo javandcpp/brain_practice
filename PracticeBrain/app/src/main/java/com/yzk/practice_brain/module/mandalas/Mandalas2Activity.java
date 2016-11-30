@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -27,6 +28,7 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -38,6 +40,7 @@ import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.utils.ImageUtils;
+import com.yzk.practice_brain.utils.SoundEffect;
 
 import java.io.File;
 
@@ -96,6 +99,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     private SVG svg;
     public Path svgparsdtopath;
     public boolean tocaMusica;
+    private int totalScore=10;
 
     private final String AREA01 = "ff00ff00";//x=108,y=108
     private final String AREA02 = "ff0000ff";//x=236,y=94
@@ -121,7 +125,10 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     ImageButton bluePen;
     private Controller controller;
 
-    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen})
+    @Bind(R.id.tvScore)
+    TextView tvScore;
+
+    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen,R.id.finish})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.redPen:
@@ -152,6 +159,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 yellowPen.setSelected(!bluePen.isSelected());
                 greenPen.setSelected(!bluePen.isSelected());
                 newColor = parseColor("#ff0000ff");
+                break;
+            case R.id.finish:
+                compareColor();
                 break;
         }
     }
@@ -229,14 +239,10 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
             this.point = new Point(v5, v6);
             if (v6 < v0 && v5 < v4) {
                 Mandalas2Activity.this.oldColor = Mandalas2Activity.this.b.getPixel(v5, v6);
-
-
                 Mandalas2Activity.this.fd.floodFill(Mandalas2Activity.this.b, this.point, oldColor, Mandalas2Activity.this.newColor);
                 Mandalas2Activity.this.imagen.invalidate();
-
-
-                compareColor();
-
+                //播放填色音效
+                SoundEffect.getInstance().play(SoundEffect.FILL_CORRECT);
             }
 
             return true;
@@ -266,19 +272,40 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         String area08_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 75, 225);
         String area09_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 238, 238);
 
-        String white = "ffffffff";
-        if (!area01_value.equals(white) && !area02_value.equals(white) && !area03_value.equals(white) && !area04_value.equals(white) &&
-                !area05_value.equals(white) && !area06_value.equals(white) && !area07_value.equals(white) && !area08_value.equals(white) && !area09_value.equals(white)) {
+//        String white = "ffffffff";
+//        if (!area01_value.equals(white) && !area02_value.equals(white) && !area03_value.equals(white) && !area04_value.equals(white) &&
+//                !area05_value.equals(white) && !area06_value.equals(white) && !area07_value.equals(white) && !area08_value.equals(white) && !area09_value.equals(white)) {
 
             if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
                 Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-            } else {
+                SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+            } else if (totalScore>=0){
+                Toast toast = Toast.makeText(this,"还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER , 0, 0);
+                toast.show();
+                --totalScore;
+                int score=totalScore>=0?totalScore:0;
+                tvScore.setText("错误次数:"+score);
+                SoundEffect.getInstance().play(SoundEffect.FILL_ERROR);
+            }else{
                 Toast.makeText(this, "闯关失败", Toast.LENGTH_SHORT).show();
+                SoundEffect.getInstance().play(SoundEffect.FAILURE);
+
             }
 
 
-        }
+//        }else{
+//            if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
+//                    && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
+//                Toast toast = Toast.makeText(this,"还是不对，再检查下吧", Toast.LENGTH_LONG);
+//                toast.setGravity(Gravity.CENTER , 0, 0);
+//
+//                toast.show();
+//            }
+//
+//
+//        }
     }
 
 
@@ -458,6 +485,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     }
 
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "------------------------------>>" + "onCreate");
@@ -466,6 +494,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         this.efectos = this.prefs.getEfectos();
         prenderEfectos();
         initView();
+        tvScore.setText("错误次数:"+totalScore);
 
         this.imagen = (ImageView) this.findViewById(R.id.imagen2);
         final View v1 = this.findViewById(R.id.gomaborrar);

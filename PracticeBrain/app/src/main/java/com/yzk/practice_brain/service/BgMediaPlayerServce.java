@@ -122,6 +122,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
                     mMedaiList.get(currentCursor).getLength());
             mMediaPlayer.prepare();
             mMediaPlayer.start();
+            isPause=false;
             LogUtil.e("mdiaplayer play  :" + mMedaiList.get(currentCursor).getFileDescriptor().toString());
 
         } catch (IOException e) {
@@ -304,6 +305,11 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
                 return true;
             }
             return false;
+        }
+
+        @Override
+        public boolean isPause() throws RemoteException {
+            return isPause;
         }
 
         @Override

@@ -2,6 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_selected="true" android:drawable="@drawable/home_yellow_seleted"/>
+    <item android:state_selected="false" android:drawable="@drawable/home_yellow_normal"/>
     <item android:drawable="@drawable/home_yellow_normal"/>
 
 </selector>

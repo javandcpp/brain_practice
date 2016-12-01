@@ -11,10 +11,7 @@ import android.widget.LinearLayout;
 
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
-import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.setting.Setting;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,11 +56,9 @@ public class Controller extends LinearLayout {
                     if (GlobalApplication.instance.getiMediaInterface().isSilent()) {
                         view.setSelected(false);
                         GlobalApplication.instance.getiMediaInterface().openVolume();
-                        EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(true));
                     } else {
                         view.setSelected(true);
                         GlobalApplication.instance.getiMediaInterface().closeVolume();
-                        EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
                     }
                 } catch (RemoteException e) {
                     e.printStackTrace();

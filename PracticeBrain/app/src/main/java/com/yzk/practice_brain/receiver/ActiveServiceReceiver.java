@@ -32,7 +32,7 @@ public class ActiveServiceReceiver extends BroadcastReceiver {
                 public void onCompleted() {
 
                     if (!isServiceRunning) {
-                        GlobalApplication.instance.startService();
+//                        GlobalApplication.instance.startBgPlayerService();
                         LogUtil.d(BgMediaPlayerServce.class.getCanonicalName() + " start");
                     } else {
                         LogUtil.d(BgMediaPlayerServce.class.getCanonicalName() + " is running");

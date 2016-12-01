@@ -12,13 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.android.volley.inter.ResponseStringDataListener;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.bean.MusicListResult;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
+import com.yzk.practice_brain.config.Config;
 import com.yzk.practice_brain.constants.Constants;
+import com.yzk.practice_brain.log.LogUtil;
+import com.yzk.practice_brain.manager.DownLoadManager;
+import com.yzk.practice_brain.network.HttpRequestUtil;
 import com.yzk.practice_brain.preference.PreferenceHelper;
+import com.yzk.practice_brain.utils.NetworkUtils;
+import com.yzk.practice_brain.utils.ParseJson;
 import com.yzk.practice_brain.utils.SizeUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -26,10 +35,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import xiaofei.library.hermeseventbus.HermesEventBus;
 
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseFragmentActivity implements ResponseStringDataListener {
 
 
+    private static final int REQUEST_MUSIC_LIST = 0x1;
     @Bind(R.id.right_image)
     ImageButton rightImage;
 
@@ -47,11 +58,31 @@ public class MainActivity extends BaseFragmentActivity {
         PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
 
 
+        playBackgroundMusic();
+        getMusicList();
+
+    }
+
+    /**
+     * 获取背景
+     */
+    private void getMusicList() {
+        if (NetworkUtils.isConnected(this)) {
+            HttpRequestUtil.HttpRequestByGet(Config.BACKGROUND_MUSIC_URL, this, REQUEST_MUSIC_LIST);
+        } else {
+            Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 背景音乐播放
+     */
+    private void playBackgroundMusic() {
         mHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (null!= GlobalApplication.instance.getiMediaInterface()&&!GlobalApplication.instance.getiMediaInterface().isPlaying()&&!GlobalApplication.instance.getiMediaInterface().isPause()) {
+                    if (null != GlobalApplication.instance.getiMediaInterface() && !GlobalApplication.instance.getiMediaInterface().isPlaying() && !GlobalApplication.instance.getiMediaInterface().isPause()) {
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -67,16 +98,15 @@ public class MainActivity extends BaseFragmentActivity {
                     e.printStackTrace();
                 }
             }
-        },300);
-
+        }, 300);
     }
 
 
-    @Subscribe(threadMode=ThreadMode.MAIN)
-    public void onEventMainThread(BackgroudMusicEvent.MusicVoiceEvent musicVoiceEvent){
-        if (musicVoiceEvent.play){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(BackgroudMusicEvent.MusicVoiceEvent musicVoiceEvent) {
+        if (musicVoiceEvent.play) {
             rightImage.setSelected(false);
-        }else{
+        } else {
             rightImage.setSelected(true);
         }
     }
@@ -205,5 +235,35 @@ public class MainActivity extends BaseFragmentActivity {
                             }
                         }).create(); // 创建对话框
         alertDialog.show(); // 显示对话框
+    }
+
+    @Override
+    public void onDataDelivered(int taskId, String data) {
+        switch (taskId) {
+            case REQUEST_MUSIC_LIST:
+                final MusicListResult musicListResult = ParseJson.parseJson(data, MusicListResult.class);
+
+                if (null != musicListResult && null != musicListResult.music && musicListResult.music.size() > 0) {
+
+                    mHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LogUtil.e(musicListResult.toString());
+                            MusicListResult.MusicEntity musicEntity = musicListResult.music.get(0);
+                            LogUtil.e("download music:"+musicEntity.name+",url:"+musicEntity.url);
+                            BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent=new BackgroudMusicEvent.DownloadMusicEvent(DownLoadManager.METHOD.GET, DownLoadManager.MEDIA_TYPE.NORMAL,musicEntity.url,musicEntity.name,Constants.MUSIC_PATH,null);
+                            HermesEventBus.getDefault().post(downloadMusicEvent);
+
+                        }
+                    }, 100);
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
+        Toast.makeText(this, R.string.request_error, Toast.LENGTH_SHORT).show();
     }
 }

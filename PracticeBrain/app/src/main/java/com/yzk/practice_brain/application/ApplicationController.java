@@ -8,6 +8,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
 
+import xiaofei.library.hermeseventbus.HermesEventBus;
+
 
 /**
  * Created by android on 11/3/15.
@@ -26,6 +28,7 @@ public class ApplicationController extends GlobalApplication {
         applicationContext=this;
         // initialize the singleton
         sInstance = this;
+        HermesEventBus.getDefault().init(this);
 
 
     }

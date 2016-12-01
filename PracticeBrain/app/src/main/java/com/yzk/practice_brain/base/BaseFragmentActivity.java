@@ -14,10 +14,10 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.stack.ActivityStack;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.ButterKnife;
+import xiaofei.library.hermeseventbus.HermesEventBus;
 
 
 /**
@@ -32,7 +32,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityStack.add(this);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
+        HermesEventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -79,7 +80,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
+        HermesEventBus.getDefault().unregister(this);
         activityDestroy();
         ActivityStack.remove(this);
     }

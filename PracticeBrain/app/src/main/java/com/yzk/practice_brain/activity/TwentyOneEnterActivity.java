@@ -88,11 +88,10 @@ public class TwentyOneEnterActivity extends BaseFragmentActivity {
                     if (GlobalApplication.instance.getiMediaInterface().isSilent()) {
                         GlobalApplication.instance.getiMediaInterface().openVolume();
                         rightImage.setSelected(false);
-                        EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(true));
+
                     } else {
                         GlobalApplication.instance.getiMediaInterface().closeVolume();
                         rightImage.setSelected(true);
-                        EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
                     }
                 } catch (RemoteException e) {
                     e.printStackTrace();

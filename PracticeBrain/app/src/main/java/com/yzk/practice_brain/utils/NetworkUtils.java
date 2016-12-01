@@ -73,7 +73,7 @@ public class NetworkUtils {
      */
     public static boolean isConnected(Context context) {
         NetworkInfo info = getActiveNetworkInfo(context);
-        return info != null && info.isConnected();
+        return info != null && info.isConnected()&&info.isAvailable();
     }
 
     /**

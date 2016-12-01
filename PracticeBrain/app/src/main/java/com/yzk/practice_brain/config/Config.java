@@ -7,8 +7,12 @@ public class Config {
 
 
 
-    private static final String BaseUrl="http://123.56.190.160:8999/";
+    private static final String BaseUrl="http://123.56.190.160:8999";
 
-    public static final String EDUCATION_NEWS_URL=BaseUrl+"kujisoftware/eduCounse/findEduCounseAll";
+    //新闻资讯获取
+    public static final String EDUCATION_NEWS_URL=BaseUrl+"/kujisoftware/eduCounse/findEduCounseAll";
+
+    //背景音乐获取
+    public static final String BACKGROUND_MUSIC_URL=BaseUrl+"/kujisoftware/musicUpload/findMusic";
 
 }

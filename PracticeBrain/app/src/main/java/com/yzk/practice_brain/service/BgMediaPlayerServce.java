@@ -16,11 +16,11 @@ import com.yzk.practice_brain.IMediaInterface;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.log.LogUtil;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import xiaofei.library.hermeseventbus.HermesEventBus;
 
 /**
  * Created by android on 11/18/16.
@@ -206,7 +206,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void serviceCloseVolume() {
         isSilent = true;
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
-        EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
+        HermesEventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
 
 
     }
@@ -221,6 +221,8 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 2, 0);
             curVolume = maxVolume / 2;
             isSilent = false;
+
+            HermesEventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(true));
 
         }
 
@@ -273,7 +275,6 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
          */
         @Override
         public void closeVolume() throws RemoteException {
-            EventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
             getService().serviceCloseVolume();
         }
 

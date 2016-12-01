@@ -93,6 +93,13 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
+        <service android:name=".service.DownloadMusicService"
+            android:exported="true"
+            android:process=":download">
+            <intent-filter android:priority="1000">
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
         <receiver android:name=".receiver.ActiveServiceReceiver">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>

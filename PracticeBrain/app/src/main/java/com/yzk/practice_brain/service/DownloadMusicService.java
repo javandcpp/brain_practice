@@ -7,15 +7,9 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.yzk.practice_brain.IDownloadInterface;
-import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
+import com.yzk.practice_brain.busevent.DownloadMusicEvent;
 import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.manager.DownLoadManager;
-import com.yzk.practice_brain.task.DownloadRunnable;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import xiaofei.library.hermeseventbus.HermesEventBus;
 
 /**
  * Created by android on 12/1/16.
@@ -32,7 +26,7 @@ public class DownloadMusicService extends Service {
         super.onCreate();
         mKeepService=this;
         downLoadManager = DownLoadManager.getInstance();
-        HermesEventBus.getDefault().register(this);
+//        HermesEventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -52,23 +46,22 @@ public class DownloadMusicService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        HermesEventBus.getDefault().unregister(this);
-        HermesEventBus.getDefault().destroy();
-        startService(new Intent(this, DownloadMusicService.class));
+//        HermesEventBus.getDefault().unregister(this);
+//        HermesEventBus.getDefault().destroy();
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void onEventThread(BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent) {
+//    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+//    public void onEventThread(BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent) {
 
-        LogUtil.e("onevent:"+downloadMusicEvent.musicEntity.name);
-//        DownLoadManager.getInstance().startDownLoad(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
-        DownloadRunnable downloadRunnable = new DownloadRunnable(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
-        try {
-            DownLoadManager.getInstance().getQueue().put(downloadRunnable);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+//        LogUtil.e("onevent:"+downloadMusicEvent.musicEntity.name);
+////        DownLoadManager.getInstance().startDownLoad(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
+//        DownloadRunnable downloadRunnable = new DownloadRunnable(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
+//        try {
+//            DownLoadManager.getInstance().getQueue().put(downloadRunnable);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 
@@ -81,9 +74,15 @@ public class DownloadMusicService extends Service {
         }
 
         @Override
-        public void downLoadMusic(String name) throws RemoteException {
+        public void downLoadMusic(DownloadMusicEvent downloadMusicEvent) throws RemoteException {
+            LogUtil.e("download:"+downloadMusicEvent);
+//            DownloadRunnable downloadRunnable = new DownloadRunnable(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
+//            try {
+//                DownLoadManager.getInstance().getQueue().put(downloadRunnable);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
     }
-
 
 }

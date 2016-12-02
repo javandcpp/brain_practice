@@ -20,6 +20,7 @@ import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.MusicListResult;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
+import com.yzk.practice_brain.busevent.DownloadMusicEvent;
 import com.yzk.practice_brain.config.Config;
 import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.log.LogUtil;
@@ -35,7 +36,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import xiaofei.library.hermeseventbus.HermesEventBus;
 
 public class MainActivity extends BaseFragmentActivity implements ResponseStringDataListener {
 
@@ -259,8 +259,15 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
                                             @Override
                                             public void run() {
                                                LogUtil.e("download name:"+entity.name+",version:"+entity.version);
-                                                BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent = new BackgroudMusicEvent().new DownloadMusicEvent(DownLoadManager.METHOD.GET, DownLoadManager.MEDIA_TYPE.BGMUSIC, entity, Constants.MUSIC_PATH, null);
-                                                HermesEventBus.getDefault().post(downloadMusicEvent);
+                                                DownloadMusicEvent downloadMusicEvent = new DownloadMusicEvent(DownLoadManager.METHOD.GET, DownLoadManager.MEDIA_TYPE.BGMUSIC, entity, Constants.MUSIC_PATH, null);
+//                                                HermesEventBus.getDefault().post(downloadMusicEvent);
+                                                try {
+                                                    if (null!=GlobalApplication.instance.getIDownloadInterface()) {
+                                                        GlobalApplication.instance.getIDownloadInterface().downLoadMusic(downloadMusicEvent);
+                                                    }
+                                                } catch (RemoteException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }, 100);
                                     }
@@ -280,8 +287,22 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtil.d("onStop");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtil.e("onPause");
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+
         mHanlder.removeCallbacksAndMessages(null);
+
     }
 }

@@ -113,6 +113,11 @@ public class GlobalApplication extends BaseApplication {
 
     ;
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        System.gc();
+    }
 
     /**
      * init
@@ -123,9 +128,9 @@ public class GlobalApplication extends BaseApplication {
 
     public void exitApp() {
         unbindService(serviceConnectionDownload);
+        stopService(intentDownload);
         unbindService(serviceConnectionMediaPlayer);
         stopService(intentMediaPlayer);
-        stopService(intentDownload);
 //        mHandler.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {

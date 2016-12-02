@@ -7,9 +7,9 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.yzk.practice_brain.IDownloadInterface;
-import com.yzk.practice_brain.busevent.DownloadMusicEvent;
 import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.manager.DownLoadManager;
+import com.yzk.practice_brain.task.DownloadRunnable;
 
 /**
  * Created by android on 12/1/16.
@@ -73,15 +73,17 @@ public class DownloadMusicService extends Service {
 
         }
 
+
+
         @Override
-        public void downLoadMusic(DownloadMusicEvent downloadMusicEvent) throws RemoteException {
-            LogUtil.e("download:"+downloadMusicEvent);
-//            DownloadRunnable downloadRunnable = new DownloadRunnable(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
-//            try {
-//                DownLoadManager.getInstance().getQueue().put(downloadRunnable);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+        public void downLoadMusic(int method, int media_type, String url, String name, long fileLenght, int version, String cachedPath) throws RemoteException {
+            LogUtil.e("download:"+url);
+            DownloadRunnable downloadRunnable = new DownloadRunnable(method, media_type, url, name, fileLenght,version,cachedPath);
+            try {
+                DownLoadManager.getInstance().getQueue().put(downloadRunnable);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -20,11 +20,9 @@ import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.MusicListResult;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
-import com.yzk.practice_brain.busevent.DownloadMusicEvent;
 import com.yzk.practice_brain.config.Config;
 import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.log.LogUtil;
-import com.yzk.practice_brain.manager.DownLoadManager;
 import com.yzk.practice_brain.network.HttpRequestUtil;
 import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.utils.NetworkUtils;
@@ -259,11 +257,9 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
                                             @Override
                                             public void run() {
                                                LogUtil.e("download name:"+entity.name+",version:"+entity.version);
-                                                DownloadMusicEvent downloadMusicEvent = new DownloadMusicEvent(DownLoadManager.METHOD.GET, DownLoadManager.MEDIA_TYPE.BGMUSIC, entity, Constants.MUSIC_PATH, null);
-//                                                HermesEventBus.getDefault().post(downloadMusicEvent);
                                                 try {
                                                     if (null!=GlobalApplication.instance.getIDownloadInterface()) {
-                                                        GlobalApplication.instance.getIDownloadInterface().downLoadMusic(downloadMusicEvent);
+                                                        GlobalApplication.instance.getIDownloadInterface().downLoadMusic(0, 0, entity.url, entity.name, entity.fileLength, entity.version, Constants.MUSIC_PATH);
                                                     }
                                                 } catch (RemoteException e) {
                                                     e.printStackTrace();

@@ -42,10 +42,11 @@ public class BackgroudMusicEvent {
 
     public class DownloadFinishEvent{
 
-        public final MusicListResult.MusicEntity mMusicEntity;
 
-        public DownloadFinishEvent(MusicListResult.MusicEntity musicEntity){
-            this.mMusicEntity=musicEntity;
+        public final String mMusicName;
+
+        public DownloadFinishEvent(String fileName){
+            this.mMusicName=fileName;
         }
     }
 

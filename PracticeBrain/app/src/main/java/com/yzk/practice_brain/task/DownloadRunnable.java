@@ -6,10 +6,8 @@ package com.yzk.practice_brain.task;
 
 import com.android.volley.HTTPSTrustManager;
 import com.yzk.practice_brain.FileDownloadError;
-import com.yzk.practice_brain.bean.MusicListResult;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.log.LogUtil;
-import com.yzk.practice_brain.manager.DownLoadManager;
 import com.yzk.practice_brain.preference.PreferenceHelper;
 
 import org.apache.http.HttpEntity;
@@ -18,7 +16,6 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.BasicHttpEntity;
 
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,31 +37,36 @@ import xiaofei.library.hermeseventbus.HermesEventBus;
 public class DownloadRunnable implements Runnable {
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
     private static final String DEFAULT_PARAMS_ENCODING = "UTF-8";
-    private final DownLoadManager.MEDIA_TYPE mMedia_type;
+    private final int mMedia_type;
     private final String mFileName;
     private final String mCachePath;
     private final String mHttpUrl;
-    private final DownLoadManager.METHOD mMethod;
-    private final Map<String, String> mHeaders;
-    private final MusicListResult.MusicEntity mMusicEntity;
+    private final int mMethod;
     private static final ReentrantLock reentrantLock = new ReentrantLock();
     private final int timeoutMs = 2500;//2500毫秒
+    private final long mFileLength;
+    private final int mVersion;
     private int retryTime = 3;
 
 
     /**
-     * @param media_type  下载音乐类型
-     * @param musicEntity 音乐文件
-     * @param cachedPath  存储路径
+     *
+     * @param method
+     * @param media_type
+     * @param url
+     * @param name
+     * @param fileLenght
+     * @param version
+     * @param cachedPath
      */
-    public DownloadRunnable(DownLoadManager.METHOD method, DownLoadManager.MEDIA_TYPE media_type, MusicListResult.MusicEntity musicEntity, String cachedPath, Map<String, String> headers) {
+    public DownloadRunnable(int method, int media_type, String url, String name, long fileLenght, int version, String cachedPath) {
         this.mMedia_type = media_type;
-        this.mHttpUrl = musicEntity.url;
-        this.mFileName = musicEntity.name;
-        this.mMusicEntity = musicEntity;
+        this.mHttpUrl = url;
+        this.mFileName = name;
+        this.mFileLength = fileLenght;
         this.mMethod = method;
         this.mCachePath = cachedPath;
-        this.mHeaders = headers;
+        this.mVersion = version;
     }
 
     @Override
@@ -77,22 +79,22 @@ public class DownloadRunnable implements Runnable {
                 com.yzk.practice_brain.log.LogUtil.e("start download:" + mHttpUrl);
                 URL url = new URL(mHttpUrl);
                 connection = createConnection(url);
-                if (null != mHeaders) {
-                    for (String headerName : mHeaders.keySet()) {
-                        connection.addRequestProperty(headerName, mHeaders.get(headerName));
-                    }
-                    LogUtil.e("header:" + mHeaders.toString());
-                }
+//                if (null != mHeaders) {
+//                    for (String headerName : mHeaders.keySet()) {
+//                        connection.addRequestProperty(headerName, mHeaders.get(headerName));
+//                    }
+//                    LogUtil.e("header:" + mHeaders.toString());
+//                }
                 connection.addRequestProperty(HEADER_CONTENT_TYPE, "application/x-www-form-urlencoded; charset=UTF-8");
                 connection.setRequestProperty("Accept-Encoding", "identity");
-                if (mMethod == DownLoadManager.METHOD.POST) {
+                if (mMethod == 1) {
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
                     connection.setRequestMethod("POST");
-                    byte[] params = encodeParameters(mHeaders, DEFAULT_PARAMS_ENCODING);
-                    DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-                    out.write(params);
-                    out.close();
+//                    byte[] params = encodeParameters(mHeaders, DEFAULT_PARAMS_ENCODING);
+//                    DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+//                    out.write(params);
+//                    out.close();
 
                 } else {
                     connection.setDoInput(true);
@@ -133,8 +135,6 @@ public class DownloadRunnable implements Runnable {
                 if (responseCode == HttpStatus.SC_OK) {
                     HttpEntity entity = entityFromConnection(connection);
                     entityToBytes(entity);
-                    LogUtil.e("name:"+mMusicEntity.name+",version:"+mMusicEntity.version);
-
                 }
                 com.yzk.practice_brain.log.LogUtil.e("Download http response code:" + responseCode);
             } catch (SocketTimeoutException e) {
@@ -285,11 +285,11 @@ public class DownloadRunnable implements Runnable {
                 bufferedOutputStream.write(buffer, 0, count);
                 len += count;
             }
-            if (len==mMusicEntity.fileLength) {
-                PreferenceHelper.writeInt(mMusicEntity.name, mMusicEntity.version);
-                if (mMedia_type== DownLoadManager.MEDIA_TYPE.BGMUSIC) {
-                    HermesEventBus.getDefault().post(new BackgroudMusicEvent().new DownloadFinishEvent(mMusicEntity));
-                }else if (mMedia_type== DownLoadManager.MEDIA_TYPE.NORMAL){
+            if (len == mFileLength) {
+                PreferenceHelper.writeInt(mFileName, mVersion);
+                if (mMedia_type == 0) {
+                    HermesEventBus.getDefault().post(new BackgroudMusicEvent().new DownloadFinishEvent(mFileName));
+                } else if (mMedia_type == 1) {
                     //图片讲解事件
 
                 }

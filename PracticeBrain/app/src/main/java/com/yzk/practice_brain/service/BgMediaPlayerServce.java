@@ -180,7 +180,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
                         } else {//否则加载APK资源
                             playSdcard = false;
                         }
-                        LogUtil.e("download finish:" + downloadFinishEvent.mMusicEntity.name + ",playsdcard:" + playSdcard);
+                        LogUtil.e("download finish:" + downloadFinishEvent.mMusicName + ",playsdcard:" + playSdcard);
 
                     }
                 }, 200);

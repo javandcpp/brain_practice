@@ -2,7 +2,6 @@
 package com.yzk.practice_brain;
 
 // Declare any non-default types here with import statements
-import com.yzk.practice_brain.busevent.DownloadMusicEvent;
 
 interface IDownloadInterface {
     /**
@@ -14,7 +13,7 @@ interface IDownloadInterface {
 
 
 
-    void downLoadMusic(in DownloadMusicEvent downloadMusicEvent);
+    void downLoadMusic(int method, int media_type, String url, String name, long fileLenght, int version, String cachedPath);
 
 
 }

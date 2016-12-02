@@ -1,5 +1,7 @@
 package com.yzk.practice_brain.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -7,15 +9,24 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.yzk.practice_brain.IMediaInterface;
+import com.yzk.practice_brain.R;
+import com.yzk.practice_brain.activity.MainActivity;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
+import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.log.LogUtil;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +43,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private MediaPlayer mMediaPlayer;
     private AssetManager mAssetManager;
     private List<AssetFileDescriptor> mMedaiList;
+    private List<File> sdCardMusic;
     private int currentCursor = 0;
     private AudioManager audioManager;
     private int maxVolume;
@@ -39,6 +51,8 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private int stepVolume;
     private boolean isPause;
     public boolean isSilent;
+    public boolean playSdcard = true;
+    private Handler mHandler;
 
     private void initMediaPlayer() {
         if (mMediaPlayer != null) {
@@ -53,7 +67,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         // 初始化音量大概为最大音量的1/2
         curVolume = maxVolume / 2;
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,curVolume, 0);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, curVolume, 0);
         // 每次调整的音量大概为最大音量的1/6
         stepVolume = maxVolume / 6;
 //        mMediaPlayer.set
@@ -75,14 +89,28 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     @Override
     public void onCreate() {
         super.onCreate();
+        HermesEventBus.getDefault().register(this);
+        mHandler = new Handler();
         LogUtil.d(BgMediaPlayerServce.class.getSimpleName() + " onCreate");
         mMedaiList = new ArrayList<>();
-        getMediaResource();
+        sdCardMusic = new ArrayList<>();
+        if (playSdcard && getSdMusic()) {//如果从SD开始播放,加载数据
+            playSdcard = true;
+            LogUtil.e("playsdcard:" + getSdMusic() + ":" + playSdcard);
+        } else {//否则加载APK资源
+            playSdcard = false;
+            LogUtil.e("playraw:" + !playSdcard);
+            getRawMediaResource();
+        }
+
         initMediaPlayer();
 
     }
 
-    private void getMediaResource() {
+    /**
+     * 获取打包音乐
+     */
+    private void getRawMediaResource() {
         mAssetManager = getAssets();
         try {
             for (int i = 1; i < 4; i++) {
@@ -96,6 +124,31 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         }
     }
 
+    /**
+     * 获取sdcard下音乐
+     */
+    private boolean getSdMusic() {
+        File sdDir = new File(Constants.MUSIC_PATH);
+        if (!sdDir.exists()) {
+            return false;
+        }
+        File[] files = sdDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String s) {
+                return null != s ? s.endsWith(".mp3") : false;
+            }
+        });
+        if (files.length > 1) {
+            for (File file : files
+                    ) {
+                LogUtil.e("sdmusic file------------>" + file.getAbsolutePath());
+                sdCardMusic.add(file);
+            }
+        }
+        return files.length > 1;
+
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -104,13 +157,51 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setContentText("")
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(12346, noti);
         return START_STICKY;
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onevent(final BackgroudMusicEvent.DownloadFinishEvent downloadFinishEvent) {
+        //获取SD卡下载的音乐
+        new Thread() {
+            @Override
+            public void run() {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getSdMusic()) {//如果从SD开始播放,加载数据
+                            playSdcard = true;
+                        } else {//否则加载APK资源
+                            playSdcard = false;
+                        }
+                        LogUtil.e("download finish:" + downloadFinishEvent.mMusicEntity.name + ",playsdcard:" + playSdcard);
+
+                    }
+                }, 200);
+
+            }
+        }.start();
+
+
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        HermesEventBus.getDefault().unregister(this);
+        HermesEventBus.getDefault().destroy();
+        mHandler.removeCallbacksAndMessages(null);
         LogUtil.d(BgMediaPlayerServce.class.getSimpleName() + " onDestroy");
         destroyMediaPlayer();
     }
@@ -118,12 +209,33 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
 
     private void mediaPlayerPlay() {
         try {
-            mMediaPlayer.setDataSource(mMedaiList.get(currentCursor).getFileDescriptor(), mMedaiList.get(currentCursor).getStartOffset(),
-                    mMedaiList.get(currentCursor).getLength());
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
-            isPause=false;
-            LogUtil.e("mdiaplayer play  :" + mMedaiList.get(currentCursor).getFileDescriptor().toString());
+            if (!playSdcard) {
+                if (mMedaiList.size() == 0) {
+                    getRawMediaResource();
+                }
+                mMediaPlayer.setDataSource(mMedaiList.get(currentCursor).getFileDescriptor(), mMedaiList.get(currentCursor).getStartOffset(),
+                        mMedaiList.get(currentCursor).getLength());
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            } else {
+                if (sdCardMusic.size() == 0) {
+                    getSdMusic();
+                    if (sdCardMusic.size() == 0) {
+                        playSdcard = false;
+                        currentCursor = 0;//如果SD下音乐文件被删除,则继续播放raw下音乐
+                        servicePlay();
+                    }
+                }
+                mMediaPlayer.setDataSource(sdCardMusic.get(currentCursor).getAbsolutePath());
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            }
+            isPause = false;
+            if (playSdcard) {
+                LogUtil.e("mdiaplayer play sdFile  :" + sdCardMusic.get(currentCursor).toString());
+            } else {
+                LogUtil.e("mdiaplayer play rawFile :" + mMedaiList.get(currentCursor).getFileDescriptor().toString());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -329,8 +441,14 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         ++currentCursor;
-        if (currentCursor > mMedaiList.size() - 1) {
-            currentCursor = 0;
+        if (playSdcard) {
+            if (currentCursor > sdCardMusic.size() - 1) {
+                currentCursor = 0;
+            }
+        } else {
+            if (currentCursor > mMedaiList.size() - 1) {
+                currentCursor = 0;
+            }
         }
         BgMediaPlayerServce.this.servicePlay();
         LogUtil.e("mediaplayer completion play,ready for next music and current cursor:" + currentCursor);
@@ -339,7 +457,6 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-
         LogUtil.e("media player error :" + i + "," + i1);
         return false;
     }

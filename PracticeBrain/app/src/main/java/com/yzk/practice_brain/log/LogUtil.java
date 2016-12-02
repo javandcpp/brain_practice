@@ -17,7 +17,7 @@ public class LogUtil {
 
     public static void e(String msg) {
         if (DEBUG)
-            Log.d(TAG, msg);
+            Log.d("mediaplay", msg);
     }
 
     public static void w(String msg) {

@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 
 import com.yzk.practice_brain.IDownloadInterface;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
+import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.manager.DownLoadManager;
+import com.yzk.practice_brain.task.DownloadRunnable;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -22,10 +24,13 @@ import xiaofei.library.hermeseventbus.HermesEventBus;
 public class DownloadMusicService extends Service {
 
     private DownLoadManager downLoadManager;
+    private DownloadMusicService mKeepService;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mKeepService=this;
         downLoadManager = DownLoadManager.getInstance();
         HermesEventBus.getDefault().register(this);
     }
@@ -39,7 +44,8 @@ public class DownloadMusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
+
+        return Service.START_STICKY;
     }
 
 
@@ -47,24 +53,24 @@ public class DownloadMusicService extends Service {
     public void onDestroy() {
         super.onDestroy();
         HermesEventBus.getDefault().unregister(this);
+        HermesEventBus.getDefault().destroy();
         startService(new Intent(this, DownloadMusicService.class));
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent) {
-        DownLoadManager.getInstance().startDownLoad(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.mHttpUrl, downloadMusicEvent.mFileName, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onEventThread(BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent) {
+
+        LogUtil.e("onevent:"+downloadMusicEvent.musicEntity.name);
+//        DownLoadManager.getInstance().startDownLoad(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
+        DownloadRunnable downloadRunnable = new DownloadRunnable(downloadMusicEvent.mMethod, downloadMusicEvent.mMedia_type, downloadMusicEvent.musicEntity, downloadMusicEvent.mCachePath, downloadMusicEvent.mHeaders);
+        try {
+            DownLoadManager.getInstance().getQueue().put(downloadRunnable);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    /**
-     * 文件下载
-     *
-     * @param fileName
-     */
-    private void startDownLoad(DownLoadManager.MEDIA_TYPE media_type, String fileName) {
-
-
-    }
 
 
     public class DownloadBinder extends IDownloadInterface.Stub {

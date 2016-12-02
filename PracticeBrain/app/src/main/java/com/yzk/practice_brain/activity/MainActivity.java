@@ -245,17 +245,29 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
 
                 if (null != musicListResult && null != musicListResult.music && musicListResult.music.size() > 0) {
 
-                    mHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            LogUtil.e(musicListResult.toString());
-                            MusicListResult.MusicEntity musicEntity = musicListResult.music.get(0);
-                            LogUtil.e("download music:"+musicEntity.name+",url:"+musicEntity.url);
-                            BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent=new BackgroudMusicEvent.DownloadMusicEvent(DownLoadManager.METHOD.GET, DownLoadManager.MEDIA_TYPE.NORMAL,musicEntity.url,musicEntity.name,Constants.MUSIC_PATH,null);
-                            HermesEventBus.getDefault().post(downloadMusicEvent);
-
-                        }
-                    }, 100);
+                    if (NetworkUtils.isConnected(this)) {
+                        mHanlder.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                LogUtil.e(musicListResult.toString());
+                                for (final MusicListResult.MusicEntity entity :
+                                        musicListResult.music) {
+                                    int anInt = PreferenceHelper.getInt(entity.name);
+                                    LogUtil.e("oldmusic name:"+entity.name+",oldVersion:"+anInt+",newVersion:"+entity.version);
+                                    if (0==anInt||anInt<entity.version) {//比较背景音乐版本
+                                        mHanlder.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                               LogUtil.e("download name:"+entity.name+",version:"+entity.version);
+                                                BackgroudMusicEvent.DownloadMusicEvent downloadMusicEvent = new BackgroudMusicEvent().new DownloadMusicEvent(DownLoadManager.METHOD.GET, DownLoadManager.MEDIA_TYPE.BGMUSIC, entity, Constants.MUSIC_PATH, null);
+                                                HermesEventBus.getDefault().post(downloadMusicEvent);
+                                            }
+                                        }, 100);
+                                    }
+                                }
+                            }
+                        }, 100);
+                    }
                 }
 
                 break;
@@ -265,5 +277,11 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
     @Override
     public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
         Toast.makeText(this, R.string.request_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHanlder.removeCallbacksAndMessages(null);
     }
 }

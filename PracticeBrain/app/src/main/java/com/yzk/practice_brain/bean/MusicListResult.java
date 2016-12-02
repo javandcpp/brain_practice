@@ -27,6 +27,8 @@ public class MusicListResult implements Serializable {
         public String url;
         public String name;
         public String id;
+        public long fileLength;
+        public int version;
 
         @Override
         public String toString() {

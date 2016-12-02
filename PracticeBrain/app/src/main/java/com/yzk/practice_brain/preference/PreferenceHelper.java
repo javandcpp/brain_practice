@@ -17,7 +17,7 @@ public class PreferenceHelper {
 
 
     public static void writeString(String key,String value){
-        getSharedPreference().edit().putString(key,value).apply();
+        getSharedPreference().edit().putString(key,value).commit();
     }
 
     public static String getString(String key){
@@ -25,20 +25,18 @@ public class PreferenceHelper {
     }
 
     public static void writeInt(String key,int value){
-        getSharedPreference().edit().putInt(key,value).apply();
+        getSharedPreference().edit().putInt(key,value).commit();
     }
 
     public static int getInt(String key){
-        return getSharedPreference().getInt(key,-1);
+        return getSharedPreference().getInt(key,0);
     }
 
     public static void writeBool(String key,boolean value){
-        getSharedPreference().edit().putBoolean(key,value).apply();
+        getSharedPreference().edit().putBoolean(key,value).commit();
     }
 
     public static boolean getBool(String key){
         return getSharedPreference().getBoolean(key,false);
     }
-
-
 }

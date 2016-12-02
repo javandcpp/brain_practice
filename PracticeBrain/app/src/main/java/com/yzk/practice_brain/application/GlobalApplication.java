@@ -55,7 +55,6 @@ public class GlobalApplication extends BaseApplication {
         boolean status1 = startBgPlayerService();//开启背景音乐服务
         boolean status2=startDownLoadService();//开启下载服务
 
-
         LogUtil.d("mediaplay service status:" + status1);
         LogUtil.d("download service status:" + status2);
     }

@@ -81,6 +81,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
         HermesEventBus.getDefault().unregister(this);
+        HermesEventBus.getDefault().destroy();
         activityDestroy();
         ActivityStack.remove(this);
     }

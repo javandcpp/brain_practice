@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/rLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ffffffff"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@id/framelayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/background_two"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/background_two">
 
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:background="@drawable/blackboard"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="50dp"
             android:layout_marginTop="20dp"
-            android:layout_height="wrap_content">
+            android:background="@drawable/blackboard">
+
             <ImageView
                 android:id="@id/imagen2"
                 android:layout_width="350dp"
@@ -36,86 +37,88 @@
 
     <LinearLayout
         android:id="@+id/llayout"
-        android:orientation="vertical"
         android:layout_width="70dp"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/redPen"
-            android:background="@null"
-            android:layout_width="match_parent"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            android:background="@null" />
+
         <Button
             android:id="@+id/yellowPen"
             android:layout_width="wrap_content"
-            android:background="@null"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            android:background="@null" />
+
         <Button
             android:id="@+id/greenPen"
-            android:background="@null"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            android:background="@null" />
+
         <Button
             android:id="@+id/bluePen"
             android:layout_width="wrap_content"
-            android:background="@null"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            android:background="@null" />
+        </LinearLayout>
 
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tvScore"
-        android:text="错误次数:0"
-        android:layout_width="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="28dp"
-        android:textColor="@color/black"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="28dp"
+            android:text="错误次数:0"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
 
-    <Button
-        android:id="@+id/rule"
-        android:layout_width="wrap_content"
-        android:text="规则"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/home_blue_btn"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/home_blue_btn"
+            android:text="规则"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
 
-    <com.yzk.practice_brain.ui.Controller
-        android:id="@+id/controlPanel"
-        android:layout_height="wrap_content"
-        app:orientation="0"
-        android:layout_centerVertical="true"
+        <com.yzk.practice_brain.ui.Controller
+            android:id="@+id/controlPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
 
-        android:paddingTop="100dp"
-        android:layout_marginLeft="35dp"
-        android:layout_width="wrap_content"/>
+            android:layout_marginLeft="35dp"
+            android:paddingTop="100dp"
+            app:orientation="0" />
 
 
-    <Button
-        android:id="@+id/finish"
-        android:layout_width="wrap_content"
-        android:text="完成"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/home_blue_btn"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+        <Button
+            android:id="@+id/finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/home_blue_btn"
+            android:text="完成"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>

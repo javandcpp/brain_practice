@@ -53,9 +53,6 @@ public class SoundEffect {
     }
 
     public void play(int number) {
-        if (-1!=beforeNumber){
-            sp.stop(number);
-        }
         AudioManager am = (AudioManager) GlobalApplication.instance.getSystemService(Context.AUDIO_SERVICE);
         float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         float audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -67,7 +64,6 @@ public class SoundEffect {
                 1,             //优先级，0最低
                 0,         //循环次数，0是不循环，-1是永远循环
                 1);            //回放速度，0.5-2.0之间。1为正常速度
-        beforeNumber=number;
     }
 
 

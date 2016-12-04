@@ -15,4 +15,8 @@ public class Config {
     //背景音乐获取
     public static final String BACKGROUND_MUSIC_URL=BaseUrl+"/kujisoftware/musicUpload/findMusic";
 
+    //舒尔特表训练
+    public static final String SUTABLE_PRACTICE_URL=BaseUrl+"/kujisoftware/questionFive/findFiveByExerciseAndWhichDayAndType?exerciseId=1000&Type=1&whichDay=1";
+
+
 }

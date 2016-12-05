@@ -41,6 +41,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     private ArrayList<RemberPracticeResult.Practice> dataList;
 
+    private ArrayList<RemberPracticeResult.Practice> prsientDataList=new ArrayList<>();
     private List<RemberPracticeResult.Practice> sortDataList=new ArrayList<>();
     private List<RemberPracticeResult.Practice> randomList=new ArrayList<>();
     private List<RemberPracticeResult.Practice> leftList=new ArrayList<>();
@@ -65,12 +66,14 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataList = (ArrayList<RemberPracticeResult.Practice>) getIntent().getSerializableExtra("data");
+
         setContentView(R.layout.remeber_practice_layout);
     }
 
     private void assertResult(View view, int i) {
         if (index > sortDataList.size() - 1) {
-            index = sortDataList.size() - 1;
+//            index = sortDataList.size() - 1;
+            return;
         }
         RemberPracticeResult.Practice o = randomList.get(i);
         RemberPracticeResult.Practice target= sortDataList.get(index);
@@ -89,17 +92,15 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 if (1==Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }
-                index=0;
-                score=10;
-                return;
+
+            }else {
+
+                Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                }
             }
             ++index;
-
-
-            Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
-            if (1==Setting.getVoice()) {
-                SoundEffect.getInstance().play(SoundEffect.CORRECT);
-            }
         } else {
             Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
             --score;
@@ -107,7 +108,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 SoundEffect.getInstance().play(SoundEffect.FAIL);
             }
             if (score<0){
-                index=0;
+                //index=0;
             }
         }
 
@@ -115,9 +116,9 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     }
     @Override
     protected void uIViewInit() {
-
-        sortDataList.addAll(dataList);
-        randomList=randomList(dataList);
+        prsientDataList.addAll(dataList);
+        sortDataList.addAll(prsientDataList);
+        randomList=randomList(prsientDataList);
         controllPanel.setClickCallBack(this);
 
 
@@ -145,6 +146,9 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     public void controll(View view) {
         switch (view.getId()){
             case R.id.retry:
+                retry();
+
+
                 break;
             case R.id.back:
                 finish();
@@ -165,5 +169,18 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 break;
 
         }
+    }
+
+    private void retry() {
+        index=0;
+        randomList.clear();
+        prsientDataList.clear();
+        prsientDataList.addAll(dataList);
+        randomList.addAll(prsientDataList);
+        randomList=randomList(prsientDataList);
+        rightAdapter.setData(randomList);
+
+        leftList.clear();
+        leftAdapter.setData(leftList);
     }
 }

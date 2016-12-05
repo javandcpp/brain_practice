@@ -24,6 +24,7 @@ public class RemberPracticeLeftAdapter extends BaseAdapter {
 
     public void setData(List<RemberPracticeResult.Practice> dataList) {
         this.tempList = dataList;
+        notifyDataSetChanged();
     }
 
 

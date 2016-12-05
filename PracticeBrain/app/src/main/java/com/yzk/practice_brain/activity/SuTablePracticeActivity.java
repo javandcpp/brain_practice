@@ -19,6 +19,7 @@ import com.yzk.practice_brain.bean.SuTableResult;
 import com.yzk.practice_brain.config.Config;
 import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.network.HttpRequestUtil;
+import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.CircularProgressView;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.RuleDialog;
@@ -99,7 +100,9 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                     backGround.setBackgroundResource(R.drawable.home_bgview_blue);
                     if (index == sortTempList.size() - 1) {
                         Toast.makeText(SuTablePracticeActivity.this, "闯关成功", Toast.LENGTH_SHORT).show();
-                        SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                        if (1== Setting.getVoice()) {
+                            SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                        }
 
                         forEachList();
 
@@ -107,14 +110,17 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                     }
                     ++index;
 
-
-                    Toast.makeText(SuTablePracticeActivity.this, "正确", Toast.LENGTH_SHORT).show();
-                    SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    if (1==Setting.getVoice()) {
+                        Toast.makeText(SuTablePracticeActivity.this, "正确", Toast.LENGTH_SHORT).show();
+                        SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    }
                 } else {
                     Toast.makeText(SuTablePracticeActivity.this, "错误", Toast.LENGTH_SHORT).show();
                     --score;
                     backGround.setBackgroundResource(R.drawable.home_bgview_green);
-                    SoundEffect.getInstance().play(SoundEffect.FAIL);
+                    if (1==Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.FAIL);
+                    }
                     if (score<0){
                         score=0;
                         forEachList();

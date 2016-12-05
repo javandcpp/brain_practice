@@ -13,6 +13,7 @@ import com.yzk.practice_brain.adapter.RemberPracticeRightAdapter;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.RemberPracticeResult;
+import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.SoundEffect;
@@ -85,7 +86,9 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
             if (index == sortDataList.size() - 1) {
                 Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-                SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                if (1==Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                }
                 index=0;
                 score=10;
                 return;
@@ -94,11 +97,15 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
 
             Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
-            SoundEffect.getInstance().play(SoundEffect.CORRECT);
+            if (1==Setting.getVoice()) {
+                SoundEffect.getInstance().play(SoundEffect.CORRECT);
+            }
         } else {
             Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
             --score;
-            SoundEffect.getInstance().play(SoundEffect.FAIL);
+            if (1==Setting.getVoice()) {
+                SoundEffect.getInstance().play(SoundEffect.FAIL);
+            }
             if (score<0){
                 index=0;
             }

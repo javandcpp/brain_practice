@@ -62,4 +62,13 @@
         android:text="规则"
         android:textColor="@color/white"
         android:textSize="18sp" />
+
+    <com.yzk.practice_brain.ui.Controller
+        android:id="@+id/controlPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="35dp"
+        android:paddingTop="100dp"
+        app:orientation="0" />
 </RelativeLayout>

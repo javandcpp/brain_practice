@@ -7,6 +7,8 @@
     android:orientation="vertical">
 
 
+
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
@@ -39,4 +41,13 @@
         android:textSize="18sp"
         android:textColor="@color/white"
         android:layout_height="wrap_content" />
+
+
+    <com.yzk.practice_brain.ui.Controller
+        android:id="@+id/controlPanel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:orientation="1" />
 </RelativeLayout>

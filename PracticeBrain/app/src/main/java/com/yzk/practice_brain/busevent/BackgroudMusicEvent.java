@@ -51,6 +51,15 @@ public class BackgroudMusicEvent {
     }
 
 
+    public class VoiceEvent{
+
+        public final int voiceValue;
+        public VoiceEvent(int voiceValue){
+            this.voiceValue=voiceValue;
+        }
+    }
+
+
 
 
 }

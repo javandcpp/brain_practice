@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -57,5 +58,13 @@
 
 
     <include layout="@layout/loading_layout"/>
+
+    <com.yzk.practice_brain.ui.Controller
+        android:id="@id/controlPanel"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        app:orientation="1" />
 
 </RelativeLayout>

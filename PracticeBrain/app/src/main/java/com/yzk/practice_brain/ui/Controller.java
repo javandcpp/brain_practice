@@ -65,7 +65,7 @@ public class Controller extends LinearLayout {
                 }
                 break;
             case R.id.voiceable:
-                int systemKeyBoardVoice = Setting.getSystemKeyBoardVoice();
+                int systemKeyBoardVoice = Setting.getVoice();
                 if (0 == systemKeyBoardVoice) {
                     view.setSelected(false);
                     Setting.setSystemKeyBoardVoice(1);
@@ -80,7 +80,6 @@ public class Controller extends LinearLayout {
 
     public Controller(Context context) {
         super(context);
-
         initView();
     }
 
@@ -116,7 +115,7 @@ public class Controller extends LinearLayout {
                 musicable.setSelected(false);
             }
 
-            int systemKeyBoardVoice = Setting.getSystemKeyBoardVoice();
+            int systemKeyBoardVoice = Setting.getVoice();
             if (0 == systemKeyBoardVoice) {
                 voiceable.setSelected(true);
             } else {

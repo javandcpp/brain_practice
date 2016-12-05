@@ -38,6 +38,7 @@ import com.caverock.androidsvg.SVGParseException;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.ImageUtils;
@@ -249,7 +250,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 Mandalas2Activity.this.fd.floodFill(Mandalas2Activity.this.b, this.point, oldColor, Mandalas2Activity.this.newColor);
                 Mandalas2Activity.this.imagen.invalidate();
                 //播放填色音效
-                SoundEffect.getInstance().play(SoundEffect.FILL_CORRECT);
+                if (1==Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FILL_CORRECT);
+                }
             }
 
             return true;
@@ -286,7 +289,10 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
             if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
                 Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-                SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                if (1==Setting.getVoice()) {
+
+                    SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                }
             } else if (totalScore>=0){
                 Toast toast = Toast.makeText(this,"还是不对，再检查下吧", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER , 0, 0);
@@ -294,10 +300,14 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 --totalScore;
                 int score=totalScore>=0?totalScore:0;
                 tvScore.setText("错误次数:"+score);
-                SoundEffect.getInstance().play(SoundEffect.FILL_ERROR);
+                if (1==Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FILL_ERROR);
+                }
             }else{
                 Toast.makeText(this, "闯关失败", Toast.LENGTH_SHORT).show();
-                SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                if (1==Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                }
 
             }
 

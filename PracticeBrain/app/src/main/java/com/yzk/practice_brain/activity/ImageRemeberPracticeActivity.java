@@ -41,6 +41,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
     @Override
     protected void uIViewInit() {
+
         controlPanel.setClickCallBack(this);
     }
 

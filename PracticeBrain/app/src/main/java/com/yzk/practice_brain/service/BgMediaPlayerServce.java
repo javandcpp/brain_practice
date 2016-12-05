@@ -239,6 +239,10 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
 
         } catch (IOException e) {
             e.printStackTrace();
+            currentCursor=0;
+            playSdcard=false;
+            mediaPlayerPlay();
+
         }
     }
 
@@ -267,6 +271,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
             e.printStackTrace();
             mMediaPlayer.reset();
             currentCursor = 0;
+
             mediaPlayerPlay();
 
         } finally {

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.ui.RuleDialog;
 
 import butterknife.OnClick;
 
@@ -22,12 +23,16 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity {
         setContentView(R.layout.image_remeber_practice_enter_layout);
     }
 
-    @OnClick({R.id.begin})
+    @OnClick({R.id.begin,R.id.rule})
     public void click(View view){
         switch (view.getId()){
             case R.id.begin:
                 Intent intent=new Intent(this,ImageRemeberPracticeActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"4");
+                builder.create().show();
                 break;
         }
     }

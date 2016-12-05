@@ -14,12 +14,14 @@ import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.RemberPracticeResult;
 import com.yzk.practice_brain.ui.Controller;
+import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.SoundEffect;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by android on 11/24/16.
@@ -46,6 +48,16 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     private int index;
     private int score=10;
     private RemberPracticeLeftAdapter leftAdapter;
+
+    @OnClick({R.id.rule})
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"2");
+                builder.create().show();
+                break;
+        }
+    }
 
 
     @Override

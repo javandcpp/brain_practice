@@ -39,6 +39,7 @@ import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.ui.Controller;
+import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.ImageUtils;
 import com.yzk.practice_brain.utils.SoundEffect;
 
@@ -128,7 +129,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     @Bind(R.id.tvScore)
     TextView tvScore;
 
-    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen,R.id.finish})
+
+
+    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen,R.id.finish,R.id.rule})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.redPen:
@@ -162,6 +165,10 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 break;
             case R.id.finish:
                 compareColor();
+                break;
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"5");
+                builder.create().show();
                 break;
         }
     }

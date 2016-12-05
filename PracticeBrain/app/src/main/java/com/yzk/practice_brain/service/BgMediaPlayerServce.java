@@ -1,5 +1,7 @@
 package com.yzk.practice_brain.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,8 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.yzk.practice_brain.IMediaInterface;
+import com.yzk.practice_brain.R;
+import com.yzk.practice_brain.activity.MainActivity;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.log.LogUtil;
@@ -154,15 +158,15 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-//        Intent notificationIntent = new Intent(this, MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-//        Notification noti = new Notification.Builder(this)
-//                .setContentTitle(getResources().getString(R.string.app_name))
-//                .setContentText("")
-//                .setSmallIcon(R.drawable.ic_launcher)
-//                .setContentIntent(pendingIntent)
-//                .build();
-//        startForeground(12346, noti);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setContentText("")
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(12346, noti);
         return START_STICKY;
     }
 

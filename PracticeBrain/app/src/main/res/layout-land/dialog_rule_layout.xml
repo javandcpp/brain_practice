@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="500dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bejing">
+
+        <Button
+            android:id="@+id/btClose"
+            android:layout_width="30dp"
+            android:background="@drawable/shape"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/yellow"
+            android:gravity="center"
+            android:shadowColor="@color/gray"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="规则"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+        <ScrollView
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/tvRuleTxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+    <include layout="@layout/loading_layout"/>
+
+
+</RelativeLayout>

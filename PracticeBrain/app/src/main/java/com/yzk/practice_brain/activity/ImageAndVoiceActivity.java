@@ -8,8 +8,10 @@ import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.ui.Controller;
+import com.yzk.practice_brain.ui.RuleDialog;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by android on 11/24/16.
@@ -23,6 +25,16 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.imageandvoice_layout);
+    }
+
+    @OnClick(R.id.rule)
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"3");
+                builder.create().show();
+                break;
+        }
     }
 
     @Override

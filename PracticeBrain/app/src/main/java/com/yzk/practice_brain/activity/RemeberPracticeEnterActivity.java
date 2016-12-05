@@ -14,6 +14,7 @@ import com.yzk.practice_brain.bean.RemberPracticeResult;
 import com.yzk.practice_brain.config.Config;
 import com.yzk.practice_brain.network.HttpRequestUtil;
 import com.yzk.practice_brain.ui.CircularProgressView;
+import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.NetworkUtils;
 import com.yzk.practice_brain.utils.ParseJson;
 
@@ -43,7 +44,7 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
         setContentView(R.layout.remeber_practice_enter_layout);
     }
 
-    @OnClick(R.id.begin)
+    @OnClick({R.id.begin,R.id.rule})
     public void click(View view){
         Intent intent;
         switch (view.getId()){
@@ -53,6 +54,10 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
                     intent.putExtra("data", tempList);
                     startActivity(intent);
                 }
+                break;
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"2");
+                builder.create().show();
                 break;
         }
 

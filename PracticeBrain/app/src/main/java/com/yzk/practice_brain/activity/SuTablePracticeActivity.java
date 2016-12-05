@@ -21,6 +21,7 @@ import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.network.HttpRequestUtil;
 import com.yzk.practice_brain.ui.CircularProgressView;
 import com.yzk.practice_brain.ui.Controller;
+import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.NetworkUtils;
 import com.yzk.practice_brain.utils.ParseJson;
 import com.yzk.practice_brain.utils.SoundEffect;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by android on 11/24/16.
@@ -54,6 +56,17 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
     private int score=10;
 
     private Handler mHanlder = new Handler();
+    @OnClick({R.id.rule})
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"1");
+                builder.create().show();
+                break;
+        }
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

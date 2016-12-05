@@ -8,8 +8,10 @@ import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.ui.Controller;
+import com.yzk.practice_brain.ui.RuleDialog;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by android on 11/24/16.
@@ -19,6 +21,16 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
     @Bind(R.id.controlPanel)
     Controller controlPanel;
+
+    @OnClick(R.id.rule)
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"4");
+                builder.create().show();
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

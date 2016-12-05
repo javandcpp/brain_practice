@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.module.mandalas.Mandalas2Activity;
+import com.yzk.practice_brain.ui.RuleDialog;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -42,7 +43,7 @@ public class MandalaEnterActivity extends BaseFragmentActivity {
 //            }
 //        });
     }
-    @OnClick({R.id.btnStart})
+    @OnClick({R.id.btnStart,R.id.rule})
     public void click(View view){
         Intent intent;
         switch (view.getId()){
@@ -52,6 +53,10 @@ public class MandalaEnterActivity extends BaseFragmentActivity {
 //                    v1.putExtra("mandala-tag", String.valueOf(v2));
                 v1.putExtra("mandala-tag", "myimage");
                 startActivity(v1);
+                break;
+            case R.id.rule:
+                RuleDialog.Builder builder=new RuleDialog.Builder(this,"5");
+                builder.create().show();
                 break;
         }
     }

@@ -16,6 +16,9 @@ import com.yzk.practice_brain.stack.ActivityStack;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import butterknife.ButterKnife;
 import xiaofei.library.hermeseventbus.HermesEventBus;
 
@@ -126,5 +129,26 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     @Subscribe
     public void onEvent(String object){}
 
+    /**
+     * 将list顺序打乱
+     *
+     * @param sourceList
+     * @return
+     */
+    protected ArrayList randomList(ArrayList sourceList) {
+        if (isEmpty(sourceList)) {
+            return sourceList;
+        }
+        ArrayList randomList = new ArrayList(sourceList.size());
+        do {
+            int randomIndex = Math.abs(new Random().nextInt(sourceList.size()));
+            randomList.add(sourceList.remove(randomIndex));
+        } while (sourceList.size() > 0);
+        return randomList;
+    }
+
+    private boolean isEmpty(ArrayList sourceList) {
+        return (sourceList == null || sourceList.size() == 0);
+    }
 
 }

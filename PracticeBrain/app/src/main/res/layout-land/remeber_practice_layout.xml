@@ -24,7 +24,7 @@
             android:paddingTop="80dp">
 
             <GridView
-                android:id="@+id/leftGrid"
+                android:id="@+id/rightGrid"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="400dp"
                 android:layout_height="280dp"
@@ -36,7 +36,7 @@
 
 
         <GridView
-            android:id="@+id/rightGrid"
+            android:id="@+id/leftGrid"
             android:layout_width="390dp"
             android:layout_height="300dp"
             android:layout_alignParentBottom="true"

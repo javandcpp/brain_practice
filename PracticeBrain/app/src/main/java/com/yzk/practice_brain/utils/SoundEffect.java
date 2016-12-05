@@ -1,6 +1,5 @@
 package com.yzk.practice_brain.utils;
 
-import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
@@ -52,12 +51,17 @@ public class SoundEffect {
         return instance;
     }
 
-    public void play(int number) {
-        AudioManager am = (AudioManager) GlobalApplication.instance.getSystemService(Context.AUDIO_SERVICE);
-        float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        float audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        float volumnRatio = audioCurrentVolumn / audioMaxVolumn;
+    public void init(){
+        sp.play(spMap.get(FILL_CORRECT),     //声音资源
+                0.5f,         //左声道
+                0.5f,         //右声道
+                1,             //优先级，0最低
+                0,         //循环次数，0是不循环，-1是永远循环
+                1);
+    }
 
+
+    public void play(int number) {
         sp.play(spMap.get(number),     //声音资源
                 1,         //左声道
                 1,         //右声道

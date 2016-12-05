@@ -28,6 +28,7 @@ import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.utils.NetworkUtils;
 import com.yzk.practice_brain.utils.ParseJson;
 import com.yzk.practice_brain.utils.SizeUtils;
+import com.yzk.practice_brain.utils.SoundEffect;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
 
         playBackgroundMusic();
         getMusicList();
+        SoundEffect.getInstance().init();
 
     }
 

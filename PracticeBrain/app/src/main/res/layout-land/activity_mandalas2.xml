@@ -41,11 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
+        android:layout_alignParentRight="true"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/redPen"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -103,7 +103,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-
             android:layout_marginLeft="35dp"
             android:paddingTop="100dp"
             app:orientation="0" />

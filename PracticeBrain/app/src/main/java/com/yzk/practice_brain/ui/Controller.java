@@ -6,12 +6,14 @@ import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.setting.Setting;
+import com.yzk.practice_brain.utils.SizeUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,10 +38,14 @@ public class Controller extends LinearLayout {
 
     @Bind(R.id.back)
     ImageButton back;
+
+    @Bind(R.id.rootView)
+    LinearLayout rootView;
     private int orientation;
     private ControllerCallBack mControllerCall;
+    private boolean retryable;
 
-    @OnClick({R.id.retry, R.id.back,R.id.play})
+    @OnClick({R.id.retry, R.id.back, R.id.play})
     public void clickEvent(View view) {
         if (null != mControllerCall) {
             mControllerCall.controll(view);
@@ -91,6 +97,7 @@ public class Controller extends LinearLayout {
 
     private void initView() {
 
+
         if (1 == orientation) {//横向
             LayoutInflater.from(getContext()).inflate(R.layout.layout_controller, this, true);
 
@@ -99,6 +106,21 @@ public class Controller extends LinearLayout {
 
         }
         ButterKnife.bind(this);
+
+        if (!retryable) {
+            retry.setVisibility(GONE);
+                ViewGroup.LayoutParams layoutParams = rootView.getLayoutParams();
+            if (1 == orientation) {
+                layoutParams.width= SizeUtils.dp2px(getContext(),160);
+                rootView.setLayoutParams(layoutParams);
+            } else {
+                layoutParams.height= SizeUtils.dp2px(getContext(),160);
+                rootView.setLayoutParams(layoutParams);
+            }
+
+        }else{
+            retry.setVisibility(VISIBLE);
+        }
 
 
         try {
@@ -131,6 +153,7 @@ public class Controller extends LinearLayout {
         if (attrs != null) {
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.Controller);
             orientation = ta.getInteger(R.styleable.Controller_orientation, -1);
+            retryable = ta.getBoolean(R.styleable.Controller_retry, true);
             ta.recycle();
         }
     }

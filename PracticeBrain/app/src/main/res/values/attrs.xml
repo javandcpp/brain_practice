@@ -41,6 +41,7 @@
 
     <declare-styleable name="Controller">
         <attr name="orientation" format="integer"/>
+        <attr name="retry" format="boolean"/>
     </declare-styleable>
 
 

@@ -70,5 +70,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="35dp"
         android:paddingTop="100dp"
+        app:retry="false"
         app:orientation="0" />
 </RelativeLayout>

@@ -59,7 +59,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     private final float MINSCALE;
     private final int SUSTITUTONEGRO;
     private Animation anim;
-    private AppRater apprater;
+//    private AppRater apprater;
     private Bitmap b;
     public Canvas canvas;
     private CustomDrawableView cdv;
@@ -621,8 +621,8 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 //                }
 //            }
 //        });
-        this.apprater = new AppRater(((Context) this));
-        this.apprater.app_launched(((Context) this));
+//        this.apprater = new AppRater(((Context) this));
+//        this.apprater.app_launched(((Context) this));
     }
 
     /**
@@ -649,7 +649,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         this.runningPaletas = false;
         this.gestureDetector = null;
         this.scaleGestureListener = null;
-        this.apprater = null;
+//        this.apprater = null;
 
 //        if ((this.tocaMusica) && this.s != null) {
 //            this.s = null;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/home_go_burst">
+
+        <Button
+            android:id="@+id/btClose"
+            android:layout_width="30dp"
+            android:background="@drawable/home_grey"
+            android:layout_marginTop="150dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:shadowColor="@color/gray"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:visibility="gone"
+            android:shadowRadius="1"
+            android:text="获取10分"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

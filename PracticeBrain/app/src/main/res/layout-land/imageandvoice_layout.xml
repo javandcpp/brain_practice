@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:id="@id/rLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -24,13 +25,37 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="50dp">
 
-            <ImageView
-                android:id="@id/imagen2"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/draweeView"
                 android:layout_width="match_parent"
-                android:padding="35dp"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/home_deer" />
+                android:padding="35dp"
+                fresco:placeholderImage="@drawable/loading" />
+
+            <!--fresco:fadeDuration="300"-->
+            <!--fresco:actualImageScaleType="focusCrop"-->
+            <!--fresco:placeholderImage="@color/wait_color"-->
+            <!--fresco:placeholderImageScaleType="fitCenter"-->
+            <!--fresco:failureImage="@drawable/error"-->
+            <!--fresco:failureImageScaleType="centerInside"-->
+            <!--fresco:retryImage="@drawable/retrying"-->
+            <!--fresco:retryImageScaleType="centerCrop"-->
+            <!--fresco:progressBarImage="@drawable/progress_bar"-->
+            <!--fresco:progressBarImageScaleType="centerInside"-->
+            <!--fresco:progressBarAutoRotateInterval="1000"-->
+            <!--fresco:backgroundImage="@color/blue"-->
+            <!--fresco:overlayImage="@drawable/watermark"-->
+            <!--fresco:pressedStateOverlayImage="@color/red"-->
+            <!--fresco:roundAsCircle="false"-->
+            <!--fresco:roundedCornerRadius="1dp"-->
+            <!--fresco:roundTopLeft="true"-->
+            <!--fresco:roundTopRight="false"-->
+            <!--fresco:roundBottomLeft="false"-->
+            <!--fresco:roundBottomRight="true"-->
+            <!--fresco:roundWithOverlayColor="@color/corner_color"-->
+            <!--fresco:roundingBorderWidth="2dp"-->
+            <!--fresco:roundingBorderColor="@color/border_color"-->
 
             <ImageView
                 android:layout_width="match_parent"

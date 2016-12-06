@@ -21,8 +21,13 @@ public class Config {
     //记忆训练
     public static final String REMEBER_PRACTICE_URL=BaseUrl+"/kujisoftware/memoryTrain/findMemoryTrainByExerciseAndWhichDayAndType?exerciseId=1001&whichDay=1&type=2";
 
-
     //规则
     public static final String RULE=BaseUrl+"/kujisoftware/typeRules/findTypeRulesById?id=";
+
+    //学习讲解
+    public static final String EXPLAIN=BaseUrl+"/kujisoftware/learnExplain/findAllLearnExplain";
+
+    //图片记忆
+    public static final String IMAGE_REMEBER=BaseUrl+"/kujisoftware/pictureMemory/findPictureByExerciseAndWhichDayAndType?exerciseId=1000&Type=3&whichDay=1";
 
 }

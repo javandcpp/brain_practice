@@ -2,12 +2,10 @@
 
 package com.yzk.practice_brain.module.mandalas;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -126,14 +124,14 @@ public class FilesHandler {
     }
 
     public void comprobarTempyMostrarDibujo(ImageView imageview) {
-        if(this.comprobarTemp()) {
-            new BitmapWorkerTask(imageview).execute(new String[]{this.devolverNombreTemp(), "temp"});
-            imageview.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    v.getContext().startActivity(new Intent(v.getContext(), Mandalas2Activity.class));
-                }
-            });
-        }
+//        if(this.comprobarTemp()) {
+//            new BitmapWorkerTask(imageview).execute(new String[]{this.devolverNombreTemp(), "temp"});
+//            imageview.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    v.getContext().startActivity(new Intent(v.getContext(), Mandalas2Activity.class));
+//                }
+//            });
+//        }
     }
 
     public String devolverNombreTemp() {

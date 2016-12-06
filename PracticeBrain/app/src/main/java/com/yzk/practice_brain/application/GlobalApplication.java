@@ -5,9 +5,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.IBinder;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.yzk.practice_brain.IDownloadInterface;
 import com.yzk.practice_brain.IMediaInterface;
 import com.yzk.practice_brain.log.LogUtil;
@@ -53,10 +56,19 @@ public class GlobalApplication extends BaseApplication {
         connectionMediaPlayer();
         connectionDownload();
         boolean status1 = startBgPlayerService();//开启背景音乐服务
-        boolean status2=startDownLoadService();//开启下载服务
+        boolean status2 = startDownLoadService();//开启下载服务
 
         LogUtil.d("mediaplay service status:" + status1);
         LogUtil.d("download service status:" + status2);
+
+        initFresco();
+    }
+
+    private void initFresco() {
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setBitmapsConfig(Bitmap.Config.RGB_565)
+                .build();
+        Fresco.initialize(this, config);
     }
 
     private void connectionDownload() {

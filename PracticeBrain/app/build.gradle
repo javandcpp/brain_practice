@@ -88,6 +88,7 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.1'
 //    compile 'com.facebook.fresco:fresco:0.9.0'
+    compile 'com.facebook.fresco:fresco:0.14.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 //    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'xiaofei.library:hermes-eventbus:0.2.0'

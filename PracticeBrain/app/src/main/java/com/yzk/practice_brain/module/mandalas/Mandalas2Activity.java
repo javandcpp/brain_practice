@@ -38,8 +38,10 @@ import com.caverock.androidsvg.SVGParseException;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.Controller;
+import com.yzk.practice_brain.ui.HintDialog;
 import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.ImageUtils;
 import com.yzk.practice_brain.utils.SoundEffect;
@@ -51,7 +53,7 @@ import butterknife.OnClick;
 
 import static android.graphics.Color.parseColor;
 
-public class Mandalas2Activity extends BaseFragmentActivity implements Animation.AnimationListener, ColorPicker.OnColorChangedListener, Controller.ControllerCallBack {
+public class Mandalas2Activity extends BaseFragmentActivity implements Animation.AnimationListener, Controller.ControllerCallBack {
     private final float MAXSCALE;
     private int MAX_SAVING_FILES;
     private final float MINSCALE;
@@ -64,7 +66,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     private boolean comprobarasync;
     private PictureDrawable d;
     private Drawable dibujo;
-    private Metricas dim;
+    //    private Metricas dim;
     private Drawable drawable;
     public boolean efectos;
     private String extFile;
@@ -84,24 +86,24 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     private int mandalaNum;
     private String mandalaString;
     private String mandalaTag;
-    private MemoryManager mem;
+    //    private MemoryManager mem;
     private Menu menu;
     private String mess;
     private int newColor = parseColor("#ffff0000");
     private int numpaleta;
     private int oldColor;
-    private GrabarPreferencias prefs;
+    //    private GrabarPreferencias prefs;
     private int proximoValor;
     private String raiz;
     private boolean runningImagen;
     private boolean runningPaletas;
-    private Sonidos s;
+    //    private Sonidos s;
     private ScaleGestureDetector scaleGestureDetector;
     private View.OnTouchListener scaleGestureListener;
     private SVG svg;
     public Path svgparsdtopath;
     public boolean tocaMusica;
-    private int totalScore=10;
+    private int totalScore = 10;
 
     private final String AREA01 = "ff00ff00";//x=108,y=108
     private final String AREA02 = "ff0000ff";//x=236,y=94
@@ -129,10 +131,11 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 
     @Bind(R.id.tvScore)
     TextView tvScore;
+    private boolean mandala_finish;
+    private int mandalascore;
 
 
-
-    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen,R.id.finish,R.id.rule})
+    @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen, R.id.finish, R.id.rule})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.redPen:
@@ -168,7 +171,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 compareColor();
                 break;
             case R.id.rule:
-                RuleDialog.Builder builder=new RuleDialog.Builder(this,"5");
+                RuleDialog.Builder builder = new RuleDialog.Builder(this, "5");
                 builder.create().show();
                 break;
         }
@@ -184,17 +187,17 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 finish();
                 break;
             case R.id.play:
-            try {
-                if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
-                    ((ImageButton) view).setSelected(false);
-                    GlobalApplication.instance.getiMediaInterface().pause();
-                } else {
-                    ((ImageButton) view).setSelected(true);
-                    GlobalApplication.instance.getiMediaInterface().play();
+                try {
+                    if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
+                        ((ImageButton) view).setSelected(false);
+                        GlobalApplication.instance.getiMediaInterface().pause();
+                    } else {
+                        ((ImageButton) view).setSelected(true);
+                        GlobalApplication.instance.getiMediaInterface().play();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
                 break;
         }
     }
@@ -250,7 +253,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 Mandalas2Activity.this.fd.floodFill(Mandalas2Activity.this.b, this.point, oldColor, Mandalas2Activity.this.newColor);
                 Mandalas2Activity.this.imagen.invalidate();
                 //播放填色音效
-                if (1==Setting.getVoice()) {
+                if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FILL_CORRECT);
                 }
             }
@@ -282,36 +285,63 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         String area08_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 75, 225);
         String area09_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 238, 238);
 
-//        String white = "ffffffff";
-//        if (!area01_value.equals(white) && !area02_value.equals(white) && !area03_value.equals(white) && !area04_value.equals(white) &&
-//                !area05_value.equals(white) && !area06_value.equals(white) && !area07_value.equals(white) && !area08_value.equals(white) && !area09_value.equals(white)) {
 
+        if (mandala_finish&&mandalascore<0) {//已练习
             if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
-                Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-                if (1==Setting.getVoice()) {
-
+                HintDialog.Builder builder = new HintDialog.Builder(Mandalas2Activity.this);
+                HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTvScore(totalScore).create();
+                hintDialog.show();
+                if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }
-            } else if (totalScore>=0){
-                Toast toast = Toast.makeText(this,"还是不对，再检查下吧", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER , 0, 0);
+            } else {
+                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
-                --totalScore;
-                int score=totalScore>=0?totalScore:0;
-                tvScore.setText("错误次数:"+score);
-                if (1==Setting.getVoice()) {
+                if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FILL_ERROR);
                 }
-            }else{
-                Toast.makeText(this, "闯关失败", Toast.LENGTH_SHORT).show();
-                if (1==Setting.getVoice()) {
+            }
+        } else {//未练习
+            if (totalScore < 0) {
+                HintDialog.Builder builder = new HintDialog.Builder(Mandalas2Activity.this);
+                HintDialog hintDialog = builder.setStatus(0).create();
+                hintDialog.show();
+
+                if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FAILURE);
                 }
 
+            } else if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
+                    && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
+
+                HintDialog.Builder builder = new HintDialog.Builder(Mandalas2Activity.this);
+                HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                hintDialog.show();
+                //上传积分
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                }
+            } else if (totalScore >= 0) {
+                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                --totalScore;
+                if (totalScore < 0) {
+                    totalScore = -1;
+                }
+                int score = totalScore >= 0 ? totalScore : 0;
+                tvScore.setText("错误次数:" + score);
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FILL_ERROR);
+                }
+
             }
+                PreferenceHelper.writeInt("mandalascore", totalScore);//每次错误记录分数
+                PreferenceHelper.writeBool("mandala_finish", true);//记录第一次
 
-
+        }
 //        }else{
 //            if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
 //                    && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
@@ -328,7 +358,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 
     public Mandalas2Activity() {
         super();
-        this.mem = new MemoryManager();
+//        this.mem = new MemoryManager();
         this.mandalaGroup = 0;
         this.mandalaNum = 1;
         this.mandalaTag = "";
@@ -348,7 +378,8 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         this.oldColor = -1;
         this.eyedropper = false;
         this.gradient = Boolean.valueOf(false);
-        this.dim = new Metricas();
+//        this.dim = new Metricas();
+
         this.runningPaletas = false;
         this.runningImagen = false;
         this.fd = new FloodFill();
@@ -465,9 +496,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         this.newColor = color;
     }
 
-    public void getColor(View v) {
-        new ColorPicker(this, this, "", -16777216, -1).show();
-    }
+//    public void getColor(View v) {
+//        new ColorPicker(this, this, "", -16777216, -1).show();
+//    }
 
     private static Point getDisplaySize(Display display) {
         Point v1 = new Point();
@@ -502,16 +533,32 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     }
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "------------------------------>>" + "onCreate");
         this.setContentView(R.layout.activity_mandalas2);
-        this.prefs = new GrabarPreferencias(((Context) this));
-        this.efectos = this.prefs.getEfectos();
+//        this.prefs = new GrabarPreferencias(((Context) this));
+//        this.efectos = this.prefs.getEfectos();
         prenderEfectos();
+        mandala_finish = PreferenceHelper.getBool("mandala_finish");
+        mandalascore = PreferenceHelper.getInt("mandalascore");
         initView();
-        tvScore.setText("错误次数:"+totalScore);
+
+        Log.e("TAG","是否完成:"+mandala_finish+",积分:"+mandalascore);
+
+        if (mandala_finish){
+            totalScore=mandalascore;
+        }else{
+            totalScore=10;
+        }
+
+        if (mandala_finish&&mandalascore<0) {//已练习过,不再记录积分和错误次数
+            tvScore.setVisibility(View.GONE);
+        }else {//未练习过或积分大于等于0
+            tvScore.setVisibility(View.VISIBLE);
+            tvScore.setText("错误次数:" + totalScore);
+
+        }
 
         this.imagen = (ImageView) this.findViewById(R.id.imagen2);
         final View v1 = this.findViewById(R.id.gomaborrar);
@@ -604,9 +651,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         this.scaleGestureListener = null;
         this.apprater = null;
 
-        if ((this.tocaMusica) && this.s != null) {
-            this.s = null;
-        }
+//        if ((this.tocaMusica) && this.s != null) {
+//            this.s = null;
+//        }
         if (this.fx != null) {
             this.fx = null;
         }
@@ -653,9 +700,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         handler.SaveDrawing("temp", imagen, mandalaTag);
 
 
-        if (this.prefs != null) {
-            this.prefs.setEfectos(Boolean.valueOf(this.efectos));
-        }
+//        if (this.prefs != null) {
+//            this.prefs.setEfectos(Boolean.valueOf(this.efectos));
+//        }
 
     }
 
@@ -685,9 +732,9 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         this.fx = new EfectosSonoros(((Context) this));
     }
 
-    private void prenderLluvia() {
-        this.s = new Sonidos(((Context) this));
-    }
+//    private void prenderLluvia() {
+//        this.s = new Sonidos(((Context) this));
+//    }
 
 
     /**

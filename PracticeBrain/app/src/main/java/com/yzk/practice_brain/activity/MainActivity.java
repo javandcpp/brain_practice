@@ -205,7 +205,7 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
             return false;
         }
 
-        return super.onKeyDown(keyCode, event);
+        return true;
     }
 
     private void showTips() {

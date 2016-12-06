@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -89,6 +90,22 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         activityDestroy();
     }
 
+    public void onLeftClick() {
+
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            onLeftClick();
+            return false;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     @Override
     protected void onResume() {
@@ -113,21 +130,31 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     /**
      * activity 创建
      */
-    protected void activityCreate(){};
+    protected void activityCreate() {
+    }
+
+    ;
 
     /**
      * activity 销毁
      */
-    protected void activityDestroy(){};
+    protected void activityDestroy() {
+    }
+
+    ;
 
     /**
      * window 是否获取焦点
      */
 
-    public  void onWindowHasFocus(boolean hasFocus){};
+    public void onWindowHasFocus(boolean hasFocus) {
+    }
+
+    ;
 
     @Subscribe
-    public void onEvent(String object){}
+    public void onEvent(String object) {
+    }
 
     /**
      * 将list顺序打乱

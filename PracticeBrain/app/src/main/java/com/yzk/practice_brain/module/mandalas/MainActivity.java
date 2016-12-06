@@ -1,13 +1,13 @@
-package com.yzk.practice_brain.module.mandalas;
-
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-    }
-}
+//package com.yzk.practice_brain.module.mandalas;
+//
+//import android.os.Bundle;
+//import android.support.v7.app.AppCompatActivity;
+//
+//public class MainActivity extends AppCompatActivity {
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+////        setContentView(R.layout.activity_main);
+//    }
+//}

@@ -46,11 +46,11 @@ public class DownloadRunnable implements Runnable {
     private final int timeoutMs = 2500;//2500毫秒
     private final long mFileLength;
     private final int mVersion;
+    private DownloadProgressListener mDownloadListener;
     private int retryTime = 3;
 
 
     /**
-     *
      * @param method
      * @param media_type
      * @param url
@@ -68,6 +68,22 @@ public class DownloadRunnable implements Runnable {
         this.mCachePath = cachedPath;
         this.mVersion = version;
     }
+
+    /**
+     * @param method
+     * @param media_type
+     * @param url
+     * @param name
+     * @param fileLenght
+     * @param version
+     * @param cachedPath
+     * @param downloadProgressListener
+     */
+    public DownloadRunnable(int method, int media_type, String url, String name, long fileLenght, int version, String cachedPath, DownloadProgressListener downloadProgressListener) {
+        this(method, media_type, url, name, fileLenght, version, cachedPath);
+        this.mDownloadListener = downloadProgressListener;
+    }
+
 
     @Override
     public void run() {
@@ -188,6 +204,9 @@ public class DownloadRunnable implements Runnable {
             file.delete();
             com.yzk.practice_brain.log.LogUtil.e(file.getAbsolutePath() + ": 下载未完成 is delected");
         }
+        if (null != mDownloadListener) {
+            mDownloadListener.downloadError("download error");
+        }
     }
 
 
@@ -284,14 +303,20 @@ public class DownloadRunnable implements Runnable {
             while ((count = in.read(buffer)) != -1) {
                 bufferedOutputStream.write(buffer, 0, count);
                 len += count;
+                if (null != mDownloadListener) {
+                    mDownloadListener.downloading(len, (int) (len * 100 / mFileLength));
+                }
+
             }
             if (len == mFileLength) {
-                PreferenceHelper.writeInt(mFileName, mVersion);
                 if (mMedia_type == 0) {
+                    PreferenceHelper.writeInt(mFileName, mVersion);
                     HermesEventBus.getDefault().post(new BackgroudMusicEvent().new DownloadFinishEvent(mFileName));
                 } else if (mMedia_type == 1) {
                     //图片讲解事件
-
+                    if (null != mDownloadListener) {
+                        mDownloadListener.downloadSuccess(mFileName,mCachePath);
+                    }
                 }
             }
             retryTime = 0;
@@ -326,5 +351,14 @@ public class DownloadRunnable implements Runnable {
         entity.setContentType(connection.getContentType());
         return entity;
     }
+
+    public interface DownloadProgressListener {
+        void downloading(long downloadSize, int percent);
+
+        void downloadError(String message);
+
+        void downloadSuccess(String fileName,String path);
+    }
+
 
 }

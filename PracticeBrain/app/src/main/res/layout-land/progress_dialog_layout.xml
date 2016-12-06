@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="top"
+        android:background="@null"
+        android:drawablePadding="5dp"
+        android:text="返回"
+        android:drawableLeft="@drawable/titlebar_left_arrow"
+        android:textColor="@color/white"
+        />
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_gravity="center"
+        android:layout_height="400dp">
+
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="资源加载中..."
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="400dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/tv"
+            android:layout_marginTop="15dp"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bg" />
+
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

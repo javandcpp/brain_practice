@@ -58,8 +58,8 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     private static final int MP3DOWNLOAD_SUCCESS = 100;
     private static final int IMAGEDOWNLOAD_SUCCESS = 101;
 
-    private final String FILE_NAME="file_name";
-    private final String EXPLAIN="explain";
+    private final String FILE_NAME = "file_name";
+    private final String EXPLAIN = "explain";
     @Bind(R.id.controlPanel)
     Controller controllPanel;
 
@@ -92,7 +92,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                         path = data.getString("path");
                         name = data.getString("name");
                         if (imageLoadFinish) {
-                            closeDialog();
+                            closeDialog(path,name);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -100,7 +100,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                     break;
                 case IMAGEDOWNLOAD_SUCCESS:
                     if (mp3DownFinish) {
-                        closeDialog();
+                        closeDialog(path,name);
                     }
 
                     break;
@@ -131,39 +131,43 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     }
 
 
-    private void closeDialog() {
+    private void closeDialog(final String path,final String fileName) {
 
         if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
 
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
-                            play.setSelected(false);
-                            GlobalApplication.instance.getiMediaInterface().pause();
-                            personCloseMusic=true;
-                        }
-                            try {
-                                mMediaPlayer.setDataSource(new File(path + File.separator + name).getAbsolutePath());
-                                mMediaPlayer.prepare();
-                                mMediaPlayer.start();
-
-                                Toast.makeText(GlobalApplication.instance, "begin start media player:" + name + "," + path, Toast.LENGTH_SHORT).show();
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, 200);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                play(path,fileName);
+            }
+        }, 200);
 
 
+    }
+
+    private void play(String path,String fileName) {
+        try {
+            if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
+                play.setSelected(false);
+                GlobalApplication.instance.getiMediaInterface().pause();
+                personCloseMusic = true;
+            }
+            try {
+                mMediaPlayer.setDataSource(new File(path + File.separator + fileName).getAbsolutePath());
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+
+                Toast.makeText(GlobalApplication.instance, "begin start media player:" + fileName + "," + path, Toast.LENGTH_SHORT).show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -213,15 +217,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
             }
         };
         controllPanel.setClickCallBack(this);
-
-        boolean isDownload = PreferenceHelper.getBool(EXPLAIN);
-        String path =Constants.EXPLAIN_PATH+File.separator+PreferenceHelper.getString(FILE_NAME);
-        if (!isDownload) {//如果没有下载,则加载资源,否则播放下载的内容
-            getDataFromNet();
-            progressDialog.show();
-        }else{
-
-        }
+        getDataFromNet();
     }
 
     @Override
@@ -273,7 +269,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                         ((ImageButton) view).setSelected(true);
                         GlobalApplication.instance.getiMediaInterface().play();
                     }
-                    personCloseMusic=false;
+                    personCloseMusic = false;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -307,9 +303,14 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                     .setUri(uri)
                     .build();
             draweeView.setController(controller);
-            DownloadRunnable downloadRunnable = new DownloadRunnable(0, 1, explain.url, explain.name, explain.fileLength, 0, Constants.EXPLAIN_PATH, this);
-            DownLoadManager.getInstance().getQueue().add(downloadRunnable);
-
+            int version = PreferenceHelper.getInt(explain.name);
+            if (explain.version < version) {
+                DownloadRunnable downloadRunnable = new DownloadRunnable(0, 1, explain.url, explain.name, explain.fileLength, 0, Constants.EXPLAIN_PATH, this);
+                DownLoadManager.getInstance().getQueue().add(downloadRunnable);
+                progressDialog.show();
+            }else{
+                play(Constants.EXPLAIN_PATH,explain.name);
+            }
         }
     }
 
@@ -354,7 +355,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     }
 
     @Override
-    public void downloadSuccess(String fileName, String path) {
+    public void downloadSuccess(String fileName, String path, int version) {
         LogUtil.e("下载成功");
         mp3DownFinish = true;
         if (null != progressDialog && progressDialog.isShowing()) {
@@ -367,8 +368,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                 message.what = MP3DOWNLOAD_SUCCESS;
                 mHandler.sendMessage(message);
 
-                PreferenceHelper.writeBool(EXPLAIN,true);
-                PreferenceHelper.writeString(FILE_NAME,fileName);
+                PreferenceHelper.writeInt(fileName, version);
 
             } catch (Exception e) {
                 e.printStackTrace();

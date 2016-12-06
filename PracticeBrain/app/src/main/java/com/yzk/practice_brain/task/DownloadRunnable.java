@@ -315,7 +315,7 @@ public class DownloadRunnable implements Runnable {
                 } else if (mMedia_type == 1) {
                     //图片讲解事件
                     if (null != mDownloadListener) {
-                        mDownloadListener.downloadSuccess(mFileName,mCachePath);
+                        mDownloadListener.downloadSuccess(mFileName,mCachePath,mVersion);
                     }
                 }
             }
@@ -357,7 +357,7 @@ public class DownloadRunnable implements Runnable {
 
         void downloadError(String message);
 
-        void downloadSuccess(String fileName,String path);
+        void downloadSuccess(String fileName,String path,int version);
     }
 
 

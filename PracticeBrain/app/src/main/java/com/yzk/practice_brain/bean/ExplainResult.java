@@ -21,6 +21,7 @@ public class ExplainResult implements Serializable {
 
     public class Explain {
         public String name;
+        public int version;
         public String url;
         public String imgUrl;
         public int id;

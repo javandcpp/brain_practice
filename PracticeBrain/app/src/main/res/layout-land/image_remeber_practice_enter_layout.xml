@@ -9,9 +9,14 @@
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_margin="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="110dp"
+        android:layout_marginLeft="110dp"
         android:horizontalSpacing="2dp"
         android:verticalSpacing="2dp"
+        android:stretchMode="columnWidth"
+        android:columnWidth="200dp"
         android:numColumns="4"
         android:layout_height="match_parent"/>
 

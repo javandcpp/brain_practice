@@ -91,7 +91,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     }
 
     public void onLeftClick() {
-
+        finish();
     }
 
 

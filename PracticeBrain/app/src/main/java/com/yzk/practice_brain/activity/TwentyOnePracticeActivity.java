@@ -37,10 +37,16 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void uIViewInit() {
+    protected void onResume() {
+        super.onResume();
         gridViewData();
         GridAdapter gridAdapter=new GridAdapter(this,gridData);
         gridView.setAdapter(gridAdapter);
+    }
+
+    @Override
+    protected void uIViewInit() {
+
     }
 
     private void gridViewData() {

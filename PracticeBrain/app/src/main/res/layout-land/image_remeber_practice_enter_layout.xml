@@ -6,16 +6,14 @@
     android:background="@drawable/background"
     android:orientation="vertical">
 
-
-
-
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_margin="70dp"
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp"
         android:numColumns="4"
-        android:layout_height="match_parent"></GridView>
-
+        android:layout_height="match_parent"/>
 
     <Button
         android:id="@+id/rule"
@@ -51,4 +49,6 @@
         android:layout_marginTop="10dp"
         app:retry="false"
         app:orientation="1" />
+
+    <include layout="@layout/loading_layout"/>
 </RelativeLayout>

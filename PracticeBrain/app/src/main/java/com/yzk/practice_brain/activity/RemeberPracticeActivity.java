@@ -13,6 +13,8 @@ import com.yzk.practice_brain.adapter.RemberPracticeRightAdapter;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.RemberPracticeResult;
+import com.yzk.practice_brain.constants.Constants;
+import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.RuleDialog;
@@ -50,6 +52,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     private int index;
     private int score=10;
     private RemberPracticeLeftAdapter leftAdapter;
+    private boolean isTest;
 
     @OnClick({R.id.rule})
     public void click(View view){
@@ -65,6 +68,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTest = getIntent().getBooleanExtra("isTest", false);
         dataList = (ArrayList<RemberPracticeResult.Practice>) getIntent().getSerializableExtra("data");
 
         setContentView(R.layout.remeber_practice_layout);
@@ -89,6 +93,9 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
             if (index == sortDataList.size() - 1) {
                 Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
+                if (isTest){
+                    PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
+                }
                 if (1==Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }

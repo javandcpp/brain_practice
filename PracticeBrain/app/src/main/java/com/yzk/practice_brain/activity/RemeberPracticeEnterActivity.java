@@ -38,36 +38,40 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
     @Bind(R.id.controlPanel)
     Controller controllPanel;
 
-    private static final int REQEUST_REMEMBER_TASK =0x1 ;
-    @Bind(R.id.gridView)
-    GridView gridView;
+    private static final int REQEUST_REMEMBER_TASK = 0x1;
 
     @Bind(R.id.loading)
     CircularProgressView loading;
 
     @Bind(R.id.voiceable)
     ImageButton voiceable;
-    private ArrayList<RemberPracticeResult.Practice> tempList=new ArrayList<>();
+
+    @Bind(R.id.gridView)
+    GridView gridView;
+    private ArrayList<RemberPracticeResult.Practice> tempList = new ArrayList<>();
+    private boolean isTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTest = getIntent().getBooleanExtra("isTest", false);
         setContentView(R.layout.remeber_practice_enter_layout);
     }
 
-    @OnClick({R.id.begin,R.id.rule})
-    public void click(View view){
+    @OnClick({R.id.begin, R.id.rule})
+    public void click(View view) {
         Intent intent;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.begin:
-                if (tempList.size()>0) {
+                if (tempList.size() > 0) {
                     intent = new Intent(this, RemeberPracticeActivity.class);
+                    intent.putExtra("isTest",isTest);
                     intent.putExtra("data", tempList);
                     startActivity(intent);
                 }
                 break;
             case R.id.rule:
-                RuleDialog.Builder builder=new RuleDialog.Builder(this,"2");
+                RuleDialog.Builder builder = new RuleDialog.Builder(this, "2");
                 builder.create().show();
                 break;
         }
@@ -78,16 +82,20 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
     @Override
     protected void uIViewInit() {
         controllPanel.setClickCallBack(this);
-
         getDataFromNet();
 
     }
 
     private void getDataFromNet() {
-        if (NetworkUtils.isConnected(this)){
+        if (NetworkUtils.isConnected(this)) {
             loading.setVisibility(View.VISIBLE);
-            HttpRequestUtil.HttpRequestByGet(Config.REMEBER_PRACTICE_URL,this,REQEUST_REMEMBER_TASK);
-        }else{
+            if (isTest) {
+                HttpRequestUtil.HttpRequestByGet(Config.TEST_REMEBER_PRACTICE_URL, this, REQEUST_REMEMBER_TASK);
+            } else {
+                HttpRequestUtil.HttpRequestByGet(Config.REMEBER_PRACTICE_URL, this, REQEUST_REMEMBER_TASK);
+
+            }
+        } else {
             Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
         }
     }
@@ -99,14 +107,14 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
 
     @Override
     public void onDataDelivered(int taskId, String data) {
-        switch (taskId){
+        switch (taskId) {
             case REQEUST_REMEMBER_TASK:
                 loading.setVisibility(View.GONE);
                 RemberPracticeResult remberPracticeResult = ParseJson.parseJson(data, RemberPracticeResult.class);
-                if (null!=remberPracticeResult&&null!=remberPracticeResult.data&&null!=remberPracticeResult.data.memoryTrainWordsView){
+                if (null != remberPracticeResult && null != remberPracticeResult.data && null != remberPracticeResult.data.memoryTrainWordsView) {
                     tempList.clear();
                     tempList.addAll(remberPracticeResult.data.memoryTrainWordsView);
-                    RemberPracticeEnterAdapter adapter=new RemberPracticeEnterAdapter(remberPracticeResult.data.memoryTrainWordsView);
+                    RemberPracticeEnterAdapter adapter = new RemberPracticeEnterAdapter(remberPracticeResult.data.memoryTrainWordsView);
                     gridView.setAdapter(adapter);
                 }
                 break;
@@ -120,10 +128,10 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(BackgroudMusicEvent.VoiceEvent voiceEvent){
-        if (1==voiceEvent.voiceValue){
+    public void onEvent(BackgroudMusicEvent.VoiceEvent voiceEvent) {
+        if (1 == voiceEvent.voiceValue) {
             voiceable.setSelected(false);
-        }else{
+        } else {
             voiceable.setSelected(true);
         }
 
@@ -131,7 +139,7 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
 
     @Override
     public void controll(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.retry:
                 break;
             case R.id.back:

@@ -31,6 +31,7 @@ import com.yzk.practice_brain.constants.Constants;
 import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.manager.DownLoadManager;
 import com.yzk.practice_brain.network.HttpRequestUtil;
+import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.task.DownloadRunnable;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.ProgressDialog;
@@ -56,6 +57,9 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     private static final int REQUEST_DATA = 0x1;
     private static final int MP3DOWNLOAD_SUCCESS = 100;
     private static final int IMAGEDOWNLOAD_SUCCESS = 101;
+
+    private final String FILE_NAME="file_name";
+    private final String EXPLAIN="explain";
     @Bind(R.id.controlPanel)
     Controller controllPanel;
 
@@ -140,6 +144,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                         if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
                             play.setSelected(false);
                             GlobalApplication.instance.getiMediaInterface().pause();
+                            personCloseMusic=true;
                         }
                             try {
                                 mMediaPlayer.setDataSource(new File(path + File.separator + name).getAbsolutePath());
@@ -208,7 +213,14 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
             }
         };
         controllPanel.setClickCallBack(this);
-        getDataFromNet();
+
+        boolean isDownload = PreferenceHelper.getBool(EXPLAIN);
+        String path =Constants.EXPLAIN_PATH+File.separator+PreferenceHelper.getString(FILE_NAME);
+        if (!isDownload) {//如果没有下载,则加载资源,否则播放下载的内容
+            getDataFromNet();
+        }else{
+
+        }
     }
 
     @Override
@@ -256,12 +268,11 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                     if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
                         ((ImageButton) view).setSelected(false);
                         GlobalApplication.instance.getiMediaInterface().pause();
-                        personCloseMusic = true;
                     } else {
                         ((ImageButton) view).setSelected(true);
                         GlobalApplication.instance.getiMediaInterface().play();
-                        personCloseMusic = false;
                     }
+                    personCloseMusic=false;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -354,6 +365,9 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                 message.obj = object;
                 message.what = MP3DOWNLOAD_SUCCESS;
                 mHandler.sendMessage(message);
+
+                PreferenceHelper.writeBool(EXPLAIN,true);
+                PreferenceHelper.writeString(FILE_NAME,fileName);
 
             } catch (Exception e) {
                 e.printStackTrace();

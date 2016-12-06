@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.yzk.practice_brain.R;
-import com.yzk.practice_brain.activity.RemeberPracticeActivity;
+import com.yzk.practice_brain.activity.RemeberPracticeEnterActivity;
 import com.yzk.practice_brain.activity.TwentyOneEnterActivity;
 import com.yzk.practice_brain.bean.PracticeEntity;
 
@@ -75,7 +75,8 @@ public class GridAdapter extends BaseAdapter {
                 PracticeEntity practiceEntity1 = mDataList.get(i);
                 Intent intent=null;
                 if (0==practiceEntity1.index){
-                    intent=new Intent(mContext, RemeberPracticeActivity.class);
+                    intent=new Intent(mContext, RemeberPracticeEnterActivity.class);
+                    intent.putExtra("isTest",true);
                     mContext.startActivity(intent);
                 }else{
                     intent=new Intent(mContext, TwentyOneEnterActivity.class);

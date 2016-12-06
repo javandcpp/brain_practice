@@ -218,6 +218,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
         String path =Constants.EXPLAIN_PATH+File.separator+PreferenceHelper.getString(FILE_NAME);
         if (!isDownload) {//如果没有下载,则加载资源,否则播放下载的内容
             getDataFromNet();
+            progressDialog.show();
         }else{
 
         }
@@ -226,7 +227,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     @Override
     protected void onStart() {
         super.onStart();
-        progressDialog.show();
+
     }
 
     @Override

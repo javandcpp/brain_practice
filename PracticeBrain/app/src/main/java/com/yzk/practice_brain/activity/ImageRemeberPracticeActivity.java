@@ -40,24 +40,23 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     GridView leftGrid;
 
 
-
     private ArrayList<ImageResult.Image> dataList;
 
 
-    private ArrayList<ImageResult.Image> prsientDataList=new ArrayList<>();
-    private ArrayList<ImageResult.Image> sortDataList=new ArrayList<>();
-    private ArrayList<ImageResult.Image> randomList=new ArrayList<>();
-    private ArrayList<ImageResult.Image> leftList=new ArrayList<>();
+    private ArrayList<ImageResult.Image> prsientDataList = new ArrayList<>();
+    private ArrayList<ImageResult.Image> sortDataList = new ArrayList<>();
+    private ArrayList<ImageResult.Image> randomList = new ArrayList<>();
+    private ArrayList<ImageResult.Image> leftList = new ArrayList<>();
     private int index;
     private ImagePracticeRightAdapter rightAdapter;
     private ImagePracticeLeftAdapter leftAdapter;
-    private int score=10;
+    private int score = 10;
 
     @OnClick(R.id.rule)
-    public void click(View view){
-        switch (view.getId()){
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.rule:
-                RuleDialog.Builder builder=new RuleDialog.Builder(this,"4");
+                RuleDialog.Builder builder = new RuleDialog.Builder(this, "4");
                 builder.create().show();
                 break;
         }
@@ -75,30 +74,30 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     protected void uIViewInit() {
         prsientDataList.addAll(dataList);
         sortDataList.addAll(prsientDataList);
-        randomList=randomList(prsientDataList);
+        randomList = randomList(prsientDataList);
 
         rightGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LogUtil.e("position:"+position);
+                LogUtil.e("position:" + position);
                 assetValue(position);
             }
         });
         controlPanel.setClickCallBack(this);
     }
 
-    private void assetValue(int position){
+    private void assetValue(int position) {
         if (index > sortDataList.size() - 1) {
 //            index = sortDataList.size() - 1;
             return;
         }
         ImageResult.Image o = randomList.get(position);
-        ImageResult.Image target= sortDataList.get(index);
+        ImageResult.Image target = sortDataList.get(index);
 
         if (o.key.equals(target.key)) {
 
-            if (null==leftAdapter){
-                leftAdapter=new ImagePracticeLeftAdapter();
+            if (null == leftAdapter) {
+                leftAdapter = new ImagePracticeLeftAdapter();
                 leftGrid.setAdapter(leftAdapter);
             }
             leftList.add(target);
@@ -107,10 +106,10 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
             if (index == sortDataList.size() - 1) {
                 Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
 
-                if (1== Setting.getVoice()) {
+                if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }
-            }else {
+            } else {
                 Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.CORRECT);
@@ -120,10 +119,10 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         } else {
             Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
             --score;
-            if (1==Setting.getVoice()) {
+            if (1 == Setting.getVoice()) {
                 SoundEffect.getInstance().play(SoundEffect.FAIL);
             }
-            if (score<0){
+            if (score < 0) {
                 //index=0;
             }
         }
@@ -132,7 +131,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
     @Override
     protected void uIViewDataApply() {
-        if (null==rightAdapter){
+        if (null == rightAdapter) {
             rightAdapter = new ImagePracticeRightAdapter();
             rightGrid.setAdapter(rightAdapter);
         }
@@ -141,7 +140,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
     @Override
     public void controll(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.retry:
                 retry();
                 break;
@@ -167,15 +166,17 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     }
 
     private void retry() {
-            index=0;
-            randomList.clear();
-            prsientDataList.clear();
-            prsientDataList.addAll(dataList);
-            randomList.addAll(prsientDataList);
-            randomList=randomList(prsientDataList);
-            rightAdapter.setData(randomList);
+        index = 0;
+        randomList.clear();
+        prsientDataList.clear();
+        prsientDataList.addAll(dataList);
+        randomList.addAll(prsientDataList);
+        randomList = randomList(prsientDataList);
+        rightAdapter.setData(randomList);
 
+        if (null != leftAdapter) {
             leftList.clear();
             leftAdapter.setData(leftList);
+        }
     }
 }

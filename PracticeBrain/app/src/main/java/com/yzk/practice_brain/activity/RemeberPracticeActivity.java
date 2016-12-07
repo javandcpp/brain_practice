@@ -43,22 +43,22 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     private ArrayList<RemberPracticeResult.Practice> dataList;
 
-    private ArrayList<RemberPracticeResult.Practice> prsientDataList=new ArrayList<>();
-    private List<RemberPracticeResult.Practice> sortDataList=new ArrayList<>();
-    private List<RemberPracticeResult.Practice> randomList=new ArrayList<>();
-    private List<RemberPracticeResult.Practice> leftList=new ArrayList<>();
+    private ArrayList<RemberPracticeResult.Practice> prsientDataList = new ArrayList<>();
+    private List<RemberPracticeResult.Practice> sortDataList = new ArrayList<>();
+    private List<RemberPracticeResult.Practice> randomList = new ArrayList<>();
+    private List<RemberPracticeResult.Practice> leftList = new ArrayList<>();
 
     private RemberPracticeRightAdapter rightAdapter;
     private int index;
-    private int score=10;
+    private int score = 10;
     private RemberPracticeLeftAdapter leftAdapter;
     private boolean isTest;
 
     @OnClick({R.id.rule})
-    public void click(View view){
-        switch (view.getId()){
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.rule:
-                RuleDialog.Builder builder=new RuleDialog.Builder(this,"2");
+                RuleDialog.Builder builder = new RuleDialog.Builder(this, "2");
                 builder.create().show();
                 break;
         }
@@ -80,12 +80,12 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
             return;
         }
         RemberPracticeResult.Practice o = randomList.get(i);
-        RemberPracticeResult.Practice target= sortDataList.get(index);
+        RemberPracticeResult.Practice target = sortDataList.get(index);
 
         if (o.value.equals(target.value)) {
 
-            if (null==leftAdapter){
-                leftAdapter=new RemberPracticeLeftAdapter();
+            if (null == leftAdapter) {
+                leftAdapter = new RemberPracticeLeftAdapter();
                 leftGrid.setAdapter(leftAdapter);
             }
             leftList.add(target);
@@ -93,14 +93,14 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
             if (index == sortDataList.size() - 1) {
                 Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-                if (isTest){
+                if (isTest) {
                     PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
                 }
-                if (1==Setting.getVoice()) {
+                if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }
 
-            }else {
+            } else {
 
                 Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
                 if (1 == Setting.getVoice()) {
@@ -111,28 +111,29 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
         } else {
             Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
             --score;
-            if (1==Setting.getVoice()) {
+            if (1 == Setting.getVoice()) {
                 SoundEffect.getInstance().play(SoundEffect.FAIL);
             }
-            if (score<0){
+            if (score < 0) {
                 //index=0;
             }
         }
 
 
     }
+
     @Override
     protected void uIViewInit() {
         prsientDataList.addAll(dataList);
         sortDataList.addAll(prsientDataList);
-        randomList=randomList(prsientDataList);
+        randomList = randomList(prsientDataList);
         controllPanel.setClickCallBack(this);
 
 
         rightGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                assertResult(view,i);
+                assertResult(view, i);
             }
         });
 
@@ -142,7 +143,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     @Override
     protected void uIViewDataApply() {
 
-        if (null==rightAdapter){
+        if (null == rightAdapter) {
             rightAdapter = new RemberPracticeRightAdapter();
             rightGrid.setAdapter(rightAdapter);
         }
@@ -151,7 +152,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     @Override
     public void controll(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.retry:
                 retry();
 
@@ -179,15 +180,18 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     }
 
     private void retry() {
-        index=0;
+        index = 0;
         randomList.clear();
         prsientDataList.clear();
         prsientDataList.addAll(dataList);
         randomList.addAll(prsientDataList);
-        randomList=randomList(prsientDataList);
+        randomList = randomList(prsientDataList);
         rightAdapter.setData(randomList);
 
-        leftList.clear();
-        leftAdapter.setData(leftList);
+
+        if (null != leftAdapter) {
+            leftList.clear();
+            leftAdapter.setData(leftList);
+        }
     }
 }

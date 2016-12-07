@@ -1,6 +1,7 @@
 package com.yzk.practice_brain.constants;
 
-import android.os.Environment;
+import com.yzk.practice_brain.application.GlobalApplication;
+import com.yzk.practice_brain.utils.FileUtils;
 
 import java.io.File;
 
@@ -17,8 +18,8 @@ public interface Constants {
 
     //背景音乐存储路径
 //    public static final String MUSIC_PATH= FileUtils.getDiskCacheDir(GlobalApplication.instance)+ File.separator+"music_file";
-    public static final String MUSIC_PATH= Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator+"music_file";
-    public static final String EXPLAIN_PATH= Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator+"voice_file";
+    public static final String MUSIC_PATH= FileUtils.getDiskCacheDir(GlobalApplication.instance)+ File.separator+"music_file";
+    public static final String EXPLAIN_PATH= FileUtils.getDiskCacheDir(GlobalApplication.instance)+ File.separator+"voice_file";
 
 
 

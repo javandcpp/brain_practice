@@ -67,43 +67,32 @@
             android:screenOrientation="landscape"/>
 
 
-        <activity
-            android:name=".module.mandalas.Indice"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".module.mandalas.SubIndice"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".module.mandalas.SubIndiceGallery"
-            android:screenOrientation="landscape" />
+
         <activity
             android:name=".module.mandalas.Mandalas2Activity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".module.mandalas.Ayuda"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".module.mandalas.Aboutcolors"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".module.mandalas.Aboutshapes"
-            android:screenOrientation="landscape" />
+
         <!--<activity android:name=".module.mandalas.TestActivity"></activity>-->
         <service android:name=".service.BgMediaPlayerServce"
             android:exported="true"
             android:process=":remote">
-            <intent-filter android:priority="1000">
+            <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
         <service android:name=".service.DownloadMusicService"
             android:exported="true"
             android:process=":download">
-            <intent-filter android:priority="1000">
+            <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
 
+        <service android:name=".service.DaemonService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
         <receiver android:name=".receiver.ActiveServiceReceiver">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>

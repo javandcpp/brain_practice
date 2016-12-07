@@ -1,7 +1,10 @@
 package com.yzk.practice_brain.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.module.mandalas.Mandalas2Activity;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.RuleDialog;
+import com.yzk.practice_brain.utils.ImageUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,20 +45,20 @@ public class MandalaEnterActivity extends BaseFragmentActivity implements Contro
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mandalas_enter);
 
-//        imageView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                switch (motionEvent.getAction()){
-//                    case MotionEvent.ACTION_DOWN:
-//                        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-//                        ImageUtils.getImageColorValue(bitmap,(int) motionEvent.getX(),(int) motionEvent.getY());
-//                        break;
-//                }
+        imageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+                        ImageUtils.getImageColorValue(bitmap,(int) motionEvent.getX(),(int) motionEvent.getY());
+                        break;
+                }
 
 
-//                return true;
-//            }
-//        });
+                return true;
+            }
+        });
     }
 
     @OnClick({R.id.btnStart, R.id.rule})

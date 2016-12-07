@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.inter.ResponseStringDataListener;
@@ -19,6 +20,7 @@ import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.MusicListResult;
+import com.yzk.practice_brain.bean.ScoreEntity;
 import com.yzk.practice_brain.busevent.BackgroudMusicEvent;
 import com.yzk.practice_brain.config.Config;
 import com.yzk.practice_brain.constants.Constants;
@@ -27,6 +29,7 @@ import com.yzk.practice_brain.network.HttpRequestUtil;
 import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.utils.NetworkUtils;
 import com.yzk.practice_brain.utils.ParseJson;
+import com.yzk.practice_brain.utils.PhoneUtils;
 import com.yzk.practice_brain.utils.SizeUtils;
 import com.yzk.practice_brain.utils.SoundEffect;
 
@@ -40,11 +43,15 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
 
 
     private static final int REQUEST_MUSIC_LIST = 0x1;
+    private static final int REQUEST_SCORE = 0x2;
     @Bind(R.id.right_image)
     ImageButton rightImage;
 
     @Bind(R.id.right_layout)
     RelativeLayout relativeLayout;
+
+    @Bind(R.id.titleBar_Left_tv)
+    TextView titleLeftTv;
 
     private boolean rightSelected;
     private static Handler mHanlder = new Handler();
@@ -119,6 +126,7 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
         relativeLayout.setLayoutParams(layoutParams);
         rightImage.setSelected(rightSelected);
 
+        titleLeftTv.setText(getResources().getString(R.string.home_title_left_text, 0));
     }
 //    R.id.play,R.id.pause,R.id.stop,R.id.closeVolume,R.id.openVolume
 
@@ -151,50 +159,25 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
                     e.printStackTrace();
                 }
                 break;
-//            case R.id.play:
-//                try {
-//                    GlobalApplication.instance.getiMediaInterface().play();
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//
-//            case R.id.stop:
-//                try {
-//                    GlobalApplication.instance.getiMediaInterface().stop();
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//
-//            case R.id.pause:
-//                try {
-//                    GlobalApplication.instance.getiMediaInterface().pause();
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//            case R.id.closeVolume:
-//                try {
-//                    GlobalApplication.instance.getiMediaInterface().closeVolume();
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//
-//            case R.id.openVolume:
-//                try {
-//                    GlobalApplication.instance.getiMediaInterface().openVolume();
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getScore();
+
     }
 
     @Override
     protected void uIViewDataApply() {
 
+    }
+
+    private void getScore() {
+        if (NetworkUtils.isConnected(this)) {
+            HttpRequestUtil.HttpRequestByGet(Config.GET_SCORE + PhoneUtils.getPhoneIMEI(this), this, REQUEST_SCORE);
+        }
     }
 
     @Override
@@ -204,6 +187,12 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
             showTips();
             return false;
         }
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            return super.onKeyDown(keyCode, event);
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            return super.onKeyDown(keyCode, event);
+        }
+
 
         return true;
     }
@@ -241,38 +230,51 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
     public void onDataDelivered(int taskId, String data) {
         switch (taskId) {
             case REQUEST_MUSIC_LIST:
-                final MusicListResult musicListResult = ParseJson.parseJson(data, MusicListResult.class);
+                try {
+                    final MusicListResult musicListResult = ParseJson.parseJson(data, MusicListResult.class);
 
-                if (null != musicListResult && null != musicListResult.music && musicListResult.music.size() > 0) {
+                    if (null != musicListResult && null != musicListResult.music && musicListResult.music.size() > 0) {
 
-                    if (NetworkUtils.isConnected(this)) {
-                        mHanlder.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                LogUtil.e(musicListResult.toString());
-                                for (final MusicListResult.MusicEntity entity :
-                                        musicListResult.music) {
-                                    int anInt = PreferenceHelper.getInt(entity.name);
-                                    LogUtil.e("oldmusic name:"+entity.name+",oldVersion:"+anInt+",newVersion:"+entity.version);
-                                    if (0==anInt||anInt<entity.version) {//比较背景音乐版本
-                                        mHanlder.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                               LogUtil.e("download name:"+entity.name+",version:"+entity.version);
-                                                try {
-                                                    if (null!=GlobalApplication.instance.getIDownloadInterface()) {
-                                                        GlobalApplication.instance.getIDownloadInterface().downLoadMusic(0, 0, entity.url, entity.name, entity.fileLength, entity.version, Constants.MUSIC_PATH);
+                        if (NetworkUtils.isConnected(this)) {
+                            mHanlder.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LogUtil.e(musicListResult.toString());
+                                    for (final MusicListResult.MusicEntity entity :
+                                            musicListResult.music) {
+                                        int anInt = PreferenceHelper.getInt(entity.name);
+                                        LogUtil.e("oldmusic name:" + entity.name + ",oldVersion:" + anInt + ",newVersion:" + entity.version);
+                                        if (0 == anInt || anInt < entity.version) {//比较背景音乐版本
+                                            mHanlder.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    LogUtil.e("download name:" + entity.name + ",version:" + entity.version);
+                                                    try {
+                                                        if (null != GlobalApplication.instance.getIDownloadInterface()) {
+                                                            GlobalApplication.instance.getIDownloadInterface().downLoadMusic(0, 0, entity.url, entity.name, entity.fileLength, entity.version, Constants.MUSIC_PATH);
+                                                        }
+                                                    } catch (RemoteException e) {
+                                                        e.printStackTrace();
                                                     }
-                                                } catch (RemoteException e) {
-                                                    e.printStackTrace();
                                                 }
-                                            }
-                                        }, 100);
+                                            }, 100);
+                                        }
                                     }
                                 }
-                            }
-                        }, 100);
+                            }, 100);
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case REQUEST_SCORE:
+                try {
+                    ScoreEntity scoreEntity = ParseJson.parseJson(data, ScoreEntity.class);
+                    titleLeftTv.setText(getResources().getString(R.string.home_title_left_text, scoreEntity.AllScore));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 break;

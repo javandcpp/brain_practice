@@ -47,7 +47,7 @@ public class ImagePracticeLeftAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (null == view) {
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(GlobalApplication.instance).inflate(R.layout.image_practice_enter_item_layout, null);
+            view = LayoutInflater.from(GlobalApplication.instance).inflate(R.layout.image_practice_left_item_layout, null);
             viewHolder.simpleDraweeView = (SimpleDraweeView) view.findViewById(R.id.draweeView);
             view.setTag(viewHolder);
         } else {

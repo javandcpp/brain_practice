@@ -32,18 +32,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.android.volley.inter.ResponseStringDataListener;
 import com.caverock.androidsvg.PreserveAspectRatio;
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 import com.yzk.practice_brain.R;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
+import com.yzk.practice_brain.config.Config;
+import com.yzk.practice_brain.log.LogUtil;
+import com.yzk.practice_brain.network.HttpRequestUtil;
 import com.yzk.practice_brain.preference.PreferenceHelper;
 import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.HintDialog;
 import com.yzk.practice_brain.ui.RuleDialog;
 import com.yzk.practice_brain.utils.ImageUtils;
+import com.yzk.practice_brain.utils.NetworkUtils;
+import com.yzk.practice_brain.utils.PhoneUtils;
 import com.yzk.practice_brain.utils.SoundEffect;
 
 import java.io.File;
@@ -53,7 +59,8 @@ import butterknife.OnClick;
 
 import static android.graphics.Color.parseColor;
 
-public class Mandalas2Activity extends BaseFragmentActivity implements Animation.AnimationListener, Controller.ControllerCallBack {
+public class Mandalas2Activity extends BaseFragmentActivity implements Animation.AnimationListener, Controller.ControllerCallBack, ResponseStringDataListener {
+    private static final int REQUEST_COMMIT_TASK =0x1 ;
     private final float MAXSCALE;
     private int MAX_SAVING_FILES;
     private final float MINSCALE;
@@ -202,6 +209,16 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         }
     }
 
+    @Override
+    public void onDataDelivered(int taskId, String data) {
+        LogUtil.e(data);
+    }
+
+    @Override
+    public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
+
+    }
+
 
     private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
         int distanciaX;
@@ -275,15 +292,17 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
      * AREA09 = "fffff100";//x=238,y=238
      */
     private void compareColor() {
-        String area01_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 108, 108);
-        String area02_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 236, 94);
-        String area03_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 350, 112);
-        String area04_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 367, 225);
-        String area05_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 360, 353);
-        String area06_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 234, 388);
-        String area07_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 101, 349);
-        String area08_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 75, 225);
-        String area09_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 238, 238);
+        String area01_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 105, 116);
+        String area02_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 220, 92);
+        String area03_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 354, 125);
+
+        String area04_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 370, 252);
+        String area05_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 352, 379);
+        String area06_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 224, 402);
+
+        String area07_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 104, 373);
+        String area08_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 70, 252);
+        String area09_value = ImageUtils.getImageColorValue(Mandalas2Activity.this.b, 220, 260);
 
 
         if (mandala_finish&&mandalascore<0) {//已练习
@@ -320,6 +339,12 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
                 hintDialog.show();
                 //上传积分
+                if (NetworkUtils.isConnected(this)){
+//                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
+                    String params="&score="+totalScore+"&whichDay=1"+"&type=2"+"&device="+ PhoneUtils.getPhoneIMEI(this);
+                    HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE+params,this,REQUEST_COMMIT_TASK);
+                }
+
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }

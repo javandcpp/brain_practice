@@ -31,6 +31,12 @@ public class Config {
     public static final String EXPLAIN=BaseUrl+"/kujisoftware/learnExplain/findAllLearnExplain";
 
     //图片记忆
-    public static final String IMAGE_REMEBER=BaseUrl+"/kujisoftware/pictureMemory/findPictureByExerciseAndWhichDayAndType?exerciseId=1000&Type=3&whichDay=1";
+    public static final String IMAGE_REMEBER=BaseUrl+"/kujisoftware/pictureMemory/findPictureByExerciseAndWhichDayAndType?exerciseId=1000&Type=4&whichDay=1";
+
+    //获取积分
+    public static final String GET_SCORE=BaseUrl+"/kujisoftware/score/findScoreByDevice?device=";
+
+    //提交积分
+    public static final String COMMIT_SCORE=BaseUrl+"/kujisoftware/score/saveScore?exerciseId=1000";
 
 }

@@ -92,7 +92,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                         path = data.getString("path");
                         name = data.getString("name");
                         if (imageLoadFinish) {
-                            closeDialog(path,name);
+                            closeDialog(path, name);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -100,7 +100,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                     break;
                 case IMAGEDOWNLOAD_SUCCESS:
                     if (mp3DownFinish) {
-                        closeDialog(path,name);
+                        closeDialog(path, name);
                     }
 
                     break;
@@ -131,7 +131,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     }
 
 
-    private void closeDialog(final String path,final String fileName) {
+    private void closeDialog(final String path, final String fileName) {
 
         if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
@@ -140,14 +140,14 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                play(path,fileName);
+                play(path, fileName);
             }
         }, 200);
 
 
     }
 
-    private void play(String path,String fileName) {
+    private void play(String path, String fileName) {
         try {
             if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
                 play.setSelected(false);
@@ -301,15 +301,15 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                     .build();
             draweeView.setController(controller);
             int version = PreferenceHelper.getInt(explain.name);
-            if (explain.version < version) {
+            File file = new File(Constants.EXPLAIN_PATH + File.separator + explain.name);
+            if (explain.version < version||!file.exists()) {
                 DownloadRunnable downloadRunnable = new DownloadRunnable(0, 1, explain.url, explain.name, explain.fileLength, 0, Constants.EXPLAIN_PATH, this);
                 DownLoadManager.getInstance().getQueue().add(downloadRunnable);
                 progressDialog.show();
-            }else{
-                File file=new File(Constants.EXPLAIN_PATH+File.separator+explain.name);
+            } else {
                 if (file.exists()) {
                     play(Constants.EXPLAIN_PATH, explain.name);
-                }else{
+                } else {
                     Toast.makeText(this, "资源文件不存在", Toast.LENGTH_SHORT).show();
                 }
             }

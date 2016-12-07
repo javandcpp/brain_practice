@@ -9,6 +9,7 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -89,6 +90,16 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Notification.Builder builder = new Notification.Builder(this);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            startForeground(250, builder.build());
+            startService(new Intent(this, DaemonService.class));
+        } else {
+            startForeground(250, new Notification());
+        }
+
         HermesEventBus.getDefault().register(this);
         mHandler = new Handler();
         LogUtil.d(BgMediaPlayerServce.class.getSimpleName() + " onCreate");

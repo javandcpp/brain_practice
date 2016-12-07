@@ -48,7 +48,7 @@ public class ProgressDialog extends Dialog {
 
 
         public ProgressDialog create() {
-            final ProgressDialog ruleDialog = new ProgressDialog(mContext, R.style.Dialog);
+            final ProgressDialog ruleDialog = new ProgressDialog(mContext, R.style.FullScreenDialog);
             ruleDialog.setCancelable(false);
             ruleDialog.setCanceledOnTouchOutside(false);
             View contentView = LayoutInflater.from(mContext).inflate(R.layout.progress_dialog_layout, null);

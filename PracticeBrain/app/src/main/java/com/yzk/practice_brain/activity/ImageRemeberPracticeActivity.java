@@ -13,6 +13,7 @@ import com.yzk.practice_brain.adapter.ImagePracticeRightAdapter;
 import com.yzk.practice_brain.application.GlobalApplication;
 import com.yzk.practice_brain.base.BaseFragmentActivity;
 import com.yzk.practice_brain.bean.ImageResult;
+import com.yzk.practice_brain.log.LogUtil;
 import com.yzk.practice_brain.setting.Setting;
 import com.yzk.practice_brain.ui.Controller;
 import com.yzk.practice_brain.ui.RuleDialog;
@@ -79,6 +80,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         rightGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LogUtil.e("position:"+position);
                 assetValue(position);
             }
         });

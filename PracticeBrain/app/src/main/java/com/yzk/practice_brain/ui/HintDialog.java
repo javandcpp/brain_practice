@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yzk.practice_brain.R;
@@ -62,6 +63,7 @@ public class HintDialog extends Dialog {
             ruleDialog.setContentView(contentView);
             tvScore = (TextView) contentView.findViewById(R.id.tvScore);
             Button button = (Button) contentView.findViewById(R.id.btClose);
+            RelativeLayout root = (RelativeLayout) contentView.findViewById(R.id.root);
             if (1==mVisible){
                 tvScore.setVisibility(View.VISIBLE);
             }else{
@@ -72,10 +74,12 @@ public class HintDialog extends Dialog {
                 tvScore.setVisibility(View.VISIBLE);
                 tvScore.setText("获得"+String.valueOf(mScore)+"分");
                 button.setBackgroundResource(R.drawable.home_white);
+                root.setBackgroundResource(R.drawable.home_victory);
             }else{
                 tvScore.setVisibility(View.GONE);
                 tvScore.setText("");
                 button.setBackgroundResource(R.drawable.home_grey);
+                root.setBackgroundResource(R.drawable.home_go_burst);
             }
 
             button.setOnClickListener(new View.OnClickListener() {

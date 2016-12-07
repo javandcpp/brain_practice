@@ -158,9 +158,6 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                 mMediaPlayer.setDataSource(new File(path + File.separator + fileName).getAbsolutePath());
                 mMediaPlayer.prepare();
                 mMediaPlayer.start();
-
-                Toast.makeText(GlobalApplication.instance, "begin start media player:" + fileName + "," + path, Toast.LENGTH_SHORT).show();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -309,7 +306,12 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                 DownLoadManager.getInstance().getQueue().add(downloadRunnable);
                 progressDialog.show();
             }else{
-                play(Constants.EXPLAIN_PATH,explain.name);
+                File file=new File(Constants.EXPLAIN_PATH+File.separator+explain.name);
+                if (file.exists()) {
+                    play(Constants.EXPLAIN_PATH, explain.name);
+                }else{
+                    Toast.makeText(this, "资源文件不存在", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

@@ -64,6 +64,7 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity impl
         switch (view.getId()) {
             case R.id.begin:
                 Intent intent = new Intent(this, ImageRemeberPracticeActivity.class);
+                intent.putExtra("data",list);
                 startActivity(intent);
                 break;
             case R.id.rule:

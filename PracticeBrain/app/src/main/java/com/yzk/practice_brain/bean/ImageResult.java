@@ -11,10 +11,10 @@ public class ImageResult implements Serializable {
 
     public ImageEntity data;
 
-    public class ImageEntity{
+    public class ImageEntity implements Serializable{
       public List<Image> list;
     }
-    public class Image{
+    public class Image implements Serializable{
         public String key;
         public String url;
     }

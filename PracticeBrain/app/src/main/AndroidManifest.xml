@@ -67,6 +67,8 @@
 
         <activity android:name="com.yzk.brain.activity.RemeberPracticeEnterActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".activity.NewsDetailActivity"
+            android:screenOrientation="landscape"/>
 
 
 

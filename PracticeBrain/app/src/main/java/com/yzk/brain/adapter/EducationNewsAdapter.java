@@ -1,5 +1,6 @@
 package com.yzk.brain.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.yzk.brain.R;
+import com.yzk.brain.activity.NewsDetailActivity;
 import com.yzk.brain.application.GlobalApplication;
 import com.yzk.brain.bean.EducationResult;
 import com.yzk.brain.utils.TimeUtils;
@@ -44,7 +46,7 @@ public class EducationNewsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
         if (null==view){
             viewHolder = new ViewHolder();
@@ -60,6 +62,17 @@ public class EducationNewsAdapter extends BaseAdapter {
         final EducationResult.EducationNews educationNews = mDataList.get(i);
         viewHolder.tvTitle.setText(educationNews.eduCounseTitle);
         viewHolder.tvTime.setText(TimeUtils.milliseconds2String(educationNews.createTime));
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               EducationResult.EducationNews educationNews = mDataList.get(i);
+
+                Intent intent=new Intent(GlobalApplication.instance, NewsDetailActivity.class);
+                intent.putExtra("news",educationNews);
+                GlobalApplication.instance.startActivity(intent);
+
+            }
+        });
 
         return view;
 

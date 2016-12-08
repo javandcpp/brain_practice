@@ -104,7 +104,7 @@ public class EducationNewsActivity extends BaseFragmentActivity implements Respo
                         educationNewsAdapter = new EducationNewsAdapter();
                         listView.setAdapter(educationNewsAdapter);
                     }
-                    educationNewsAdapter.setData(educationResult.data);
+                    educationNewsAdapter.setData(EducationNewsActivity.this,educationResult.data);
                     materialRefreshLayout.finishRefresh();
                 }
                 break;

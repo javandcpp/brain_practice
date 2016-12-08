@@ -1,5 +1,6 @@
 package com.yzk.brain.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,12 @@ public class EducationNewsAdapter extends BaseAdapter {
 
     private List<EducationResult.EducationNews> mDataList;
     private ViewHolder viewHolder;
+    private Context mContext;
 
 
-    public void setData(List<EducationResult.EducationNews>dataList){
+    public void setData(Context context,List<EducationResult.EducationNews>dataList){
         this.mDataList=dataList;
+        this.mContext=context;
         notifyDataSetChanged();
     }
 
@@ -67,9 +70,9 @@ public class EducationNewsAdapter extends BaseAdapter {
             public void onClick(View v) {
                EducationResult.EducationNews educationNews = mDataList.get(i);
 
-                Intent intent=new Intent(GlobalApplication.instance, NewsDetailActivity.class);
+                Intent intent=new Intent(mContext, NewsDetailActivity.class);
                 intent.putExtra("news",educationNews);
-                GlobalApplication.instance.startActivity(intent);
+                mContext.startActivity(intent);
 
             }
         });

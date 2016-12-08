@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.volley.inter.ResponseStringDataListener;
 import com.yzk.brain.R;
+import com.yzk.brain.bean.HelpResult;
 import com.yzk.brain.bean.RuleResult;
 import com.yzk.brain.config.Config;
 import com.yzk.brain.log.LogUtil;
@@ -35,15 +36,30 @@ public class RuleDialog extends Dialog {
     public static class Builder implements ResponseStringDataListener {
 
 
-        private static final int REQUEST_RULE =0x1 ;
-        private final Context mContext;
-        private final String mParmas;
-        private TextView tvRuleTxt;
-        private CircularProgressView circularProgressView;
+        protected static final int REQUEST_RULE = 0x1;
+        protected static final int REQUEST_HELP = 0x2;
+        protected Context mContext;
+        protected String mParmas;
+        protected TextView tvRuleTxt;
+        protected CircularProgressView circularProgressView;
 
-        public Builder(Context context,String params) {
+        public Builder(Context context, String params) {
             this.mContext = context;
-            this.mParmas=params;
+            this.mParmas = params;
+        }
+
+        public Builder(Context context) {
+            this.mContext = context;
+        }
+
+
+        public void getDataFromNet() {
+            if (NetworkUtils.isConnected(mContext)) {
+                circularProgressView.setVisibility(View.VISIBLE);
+                HttpRequestUtil.HttpRequestByGet(Config.RULE + mParmas, this, REQUEST_RULE);
+            } else {
+                Toast.makeText(mContext, R.string.net_error, Toast.LENGTH_SHORT).show();
+            }
         }
 
 
@@ -57,32 +73,37 @@ public class RuleDialog extends Dialog {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (null!=ruleDialog&&ruleDialog.isShowing()){
+                    if (null != ruleDialog && ruleDialog.isShowing()) {
                         tvRuleTxt.setText("");
                         ruleDialog.dismiss();
                     }
                 }
             });
 
-            if (NetworkUtils.isConnected(mContext)){
-                circularProgressView.setVisibility(View.VISIBLE);
-                HttpRequestUtil.HttpRequestByGet(Config.RULE+mParmas,this,REQUEST_RULE);
-            }else{
-                Toast.makeText(mContext, R.string.net_error, Toast.LENGTH_SHORT).show();
-            }
+            getDataFromNet();
+
             return ruleDialog;
         }
 
 
         @Override
         public void onDataDelivered(int taskId, String data) {
-            switch (taskId){
+            switch (taskId) {
                 case REQUEST_RULE:
                     circularProgressView.setVisibility(View.GONE);
                     RuleResult ruleResult = ParseJson.parseJson(data, RuleResult.class);
-                    if (null!=ruleResult&&"0".equals(ruleResult.code)){
+                    if (null != ruleResult && "0".equals(ruleResult.code)) {
                         LogUtil.d(ruleResult.data.typeRulesContent);
                         tvRuleTxt.setText(ruleResult.data.typeRulesContent);
+                    }
+                    break;
+
+                case REQUEST_HELP:
+                    circularProgressView.setVisibility(View.GONE);
+                    HelpResult helpResult = ParseJson.parseJson(data, HelpResult.class);
+                    if (null != helpResult && "0".equals(helpResult.code)) {
+                        LogUtil.d(helpResult.data.helpContent);
+                        tvRuleTxt.setText(helpResult.data.helpContent);
                     }
 
                     break;
@@ -91,7 +112,7 @@ public class RuleDialog extends Dialog {
 
         @Override
         public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
-                circularProgressView.setVisibility(View.GONE);
+            circularProgressView.setVisibility(View.GONE);
         }
 
 

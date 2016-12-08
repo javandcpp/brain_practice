@@ -39,4 +39,7 @@ public class Config {
     //提交积分
     public static final String COMMIT_SCORE=BaseUrl+"/kujisoftware/score/saveScore?exerciseId=1000";
 
+    //帮助说明
+    public static final String HELP_URL=BaseUrl+"/kujisoftware/help/findHelpByExerciseId?whichExercise=1000";
+
 }

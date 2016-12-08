@@ -53,6 +53,7 @@
 
 
     <TextView
+        android:id="@+id/tvScore"
         android:text="错误次数:0"
         android:layout_width="wrap_content"
         android:textSize="18sp"

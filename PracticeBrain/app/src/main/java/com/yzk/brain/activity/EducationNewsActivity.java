@@ -94,7 +94,9 @@ public class EducationNewsActivity extends BaseFragmentActivity implements Respo
         LogUtil.e(data);
         switch (taskId) {
             case REQUEST_NEWS:
-                circularProgressView.setVisibility(View.GONE);
+                if (null!=circularProgressView) {
+                    circularProgressView.setVisibility(View.GONE);
+                }
                 EducationResult educationResult = ParseJson.parseJson(data, EducationResult.class);
                 if (null != educationResult && "0".equals(educationResult.code)) {
                     LogUtil.e(educationResult.toString());
@@ -112,6 +114,8 @@ public class EducationNewsActivity extends BaseFragmentActivity implements Respo
     @Override
     public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
         Toast.makeText(this, R.string.request_error, Toast.LENGTH_SHORT).show();
-        circularProgressView.setVisibility(View.GONE);
+        if (null!=circularProgressView) {
+            circularProgressView.setVisibility(View.GONE);
+        }
     }
 }

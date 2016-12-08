@@ -1,23 +1,32 @@
 package com.yzk.brain.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.inter.ResponseStringDataListener;
 import com.yzk.brain.R;
 import com.yzk.brain.adapter.RemberPracticeLeftAdapter;
 import com.yzk.brain.adapter.RemberPracticeRightAdapter;
 import com.yzk.brain.application.GlobalApplication;
 import com.yzk.brain.base.BaseFragmentActivity;
 import com.yzk.brain.bean.RemberPracticeResult;
+import com.yzk.brain.config.Config;
 import com.yzk.brain.constants.Constants;
+import com.yzk.brain.log.LogUtil;
+import com.yzk.brain.network.HttpRequestUtil;
 import com.yzk.brain.preference.PreferenceHelper;
 import com.yzk.brain.setting.Setting;
 import com.yzk.brain.ui.Controller;
+import com.yzk.brain.ui.HintDialog;
 import com.yzk.brain.ui.RuleDialog;
+import com.yzk.brain.utils.NetworkUtils;
+import com.yzk.brain.utils.PhoneUtils;
 import com.yzk.brain.utils.SoundEffect;
 
 import java.util.ArrayList;
@@ -32,6 +41,7 @@ import butterknife.OnClick;
 
 public class RemeberPracticeActivity extends BaseFragmentActivity implements Controller.ControllerCallBack {
 
+    private static final int REQUEST_COMMIT_TASK = 0x1;
     @Bind(R.id.controlPanel)
     Controller controllPanel;
 
@@ -41,7 +51,10 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     @Bind(R.id.rightGrid)
     GridView rightGrid;
 
+    @Bind(R.id.tvHint)
+    TextView tvScore;
     private ArrayList<RemberPracticeResult.Practice> dataList;
+
 
     private ArrayList<RemberPracticeResult.Practice> prsientDataList = new ArrayList<>();
     private List<RemberPracticeResult.Practice> sortDataList = new ArrayList<>();
@@ -50,9 +63,13 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     private RemberPracticeRightAdapter rightAdapter;
     private int index;
-    private int score = 10;
+    private int totalScore;
+
+    private static final String REMEBER_PRACTICE_FINISH = "remember_practice_finish";
+    private static final String REMEMBER_PRACTICE_SCORE = "remember_practice_score";
     private RemberPracticeLeftAdapter leftAdapter;
     private boolean isTest;
+    private boolean isFinish;
 
     @OnClick({R.id.rule})
     public void click(View view) {
@@ -82,41 +99,111 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
         RemberPracticeResult.Practice o = randomList.get(i);
         RemberPracticeResult.Practice target = sortDataList.get(index);
 
-        if (o.value.equals(target.value)) {
+        if (isFinish) {
+            if (o.value.equals(target.value)) {
 
-            if (null == leftAdapter) {
-                leftAdapter = new RemberPracticeLeftAdapter();
-                leftGrid.setAdapter(leftAdapter);
-            }
-            leftList.add(target);
-            leftAdapter.setData(leftList);
-
-            if (index == sortDataList.size() - 1) {
-                Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-                if (isTest) {
-                    PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
+                if (null == leftAdapter) {
+                    leftAdapter = new RemberPracticeLeftAdapter();
+                    leftGrid.setAdapter(leftAdapter);
                 }
-                if (1 == Setting.getVoice()) {
-                    SoundEffect.getInstance().play(SoundEffect.SUCCESS);
-                }
+                leftList.add(target);
+                leftAdapter.setData(leftList);
 
+                if (index == sortDataList.size() - 1) {
+                    HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setTest(isTest).setTvScore(totalScore).create();
+                    hintDialog.show();
+                    if (isTest) {
+                        PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
+                    }
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                    }
+
+                } else {
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    }
+                }
+                ++index;
             } else {
+                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
 
-                Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
                 if (1 == Setting.getVoice()) {
-                    SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    SoundEffect.getInstance().play(SoundEffect.FAIL);
                 }
+
             }
-            ++index;
         } else {
-            Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
-            --score;
-            if (1 == Setting.getVoice()) {
-                SoundEffect.getInstance().play(SoundEffect.FAIL);
+            if (totalScore < 0) {
+                HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
+                HintDialog hintDialog = builder.setStatus(0).setTest(isTest).create();
+                hintDialog.show();
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                }
+                PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记
+
+            } else if (o.value.equals(target.value)) {
+
+                if (null == leftAdapter) {
+                    leftAdapter = new RemberPracticeLeftAdapter();
+                    leftGrid.setAdapter(leftAdapter);
+                }
+                leftList.add(target);
+                leftAdapter.setData(leftList);
+
+                if (index == sortDataList.size() - 1) {
+
+
+                    HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setTest(isTest).setTvScore(totalScore).create();
+                    hintDialog.show();
+
+                    //上传积分
+                    if (NetworkUtils.isConnected(this)) {
+//                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
+                        String params = "&score=" + totalScore + "&whichDay=1" + "&type=2" + "&device=" + PhoneUtils.getPhoneIMEI(this);
+                        HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
+                            @Override
+                            public void onDataDelivered(int taskId, String data) {
+                                LogUtil.e(data);
+                            }
+
+                            @Override
+                            public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
+
+                            }
+                        }, REQUEST_COMMIT_TASK);
+                    }
+                    PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记录第一次
+
+                    if (isTest) {
+                        PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
+                    }
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                    }
+
+                } else {
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    }
+                }
+                ++index;
+            } else {
+                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                --totalScore;
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FAIL);
+                }
+
             }
-            if (score < 0) {
-                //index=0;
-            }
+            PreferenceHelper.writeInt(REMEMBER_PRACTICE_SCORE, totalScore);//每次错误记录分数
         }
 
 
@@ -124,6 +211,18 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     @Override
     protected void uIViewInit() {
+
+        isFinish = PreferenceHelper.getBool(REMEBER_PRACTICE_FINISH);
+        totalScore = PreferenceHelper.getScore(REMEMBER_PRACTICE_SCORE);
+
+        if (isFinish) {//已练习过,不再记录积分和错误次数
+            tvScore.setVisibility(View.GONE);
+        } else {//未练习过或积分大于等于0
+            tvScore.setVisibility(View.VISIBLE);
+            tvScore.setText("错误次数:" + totalScore);
+        }
+
+
         prsientDataList.addAll(dataList);
         sortDataList.addAll(prsientDataList);
         randomList = randomList(prsientDataList);
@@ -159,6 +258,11 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
                 break;
             case R.id.back:
+                if (isTest) {
+
+                } else {
+
+                }
                 finish();
                 break;
 

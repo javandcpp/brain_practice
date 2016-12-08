@@ -43,5 +43,7 @@ public class PreferenceHelper {
     public static int getVoiceInt(String key){
         return getSharedPreference().getInt(key,1);
     }
-
+    public static int getScore(String key){
+        return getSharedPreference().getInt(key,10);
+    }
 }

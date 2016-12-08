@@ -13,8 +13,7 @@
 
 
     <com.yzk.brain.ui.EaseTitleBar
-        app:titleBarTitle="@string/home_1_text"
-        app:titleBarRightText="@string/practice_21_day_title_right_text"
+        app:titleBarTitle="@string/home_4_text"
         android:layout_width="match_parent"
         app:titleBarLeftImage="@drawable/titlebar_left_arrow"
         android:layout_height="wrap_content"></com.yzk.brain.ui.EaseTitleBar>

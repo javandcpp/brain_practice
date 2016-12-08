@@ -2,6 +2,7 @@ package com.yzk.brain.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -19,12 +20,15 @@ import com.yzk.brain.bean.SuTableResult;
 import com.yzk.brain.config.Config;
 import com.yzk.brain.log.LogUtil;
 import com.yzk.brain.network.HttpRequestUtil;
+import com.yzk.brain.preference.PreferenceHelper;
 import com.yzk.brain.setting.Setting;
 import com.yzk.brain.ui.CircularProgressView;
 import com.yzk.brain.ui.Controller;
+import com.yzk.brain.ui.HintDialog;
 import com.yzk.brain.ui.RuleDialog;
 import com.yzk.brain.utils.NetworkUtils;
 import com.yzk.brain.utils.ParseJson;
+import com.yzk.brain.utils.PhoneUtils;
 import com.yzk.brain.utils.SoundEffect;
 
 import java.util.ArrayList;
@@ -40,6 +44,7 @@ import butterknife.OnClick;
 public class SuTablePracticeActivity extends BaseFragmentActivity implements Controller.ControllerCallBack, ResponseStringDataListener {
 
     private static final int REQUEST_DATA_TASK = 0x1;
+    private static final int REQUEST_COMMIT_TASK = 0x2;
 
     @Bind(R.id.controlPanel)
     Controller controllPanel;
@@ -51,22 +56,30 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
     @Bind(R.id.grid)
     GridView gridView;
 
+    @Bind(R.id.tvScore)
+    TextView tvScore;
+
     private List<SuTableResult.Table> sortTempList = new ArrayList<>();
     private ArrayList<SuTableResult.Table> randomList;
     private int index = 0;
-    private int score=10;
+    private int totalScore;
+
+    private final String SuTable_FINISH = "Sutable_finish";
+    private final String STUTABLE_SCORE = "sutable_score";
+
 
     private Handler mHanlder = new Handler();
+    private boolean isFinish;
+
     @OnClick({R.id.rule})
-    public void click(View view){
-        switch (view.getId()){
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.rule:
-                RuleDialog.Builder builder=new RuleDialog.Builder(this,"1");
+                RuleDialog.Builder builder = new RuleDialog.Builder(this, "1");
                 builder.create().show();
                 break;
         }
     }
-
 
 
     @Override
@@ -77,6 +90,17 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
 
     @Override
     protected void uIViewInit() {
+
+        isFinish = PreferenceHelper.getBool(SuTable_FINISH);
+        totalScore = PreferenceHelper.getScore(STUTABLE_SCORE);
+
+        if (isFinish) {//已练习过,不再记录积分和错误次数
+            tvScore.setVisibility(View.GONE);
+        } else {//未练习过或积分大于等于0
+            tvScore.setVisibility(View.VISIBLE);
+            tvScore.setText("错误次数:" + totalScore);
+        }
+
 
         controllPanel.setClickCallBack(this);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,55 +113,107 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
 
             private void assertResult(View view, int i) {
                 if (index > sortTempList.size() - 1) {
-                    index = sortTempList.size() - 1;
+                    return;
                 }
+
                 final RelativeLayout backGround = (RelativeLayout) view.findViewById(R.id.backgroud);
                 TextView tvText = (TextView) view.findViewById(R.id.tvText);
 
                 SuTableResult.Table o = randomList.get(i);
                 SuTableResult.Table table = sortTempList.get(index);
-                if (o.value.equals(table.value)) {
-                    backGround.setBackgroundResource(R.drawable.home_bgview_blue);
-                    if (index == sortTempList.size() - 1) {
-                        Toast.makeText(SuTablePracticeActivity.this, "闯关成功", Toast.LENGTH_SHORT).show();
-                        if (1== Setting.getVoice()) {
-                            SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+
+
+                if (isFinish) {
+                    if (o.key.equals(table.key)) {
+                        if (index == sortTempList.size() - 1) {
+                            HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
+                            HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                            hintDialog.show();
+                            if (1 == Setting.getVoice()) {
+                                SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                            }
+                        } else {
+                            if (1 == Setting.getVoice()) {
+                                SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                            }
                         }
-
-                        forEachList();
-
-                        return;
-                    }
-                    ++index;
-
-                    if (1==Setting.getVoice()) {
-                        Toast.makeText(SuTablePracticeActivity.this, "正确", Toast.LENGTH_SHORT).show();
-                        SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                        ++index;
+                    } else {
+                        Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        if (1 == Setting.getVoice()) {
+                            SoundEffect.getInstance().play(SoundEffect.FAIL);
+                        }
                     }
                 } else {
-                    Toast.makeText(SuTablePracticeActivity.this, "错误", Toast.LENGTH_SHORT).show();
-                    --score;
-                    backGround.setBackgroundResource(R.drawable.home_bgview_green);
-                    if (1==Setting.getVoice()) {
-                        SoundEffect.getInstance().play(SoundEffect.FAIL);
-                    }
-                    if (score<0){
-                        score=0;
-                        forEachList();
-                        return;
-                    }
-                    mHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            backGround.setBackgroundResource(R.drawable.home_bgview_white);
+                    if (totalScore < 0) {
+                        HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
+                        HintDialog hintDialog = builder.setStatus(0).create();
+                        hintDialog.show();
+                        if (1 == Setting.getVoice()) {
+                            SoundEffect.getInstance().play(SoundEffect.FAILURE);
                         }
-                    }, 100);
+                        PreferenceHelper.writeBool(SuTable_FINISH, true);//记录第一次
+                    } else if (o.value.equals(table.value)) {
+                        backGround.setBackgroundResource(R.drawable.home_bgview_blue);
+                        if (index == sortTempList.size() - 1) {
+                            Toast.makeText(SuTablePracticeActivity.this, "闯关成功", Toast.LENGTH_SHORT).show();
+                            if (1 == Setting.getVoice()) {
+                                SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                            }
 
+                            HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
+                            HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                            hintDialog.show();
+
+                            forEachList();
+
+                            //上传积分
+                            if (NetworkUtils.isConnected(SuTablePracticeActivity.this)) {
+//                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
+                                String params = "&score=" + totalScore + "&whichDay=1" + "&type=1" + "&device=" + PhoneUtils.getPhoneIMEI(SuTablePracticeActivity.this);
+                                HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
+                                    @Override
+                                    public void onDataDelivered(int taskId, String data) {
+                                        LogUtil.e(data);
+                                    }
+
+                                    @Override
+                                    public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
+
+                                    }
+                                }, REQUEST_COMMIT_TASK);
+                            }
+                            PreferenceHelper.writeBool(SuTable_FINISH, true);
+                            return;
+                        }else {
+                            if (1 == Setting.getVoice()) {
+                                Toast.makeText(SuTablePracticeActivity.this, "正确", Toast.LENGTH_SHORT).show();
+                                SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                            }
+                        }
+                        ++index;
+                    } else {
+                        Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        --totalScore;
+                        backGround.setBackgroundResource(R.drawable.home_bgview_green);
+                        if (1 == Setting.getVoice()) {
+                            SoundEffect.getInstance().play(SoundEffect.FAIL);
+                        }
+
+                        mHanlder.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                backGround.setBackgroundResource(R.drawable.home_bgview_white);
+                            }
+                        }, 100);
+                    }
+                    PreferenceHelper.writeInt(STUTABLE_SCORE, totalScore);//每次错误记录分数
 
                 }
-
-
-                LogUtil.e(o.key + ":" + backGround + ":" + tvText);
             }
         });
 
@@ -150,8 +226,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                 randomList) {
             table.flag = true;
         }
-        index=0;
-        score=10;
+        index = 0;
         gridView.setEnabled(false);
         sutableAdapter.notifyDataSetChanged();
     }
@@ -200,12 +275,13 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
     }
 
 
-
     @Override
     public void onDataDelivered(int taskId, String data) {
         switch (taskId) {
             case REQUEST_DATA_TASK:
-                loading.setVisibility(View.GONE);
+                if (null != loading) {
+                    loading.setVisibility(View.GONE);
+                }
                 sortTempList.clear();
                 SuTableResult suTableResult = ParseJson.parseJson(data, SuTableResult.class);
                 if (null != suTableResult && null != suTableResult.data && suTableResult.data.fiveContentView.size() > 0) {
@@ -228,6 +304,8 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
     @Override
     public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
         Toast.makeText(this, R.string.request_error, Toast.LENGTH_SHORT).show();
-        loading.setVisibility(View.GONE);
+        if (null != loading) {
+            loading.setVisibility(View.GONE);
+        }
     }
 }

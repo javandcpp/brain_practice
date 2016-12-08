@@ -331,7 +331,9 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
      */
     private void serviceCloseVolume() {
         isSilent = true;
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        mMediaPlayer.setVolume(0,0);
+
+//        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
         HermesEventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(false));
 
 
@@ -344,9 +346,10 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         if (isSilent) {
             int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             LogUtil.e("voice volume :" + maxVolume);
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 2, 0);
+//            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume / 2, 0);
             curVolume = maxVolume / 2;
             isSilent = false;
+            mMediaPlayer.setVolume(1,1);
 
             HermesEventBus.getDefault().post(new BackgroudMusicEvent.MusicVoiceEvent(true));
 

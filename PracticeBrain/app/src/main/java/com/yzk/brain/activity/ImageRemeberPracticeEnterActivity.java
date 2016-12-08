@@ -133,7 +133,9 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity impl
     public void onDataDelivered(int taskId, String data) {
         switch (taskId) {
             case REQUEST_DATA:
-                circularProgressView.setVisibility(View.GONE);
+                if (null!=circularProgressView) {
+                    circularProgressView.setVisibility(View.GONE);
+                }
                 ImageResult imageResult = ParseJson.parseJson(data, ImageResult.class);
                 if (null != imageResult && null != imageResult.data && null != imageResult.data.list) {
                     list = (ArrayList<ImageResult.Image>) imageResult.data.list;
@@ -151,6 +153,8 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity impl
     @Override
     public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
         Toast.makeText(this, R.string.request_error, Toast.LENGTH_SHORT).show();
-        circularProgressView.setVisibility(View.GONE);
+        if (null!=circularProgressView) {
+            circularProgressView.setVisibility(View.GONE);
+        }
     }
 }

@@ -1,22 +1,31 @@
 package com.yzk.brain.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.inter.ResponseStringDataListener;
 import com.yzk.brain.R;
 import com.yzk.brain.adapter.ImagePracticeLeftAdapter;
 import com.yzk.brain.adapter.ImagePracticeRightAdapter;
 import com.yzk.brain.application.GlobalApplication;
 import com.yzk.brain.base.BaseFragmentActivity;
 import com.yzk.brain.bean.ImageResult;
+import com.yzk.brain.config.Config;
 import com.yzk.brain.log.LogUtil;
+import com.yzk.brain.network.HttpRequestUtil;
+import com.yzk.brain.preference.PreferenceHelper;
 import com.yzk.brain.setting.Setting;
 import com.yzk.brain.ui.Controller;
+import com.yzk.brain.ui.HintDialog;
 import com.yzk.brain.ui.RuleDialog;
+import com.yzk.brain.utils.NetworkUtils;
+import com.yzk.brain.utils.PhoneUtils;
 import com.yzk.brain.utils.SoundEffect;
 
 import java.util.ArrayList;
@@ -30,6 +39,7 @@ import butterknife.OnClick;
 
 public class ImageRemeberPracticeActivity extends BaseFragmentActivity implements Controller.ControllerCallBack {
 
+    private static final int REQUEST_COMMIT_TASK = 0x1;
     @Bind(R.id.controlPanel)
     Controller controlPanel;
 
@@ -39,7 +49,14 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     @Bind(R.id.leftGrid)
     GridView leftGrid;
 
+    @Bind(R.id.tvHint)
+    TextView tvScore;
 
+
+    private final String IMAGE_PRACTICE_FINISH = "image_practice_finish";
+    private final String IMAGE_PRACTICE_SCORE = "image_practice_score";
+    private boolean isFinish;
+    private int totalScore;
     private ArrayList<ImageResult.Image> dataList;
 
 
@@ -50,7 +67,6 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     private int index;
     private ImagePracticeRightAdapter rightAdapter;
     private ImagePracticeLeftAdapter leftAdapter;
-    private int score = 10;
 
     @OnClick(R.id.rule)
     public void click(View view) {
@@ -65,6 +81,8 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         dataList = (ArrayList<ImageResult.Image>) getIntent().getSerializableExtra("data");
         setContentView(R.layout.image_remeber_practice_layout);
     }
@@ -72,6 +90,17 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
     @Override
     protected void uIViewInit() {
+
+        isFinish = PreferenceHelper.getBool(IMAGE_PRACTICE_FINISH);
+        totalScore = PreferenceHelper.getScore(IMAGE_PRACTICE_SCORE);
+
+        if (isFinish) {//已练习过,不再记录积分和错误次数
+            tvScore.setVisibility(View.GONE);
+        } else {//未练习过或积分大于等于0
+            tvScore.setVisibility(View.VISIBLE);
+            tvScore.setText("错误次数:" + totalScore);
+        }
+
         prsientDataList.addAll(dataList);
         sortDataList.addAll(prsientDataList);
         randomList = randomList(prsientDataList);
@@ -94,38 +123,93 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         ImageResult.Image o = randomList.get(position);
         ImageResult.Image target = sortDataList.get(index);
 
-        if (o.key.equals(target.key)) {
-
-            if (null == leftAdapter) {
-                leftAdapter = new ImagePracticeLeftAdapter();
-                leftGrid.setAdapter(leftAdapter);
-            }
-            leftList.add(target);
-            leftAdapter.setData(leftList);
-
-            if (index == sortDataList.size() - 1) {
-                Toast.makeText(this, "闯关成功", Toast.LENGTH_SHORT).show();
-
-                if (1 == Setting.getVoice()) {
-                    SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+        if (isFinish) {
+            if (o.key.equals(target.key)) {
+                if (index == sortDataList.size() - 1) {
+                    HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                    hintDialog.show();
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                    }
+                } else {
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    }
                 }
+                ++index;
             } else {
-                Toast.makeText(this, "正确", Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
                 if (1 == Setting.getVoice()) {
-                    SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    SoundEffect.getInstance().play(SoundEffect.FAIL);
                 }
             }
-            ++index;
+
         } else {
-            Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
-            --score;
-            if (1 == Setting.getVoice()) {
-                SoundEffect.getInstance().play(SoundEffect.FAIL);
+            if (totalScore < 0) {
+                HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
+                HintDialog hintDialog = builder.setStatus(0).create();
+                hintDialog.show();
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                }
+                PreferenceHelper.writeBool(IMAGE_PRACTICE_FINISH, true);//记录第一次
+            } else if (o.key.equals(target.key)) {
+
+                if (null == leftAdapter) {
+                    leftAdapter = new ImagePracticeLeftAdapter();
+                    leftGrid.setAdapter(leftAdapter);
+                }
+                leftList.add(target);
+                leftAdapter.setData(leftList);
+
+                if (index == sortDataList.size() - 1) {
+
+                    HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                    hintDialog.show();
+
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.SUCCESS);
+                    }
+                    //上传积分
+                    if (NetworkUtils.isConnected(this)) {
+//                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
+                        String params = "&score=" + totalScore + "&whichDay=1" + "&type=4" + "&device=" + PhoneUtils.getPhoneIMEI(this);
+                        HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
+                            @Override
+                            public void onDataDelivered(int taskId, String data) {
+                                LogUtil.e(data);
+                            }
+
+                            @Override
+                            public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
+
+                            }
+                        }, REQUEST_COMMIT_TASK);
+                    }
+                    PreferenceHelper.writeBool(IMAGE_PRACTICE_FINISH, true);//记录第一次
+
+                } else {
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.CORRECT);
+                    }
+                }
+                ++index;
+            } else {
+                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                --totalScore;
+                if (1 == Setting.getVoice()) {
+                    SoundEffect.getInstance().play(SoundEffect.FAIL);
+                }
             }
-            if (score < 0) {
-                //index=0;
-            }
+            PreferenceHelper.writeInt(IMAGE_PRACTICE_SCORE, totalScore);//每次错误记录分数
         }
+
 
     }
 

@@ -109,7 +109,9 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
     public void onDataDelivered(int taskId, String data) {
         switch (taskId) {
             case REQEUST_REMEMBER_TASK:
-                loading.setVisibility(View.GONE);
+                if (null!=loading) {
+                    loading.setVisibility(View.GONE);
+                }
                 RemberPracticeResult remberPracticeResult = ParseJson.parseJson(data, RemberPracticeResult.class);
                 if (null != remberPracticeResult && null != remberPracticeResult.data && null != remberPracticeResult.data.memoryTrainWordsView) {
                     tempList.clear();
@@ -124,7 +126,9 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
     @Override
     public void onErrorHappened(int taskId, String errorCode, String errorMessage) {
         Toast.makeText(this, R.string.request_error, Toast.LENGTH_SHORT).show();
-        loading.setVisibility(View.GONE);
+        if (null!=loading) {
+            loading.setVisibility(View.GONE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

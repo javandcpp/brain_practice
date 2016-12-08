@@ -1097,9 +1097,9 @@ public class FileUtils {
         String cachePath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
-            cachePath = context.getExternalCacheDir().getPath();
+            cachePath = Environment.getExternalStorageDirectory().getAbsolutePath();
         } else {
-            cachePath = context.getFilesDir().getPath();
+            cachePath = context.getFilesDir().getAbsolutePath();
         }
         return cachePath;
     }

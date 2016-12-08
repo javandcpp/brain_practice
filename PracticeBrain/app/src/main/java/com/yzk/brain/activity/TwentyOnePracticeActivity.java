@@ -3,6 +3,7 @@ package com.yzk.brain.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.yzk.brain.R;
 import com.yzk.brain.adapter.GridAdapter;
@@ -10,6 +11,7 @@ import com.yzk.brain.base.BaseFragmentActivity;
 import com.yzk.brain.bean.PracticeEntity;
 import com.yzk.brain.constants.Constants;
 import com.yzk.brain.preference.PreferenceHelper;
+import com.yzk.brain.ui.HelpDialog;
 import com.yzk.brain.ui.UnScrollGridView;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
     @Bind(R.id.gridview)
     UnScrollGridView gridView;
 
+    @Bind(R.id.right_layout)
+    RelativeLayout rightLayout;
 
     private List<PracticeEntity> gridData = new ArrayList<>();
 
@@ -94,7 +98,8 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
                 finish();
                 break;
             case R.id.right_layout:
-
+                HelpDialog.Builder builder=new HelpDialog.Builder(this);
+                builder.create().show();
                 break;
 
         }

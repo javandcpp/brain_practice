@@ -128,7 +128,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         backGround.setBackgroundResource(R.drawable.home_bgview_blue);
                         if (index == sortTempList.size() - 1) {
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                            HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                            HintDialog hintDialog = builder.setStatus(0).setTvScore(totalScore).create();
                             hintDialog.show();
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.SUCCESS);
@@ -212,6 +212,11 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         if (1 == Setting.getVoice()) {
                             SoundEffect.getInstance().play(SoundEffect.FAIL);
                         }
+                        if (totalScore < 0) {
+                            totalScore = -1;
+                        }
+                        int score = totalScore >= 0 ? totalScore : 0;
+                        tvScore.setText("错误次数:" + score);
 
                         mHanlder.postDelayed(new Runnable() {
                             @Override

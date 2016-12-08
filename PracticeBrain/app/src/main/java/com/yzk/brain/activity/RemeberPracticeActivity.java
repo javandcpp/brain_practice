@@ -111,7 +111,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
                 if (index == sortDataList.size() - 1) {
                     HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setTest(isTest).setTvScore(totalScore).create();
+                    HintDialog hintDialog = builder.setStatus(0).setTest(isTest).setTvScore(totalScore).create();
                     hintDialog.show();
                     if (isTest) {
                         PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
@@ -201,7 +201,11 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FAIL);
                 }
-
+                if (totalScore < 0) {
+                    totalScore = -1;
+                }
+                int score = totalScore >= 0 ? totalScore : 0;
+                tvScore.setText("错误次数:" + score);
             }
             PreferenceHelper.writeInt(REMEMBER_PRACTICE_SCORE, totalScore);//每次错误记录分数
         }

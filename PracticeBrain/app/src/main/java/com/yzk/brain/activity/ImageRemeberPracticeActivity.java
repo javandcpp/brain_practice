@@ -127,7 +127,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
             if (o.key.equals(target.key)) {
                 if (index == sortDataList.size() - 1) {
                     HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                    HintDialog hintDialog = builder.setStatus(0).setTvScore(totalScore).create();
                     hintDialog.show();
                     if (1 == Setting.getVoice()) {
                         SoundEffect.getInstance().play(SoundEffect.SUCCESS);
@@ -206,6 +206,11 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FAIL);
                 }
+                if (totalScore < 0) {
+                    totalScore = -1;
+                }
+                int score = totalScore >= 0 ? totalScore : 0;
+                tvScore.setText("错误次数:" + score);
             }
             PreferenceHelper.writeInt(IMAGE_PRACTICE_SCORE, totalScore);//每次错误记录分数
         }

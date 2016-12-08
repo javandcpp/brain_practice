@@ -125,6 +125,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
 
                 if (isFinish) {
                     if (o.key.equals(table.key)) {
+                        backGround.setBackgroundResource(R.drawable.home_bgview_blue);
                         if (index == sortTempList.size() - 1) {
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
                             HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
@@ -142,6 +143,14 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+
+                        backGround.setBackgroundResource(R.drawable.home_bgview_green);
+                        mHanlder.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                backGround.setBackgroundResource(R.drawable.home_bgview_white);
+                            }
+                        }, 100);
                         if (1 == Setting.getVoice()) {
                             SoundEffect.getInstance().play(SoundEffect.FAIL);
                         }

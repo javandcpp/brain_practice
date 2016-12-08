@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.yzk.practice_brain.module.mandalas.TestActivity">
+    tools:context="com.yzk.brain.module.mandalas.TestActivity">
 
    <Button
        android:id="@+id/one"

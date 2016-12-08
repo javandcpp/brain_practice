@@ -13,14 +13,14 @@
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        tools:context="com.yzk.practice_brain.activity.MainActivity">
+        tools:context="com.yzk.brain.activity.MainActivity">
 
-        <com.yzk.practice_brain.ui.EaseTitleBar
+        <com.yzk.brain.ui.EaseTitleBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleBarLeftText="@string/home_title_left_text"
             app:titleBarRightImage="@drawable/btn_voiceable_selector"
-            app:titleBarTitle="@string/home_title_text"></com.yzk.practice_brain.ui.EaseTitleBar>
+            app:titleBarTitle="@string/home_title_text"></com.yzk.brain.ui.EaseTitleBar>
 
 
         <!--<LinearLayout-->

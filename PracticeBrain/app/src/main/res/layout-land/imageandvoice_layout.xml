@@ -78,7 +78,7 @@
         android:textSize="18sp" />
 
 
-    <com.yzk.practice_brain.ui.Controller
+    <com.yzk.brain.ui.Controller
         android:id="@+id/controlPanel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

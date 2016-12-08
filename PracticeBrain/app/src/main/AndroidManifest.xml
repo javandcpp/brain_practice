@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yzk.practice_brain">
+    package="com.yzk.brain">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,15 +9,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:debuggable="false"
+        android:persistent="false"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:name=".application.ApplicationController"
+        android:name="com.yzk.brain.application.ApplicationController"
         android:theme="@style/AppTheme">
         <!--<activity-->
             <!--android:name=".module.mandalas.Caratula"-->
@@ -30,7 +32,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.yzk.brain.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape">
@@ -41,46 +43,46 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.TwentyOnePracticeActivity"
+        <activity android:name="com.yzk.brain.activity.TwentyOnePracticeActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.EducationNewsActivity"
+        <activity android:name="com.yzk.brain.activity.EducationNewsActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.TwentyOneEnterActivity"
+        <activity android:name="com.yzk.brain.activity.TwentyOneEnterActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.ImageRemeberPracticeEnterActivity"
+        <activity android:name="com.yzk.brain.activity.ImageRemeberPracticeEnterActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.SuTablePracticeActivity"
+        <activity android:name="com.yzk.brain.activity.SuTablePracticeActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.ImageAndVoiceActivity"
+        <activity android:name="com.yzk.brain.activity.ImageAndVoiceActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.MandalasActivity"
+        <activity android:name="com.yzk.brain.activity.MandalasActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.RemeberPracticeActivity"
+        <activity android:name="com.yzk.brain.activity.RemeberPracticeActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.MandalaEnterActivity"
-            android:screenOrientation="landscape"/>
-
-        <activity android:name=".activity.ImageRemeberPracticeActivity"
+        <activity android:name="com.yzk.brain.activity.MandalaEnterActivity"
             android:screenOrientation="landscape"/>
 
-        <activity android:name=".activity.RemeberPracticeEnterActivity"
+        <activity android:name="com.yzk.brain.activity.ImageRemeberPracticeActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name="com.yzk.brain.activity.RemeberPracticeEnterActivity"
             android:screenOrientation="landscape"/>
 
 
 
         <activity
-            android:name=".module.mandalas.Mandalas2Activity"
+            android:name="com.yzk.brain.module.mandalas.Mandalas2Activity"
             android:screenOrientation="landscape" />
 
         <!--<activity android:name=".module.mandalas.TestActivity"></activity>-->
-        <service android:name=".service.BgMediaPlayerServce"
+        <service android:name="com.yzk.brain.service.BgMediaPlayerServce"
             android:exported="true"
             android:process=":remote">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
-        <service android:name=".service.DownloadMusicService"
+        <service android:name="com.yzk.brain.service.DownloadMusicService"
             android:exported="true"
             android:process=":download">
             <intent-filter>
@@ -88,12 +90,12 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.DaemonService">
+        <service android:name="com.yzk.brain.service.DaemonService">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
-        <receiver android:name=".receiver.ActiveServiceReceiver">
+        <receiver android:name="com.yzk.brain.receiver.ActiveServiceReceiver">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.TIME_TICK"/>

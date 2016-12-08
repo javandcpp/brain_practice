@@ -61,7 +61,7 @@
 
     <include layout="@layout/loading_layout"/>
 
-    <com.yzk.practice_brain.ui.Controller
+    <com.yzk.brain.ui.Controller
         android:id="@id/controlPanel"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"

@@ -85,6 +85,7 @@ public class HttpRequestUtil {
             }
         };
 
+        stringRequest.setTag(responseStringDataListener);
         addToQueue(responseStringDataListener, taskId, stringRequest);
     }
 

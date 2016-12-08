@@ -13,6 +13,7 @@ import android.widget.PopupWindow;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.yzk.brain.R;
+import com.yzk.brain.application.ApplicationController;
 import com.yzk.brain.stack.ActivityStack;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -139,6 +140,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
      * activity 销毁
      */
     protected void activityDestroy() {
+        ApplicationController.getInstance().cancelPendingRequests(this);
     }
 
     ;

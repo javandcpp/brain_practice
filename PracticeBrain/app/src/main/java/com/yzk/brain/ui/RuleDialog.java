@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.volley.inter.ResponseStringDataListener;
 import com.yzk.brain.R;
+import com.yzk.brain.application.ApplicationController;
 import com.yzk.brain.bean.HelpResult;
 import com.yzk.brain.bean.RuleResult;
 import com.yzk.brain.config.Config;
@@ -76,6 +77,7 @@ public class RuleDialog extends Dialog {
                     if (null != ruleDialog && ruleDialog.isShowing()) {
                         tvRuleTxt.setText("");
                         ruleDialog.dismiss();
+                        ApplicationController.getInstance().cancelPendingRequests(this);
                     }
                 }
             });

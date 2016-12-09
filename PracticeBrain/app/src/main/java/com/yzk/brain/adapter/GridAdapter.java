@@ -22,26 +22,30 @@ import java.util.List;
 public class GridAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final List<PracticeEntity> mDataList;
+    private List<PracticeEntity> mDataList;
     private ViewHolder viewHolder;
     private final LayoutInflater mInflater;
 
-    public GridAdapter(Context context, List<PracticeEntity> dataList) {
+    public GridAdapter(Context context) {
 
         this.mContext = context;
-        this.mDataList = dataList;
         mInflater = LayoutInflater.from(mContext);
+    }
+
+    public void setData(List<PracticeEntity> dataList) {
+        this.mDataList = dataList;
+        notifyDataSetChanged();
     }
 
 
     @Override
     public int getCount() {
-        return mDataList.size();
+        return null!=mDataList?mDataList.size():0;
     }
 
     @Override
     public Object getItem(int i) {
-        return mDataList.get(i);
+        return null!=mDataList?mDataList.get(i):null;
     }
 
     @Override
@@ -73,20 +77,19 @@ public class GridAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 PracticeEntity practiceEntity1 = mDataList.get(i);
-                Intent intent=null;
-                if (0==practiceEntity1.index){
-                    intent=new Intent(mContext, RemeberPracticeEnterActivity.class);
-                    intent.putExtra("isTest",true);
+                Intent intent = null;
+                if (0 == practiceEntity1.index) {
+                    intent = new Intent(mContext, RemeberPracticeEnterActivity.class);
+                    intent.putExtra("isTest", true);
                     mContext.startActivity(intent);
-                }else{
-                    intent=new Intent(mContext, TwentyOneEnterActivity.class);
+                } else {
+                    intent = new Intent(mContext, TwentyOneEnterActivity.class);
                     mContext.startActivity(intent);
                 }
             }
         });
 
         int width = viewHolder.imageView.getWidth();
-
 
 
         return view;

@@ -33,6 +33,7 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
     RelativeLayout rightLayout;
 
     private List<PracticeEntity> gridData = new ArrayList<>();
+    private GridAdapter gridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,19 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        gridViewData();
-        GridAdapter gridAdapter=new GridAdapter(this,gridData);
-        gridView.setAdapter(gridAdapter);
+        gridDataRefresh();
     }
+
+    private void gridDataRefresh() {
+
+        if (null == gridAdapter) {
+            gridAdapter = new GridAdapter(this);
+            gridView.setAdapter(gridAdapter);
+        }
+        gridViewData();
+        gridAdapter.setData(gridData);
+    }
+
 
     @Override
     protected void uIViewInit() {
@@ -55,34 +65,34 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
 
     private void gridViewData() {
         for (int x = 0; x < 22; x++) {
-            if (x>0&&x==8){
-                gridData.add(getResource(0,x));
-            }else if (x==15){
-                gridData.add(getResource(0,x));
+            if (x > 0 && x == 8) {
+                gridData.add(getResource(0, x));
+            } else if (x == 15) {
+                gridData.add(getResource(0, x));
             }
-           gridData.add(getResource(x,x));
+            gridData.add(getResource(x, x));
         }
     }
 
-    private PracticeEntity getResource(int index,int cursor) {
-        String normal="normal_"+index;
-        String seleted="seleted_"+index;
+    private PracticeEntity getResource(int index, int cursor) {
+        String normal = "normal_" + index;
+        String seleted = "seleted_" + index;
 
         Context ctx = getBaseContext();
         int normalRes = getResources().getIdentifier(normal, "drawable", ctx.getPackageName());
         int selectedRes = getResources().getIdentifier(seleted, "drawable", ctx.getPackageName());
 
-        PracticeEntity practiceEntity=new PracticeEntity();
+        PracticeEntity practiceEntity = new PracticeEntity();
 
         int anInt = PreferenceHelper.getInt(Constants.TWENTY_ONE);
-        if (cursor<=anInt){
-            practiceEntity.locked=false;
-        }else {
+        if (cursor <= anInt) {
+            practiceEntity.locked = false;
+        } else {
             practiceEntity.locked = true;
         }
-        practiceEntity.normalResId=normalRes;
-        practiceEntity.unlockResId=selectedRes;
-        practiceEntity.index=index;
+        practiceEntity.normalResId = normalRes;
+        practiceEntity.unlockResId = selectedRes;
+        practiceEntity.index = index;
         return practiceEntity;
     }
 
@@ -91,14 +101,14 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
 
     }
 
-    @OnClick({R.id.left_layout,R.id.right_layout})
-    public void click(View view){
-        switch (view.getId()){
+    @OnClick({R.id.left_layout, R.id.right_layout})
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.left_layout:
                 finish();
                 break;
             case R.id.right_layout:
-                HelpDialog.Builder builder=new HelpDialog.Builder(this);
+                HelpDialog.Builder builder = new HelpDialog.Builder(this);
                 builder.create().show();
                 break;
 

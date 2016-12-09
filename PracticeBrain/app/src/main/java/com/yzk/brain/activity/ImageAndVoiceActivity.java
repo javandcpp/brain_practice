@@ -113,20 +113,22 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     private AudioManager audioManager;
     private int maxVolume;
     private int curVolume;
+    private boolean isPlay = true;
+    private boolean isPause;
+    private String mPath;
+    private String mFileName;
+
 
     @Override
     public void onLeftClick() {//退出此界面,默认开始播放音乐
         try {
-            if (personCloseMusic) {
-                if (GlobalApplication.instance.getiMediaInterface().isPause()) {
-                    play.setSelected(true);
-                    GlobalApplication.instance.getiMediaInterface().play();
-                }
+            if (GlobalApplication.instance.getiMediaInterface().isPause()) {
+                play.setSelected(true);
+                GlobalApplication.instance.getiMediaInterface().play();
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
         finish();
     }
 
@@ -140,6 +142,8 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mPath = path;
+                mFileName = fileName;
                 play(path, fileName);
             }
         }, 200);
@@ -147,22 +151,30 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
 
     }
 
+    private void pause() {
+        if (null != mMediaPlayer && isPlay) {
+            mMediaPlayer.pause();
+            isPause = true;
+            isPlay = !isPause;
+        }
+    }
+
     private void play(String path, String fileName) {
         try {
-            if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
-                play.setSelected(false);
-                GlobalApplication.instance.getiMediaInterface().pause();
-                personCloseMusic = true;
-            }
+
             try {
                 mMediaPlayer.setDataSource(new File(path + File.separator + fileName).getAbsolutePath());
                 mMediaPlayer.prepare();
                 mMediaPlayer.start();
+                isPlay = true;
+                isPause = !isPlay;
+                play.setSelected(true);
             } catch (IOException e) {
                 e.printStackTrace();
+                isPlay = false;
             }
 
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -170,6 +182,14 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
+                GlobalApplication.instance.getiMediaInterface().pause();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
         builder = new ProgressDialog.Builder(this);
         progressDialog = builder.setBackClickListener(this).create();
         initMediaPlayer();
@@ -259,16 +279,26 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
                 break;
             case R.id.play:
                 try {
-                    if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
+                    if (isPlay) {
                         ((ImageButton) view).setSelected(false);
-                        GlobalApplication.instance.getiMediaInterface().pause();
+                        pause();
                     } else {
                         ((ImageButton) view).setSelected(true);
-                        GlobalApplication.instance.getiMediaInterface().play();
+                        if (null == mMediaPlayer) {
+                            initMediaPlayer();
+                            play(mPath,mFileName);
+                        }else{
+                            mMediaPlayer.start();
+                        }
+                        isPlay=true;
+
                     }
-                    personCloseMusic = false;
+
                 } catch (Exception e) {
                     e.printStackTrace();
+                    initMediaPlayer();
+                    play(mPath, mFileName);
+
                 }
 
                 break;
@@ -302,7 +332,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
             draweeView.setController(controller);
             int version = PreferenceHelper.getInt(explain.name);
             File file = new File(Constants.EXPLAIN_PATH + File.separator + explain.name);
-            if (explain.version < version||!file.exists()) {
+            if (explain.version < version || !file.exists()) {
                 DownloadRunnable downloadRunnable = new DownloadRunnable(0, 1, explain.url, explain.name, explain.fileLength, 0, Constants.EXPLAIN_PATH, this);
                 DownLoadManager.getInstance().getQueue().add(downloadRunnable);
                 progressDialog.show();
@@ -386,9 +416,9 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
         mMediaPlayer.release();
         mMediaPlayer = null;
         mHandler.removeCallbacksAndMessages(null);
-        if (null!=progressDialog){
+        if (null != progressDialog) {
             progressDialog.dismiss();
-            progressDialog=null;
+            progressDialog = null;
         }
 
     }

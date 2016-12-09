@@ -44,6 +44,7 @@ public class Controller extends LinearLayout {
     private int orientation;
     private ControllerCallBack mControllerCall;
     private boolean retryable;
+    private boolean music;
 
     @OnClick({R.id.retry, R.id.back, R.id.play})
     public void clickEvent(View view) {
@@ -122,6 +123,23 @@ public class Controller extends LinearLayout {
             retry.setVisibility(VISIBLE);
         }
 
+        if (!music) {
+            musicable.setVisibility(GONE);
+            ViewGroup.LayoutParams layoutParams = rootView.getLayoutParams();
+            if (1 == orientation) {
+                layoutParams.width= SizeUtils.dp2px(getContext(),160);
+                rootView.setLayoutParams(layoutParams);
+            } else {
+                layoutParams.height= SizeUtils.dp2px(getContext(),160);
+                rootView.setLayoutParams(layoutParams);
+            }
+
+        }else{
+            musicable.setVisibility(VISIBLE);
+        }
+
+
+
 
         try {
             if (GlobalApplication.instance.getiMediaInterface().isPlaying()) {
@@ -154,6 +172,7 @@ public class Controller extends LinearLayout {
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.Controller);
             orientation = ta.getInteger(R.styleable.Controller_orientation, -1);
             retryable = ta.getBoolean(R.styleable.Controller_retry, true);
+            music=ta.getBoolean(R.styleable.Controller_music,true);
             ta.recycle();
         }
     }

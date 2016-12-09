@@ -42,6 +42,7 @@
     <declare-styleable name="Controller">
         <attr name="orientation" format="integer"/>
         <attr name="retry" format="boolean"/>
+        <attr name="music" format="boolean"/>
     </declare-styleable>
 
 

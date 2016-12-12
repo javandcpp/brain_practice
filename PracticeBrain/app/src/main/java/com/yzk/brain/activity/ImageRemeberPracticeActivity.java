@@ -87,8 +87,8 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         dataList = (ArrayList<ImageResult.Image>) getIntent().getSerializableExtra("data");
         ImageResult.ImageEntity entity = (ImageResult.ImageEntity) getIntent().getSerializableExtra("entity");
 
-        totalScore=entity.pictureMemoryScore;
-        errorNumber=entity.pictureMemoryErrorNumber;
+        totalScore=entity.pictureMemory.pictureMemoryScore;
+        errorNumber=entity.pictureMemory.pictureMemoryErrorNumber;
         setContentView(R.layout.image_remeber_practice_layout);
     }
 

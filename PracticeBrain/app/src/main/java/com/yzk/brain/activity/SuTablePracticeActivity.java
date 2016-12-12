@@ -107,6 +107,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 assertResult(view, i);
 
 
@@ -116,13 +117,13 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                 if (index > sortTempList.size() - 1) {
                     return;
                 }
-
-                final RelativeLayout backGround = (RelativeLayout) view.findViewById(R.id.backgroud);
-                TextView tvText = (TextView) view.findViewById(R.id.tvText);
-
                 SuTableResult.Table o = randomList.get(i);
                 SuTableResult.Table table = sortTempList.get(index);
-
+                if (o.clicked){
+                    return;
+                }
+                final RelativeLayout backGround = (RelativeLayout) view.findViewById(R.id.backgroud);
+                TextView tvText = (TextView) view.findViewById(R.id.tvText);
 
                 if (isFinish) {
                     if (o.key.equals(table.key)) {
@@ -134,11 +135,15 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                             }
+                            backGround.setEnabled(false);
+                            backGround.setClickable(false);
                         } else {
+
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.CORRECT);
                             }
                         }
+                        o.clicked=true;
                         ++index;
                     } else {
                         Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
@@ -165,8 +170,11 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             SoundEffect.getInstance().play(SoundEffect.FAILURE);
                         }
 //                        PreferenceHelper.writeBool(SuTable_FINISH, true);//记录第一次
-                    } else if (o.value.equals(table.value)) {
+                    } else if (o.key.equals(table.key)) {
                         backGround.setBackgroundResource(R.drawable.home_bgview_blue);
+                        backGround.setEnabled(false);
+                        backGround.setClickable(false);
+
                         if (index == sortTempList.size() - 1) {
                             Toast.makeText(SuTablePracticeActivity.this, "闯关成功", Toast.LENGTH_SHORT).show();
                             if (1 == Setting.getVoice()) {
@@ -203,8 +211,10 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                                 SoundEffect.getInstance().play(SoundEffect.CORRECT);
                             }
                         }
+                        o.clicked=true;
                         ++index;
                     } else {
+
                         --errorNumber;
                         if (errorNumber>=0) {
                             Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
@@ -250,6 +260,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
         for (SuTableResult.Table table :
                 randomList) {
             table.flag = true;
+            table.clicked=false;
         }
         index = 0;
         gridView.setEnabled(false);
@@ -270,13 +281,27 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
             Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
         }
     }
+    private void retry() {
+        index = 0;
+        randomList.clear();
+
+        randomList.addAll(sortTempList);
+        randomList = randomList(randomList);
+        for (SuTableResult.Table table :
+                randomList) {
+            table.flag = false;
+        }
+        index = 0;
+        gridView.setEnabled(true);
+        sutableAdapter.setData(randomList);
+    }
+
 
     @Override
     public void controll(View view) {
         switch (view.getId()) {
             case R.id.retry:
-                getDataFromNet();
-                gridView.setEnabled(true);
+               retry();
                 break;
             case R.id.back:
                 finish();
@@ -310,14 +335,15 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                 sortTempList.clear();
                 SuTableResult suTableResult = ParseJson.parseJson(data, SuTableResult.class);
                 if (null != suTableResult && null != suTableResult.data && suTableResult.data.fiveContentView.size() > 0) {
-                    errorNumber = suTableResult.data.errorNumber;
-                    totalScore=suTableResult.data.fiveScore;
+                    errorNumber = suTableResult.data.five.errorNumber;
+                    totalScore=suTableResult.data.five.fiveScore;
+                    tvScore.setText("错误次数:" + errorNumber);
+
                     sortTempList.addAll(suTableResult.data.fiveContentView);
 
                     randomList = randomList(suTableResult.data.fiveContentView);
                     LogUtil.e(suTableResult.toString());
                     if (null == sutableAdapter) {
-
                         sutableAdapter = new SutableAdapter();
                         gridView.setAdapter(sutableAdapter);
                     }

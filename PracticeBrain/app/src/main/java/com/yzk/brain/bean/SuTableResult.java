@@ -25,8 +25,7 @@ public class SuTableResult implements Serializable {
     public class TableEntity implements Serializable{
 
        public ArrayList<Table> fiveContentView;
-        public int errorNumber;
-        public int fiveScore;
+        public Five five;
 
         @Override
         public String toString() {
@@ -36,11 +35,17 @@ public class SuTableResult implements Serializable {
         }
     }
 
+    public class Five implements Serializable{
+        public int errorNumber;
+        public int fiveScore;
+    }
+
     public class Table implements Serializable{
         public String key;
         public String value;
         public boolean flag;
 
+        public boolean clicked;
         @Override
         public String toString() {
             return "Table{" +

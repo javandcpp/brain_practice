@@ -22,10 +22,16 @@ public class RemberPracticeResult implements Serializable {
                 '}';
     }
 
-    public class PracticeEntity implements Serializable {
+    public class MemoryTrain implements Serializable{
+
         public int memoryTrainErrorNumber;
         public int memoryTrainScore;
+    }
 
+
+    public class PracticeEntity implements Serializable {
+
+        public MemoryTrain memoryTrain;
         public List<Practice> memoryTrainWordsView;
 
         @Override

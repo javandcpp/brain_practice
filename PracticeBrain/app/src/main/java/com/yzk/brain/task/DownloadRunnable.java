@@ -311,6 +311,7 @@ public class DownloadRunnable implements Runnable {
             if (len == mFileLength) {
                 if (mMedia_type == 0) {
                     PreferenceHelper.writeInt(mFileName, mVersion);
+                    LogUtil.e(mFileName+","+mVersion);
                     HermesEventBus.getDefault().post(new BackgroudMusicEvent().new DownloadFinishEvent(mFileName));
                 } else if (mMedia_type == 1) {
                     //图片讲解事件

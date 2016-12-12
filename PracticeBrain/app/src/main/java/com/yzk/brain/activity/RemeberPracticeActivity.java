@@ -92,8 +92,8 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
         dataList = (ArrayList<RemberPracticeResult.Practice>) getIntent().getSerializableExtra("data");
         practiceEntity = (RemberPracticeResult.PracticeEntity) getIntent().getSerializableExtra("entity");
 
-        totalScore=practiceEntity.memoryTrainScore;
-        errorNumber=practiceEntity.memoryTrainErrorNumber;
+        totalScore=practiceEntity.memoryTrain.memoryTrainScore;
+        errorNumber=practiceEntity.memoryTrain.memoryTrainErrorNumber;
 
         setContentView(R.layout.remeber_practice_layout);
     }

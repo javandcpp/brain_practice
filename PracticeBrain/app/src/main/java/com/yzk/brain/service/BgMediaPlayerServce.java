@@ -50,7 +50,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private int stepVolume;
     private boolean isPause;
     public boolean isSilent;
-    public boolean playSdcard = true;
+    public boolean playSdcard=true;
     private Handler mHandler;
 
     private void initMediaPlayer() {
@@ -108,7 +108,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
             LogUtil.e("playsdcard:" + getSdMusic() + ":" + playSdcard);
         } else {//否则加载APK资源
             playSdcard = false;
-            LogUtil.e("playraw:" + !playSdcard);
+            LogUtil.e("playraw:---------------------------------->" + !playSdcard);
             getRawMediaResource();
         }
 
@@ -122,8 +122,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void getRawMediaResource() {
         mAssetManager = getAssets();
         try {
-            for (int i = 1; i < 1; i++) {
-
+            for (int i = 1; i < 2; i++) {
                 String musicName = "music" + i + ".mp3";
                 AssetFileDescriptor fileDescriptor = mAssetManager.openFd(musicName);
                 mMedaiList.add(fileDescriptor);

@@ -23,6 +23,8 @@ public class RemberPracticeResult implements Serializable {
     }
 
     public class PracticeEntity implements Serializable {
+        public int memoryTrainErrorNumber;
+        public int memoryTrainScore;
 
         public List<Practice> memoryTrainWordsView;
 

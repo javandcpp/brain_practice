@@ -70,6 +70,8 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     private RemberPracticeLeftAdapter leftAdapter;
     private boolean isTest;
     private boolean isFinish;
+    private RemberPracticeResult.PracticeEntity practiceEntity;
+    private int errorNumber;
 
     @OnClick({R.id.rule})
     public void click(View view) {
@@ -82,11 +84,16 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isTest = getIntent().getBooleanExtra("isTest", false);
         dataList = (ArrayList<RemberPracticeResult.Practice>) getIntent().getSerializableExtra("data");
+        practiceEntity = (RemberPracticeResult.PracticeEntity) getIntent().getSerializableExtra("entity");
+
+        totalScore=practiceEntity.memoryTrainScore;
+        errorNumber=practiceEntity.memoryTrainErrorNumber;
 
         setContentView(R.layout.remeber_practice_layout);
     }
@@ -137,14 +144,14 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
             }
         } else {
-            if (totalScore < 0) {
+            if (errorNumber < 0) {
                 HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
                 HintDialog hintDialog = builder.setStatus(0).setTest(isTest).create();
                 hintDialog.show();
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FAILURE);
                 }
-                PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记
+//                PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记
 
             } else if (o.value.equals(target.value)) {
 
@@ -159,13 +166,13 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
 
                     HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setTest(isTest).setTvScore(totalScore).create();
+                    HintDialog hintDialog = builder.setStatus(1).setTest(isTest).setTvScore(totalScore-errorNumber).create();
                     hintDialog.show();
 
                     //上传积分
                     if (NetworkUtils.isConnected(this)) {
 //                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
-                        String params = "&score=" + totalScore + "&whichDay=1" + "&type=2" + "&device=" + PhoneUtils.getPhoneIMEI(this);
+                        String params = "&score=" +( totalScore-errorNumber) + "&whichDay=1" + "&type=2" + "&device=" + PhoneUtils.getPhoneIMEI(this);
                         HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
                             @Override
                             public void onDataDelivered(int taskId, String data) {
@@ -194,17 +201,25 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 }
                 ++index;
             } else {
-                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                --totalScore;
-                if (1 == Setting.getVoice()) {
+                --errorNumber;
+                if (errorNumber>=0) {
+                  if (1 == Setting.getVoice()){
                     SoundEffect.getInstance().play(SoundEffect.FAIL);
+                  }
+                    Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
-                if (totalScore < 0) {
-                    totalScore = -1;
+                if (errorNumber < 0) {
+                    errorNumber = -1;
+                    HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(0).setTest(isTest).create();
+                    hintDialog.show();
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                    }
                 }
-                int score = totalScore >= 0 ? totalScore : 0;
+                int score = errorNumber >= 0 ? errorNumber : 0;
                 tvScore.setText("错误次数:" + score);
             }
             PreferenceHelper.writeInt(REMEMBER_PRACTICE_SCORE, totalScore);//每次错误记录分数
@@ -217,13 +232,13 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     protected void uIViewInit() {
 
         isFinish = PreferenceHelper.getBool(REMEBER_PRACTICE_FINISH);
-        totalScore = PreferenceHelper.getScore(REMEMBER_PRACTICE_SCORE);
+//        totalScore = PreferenceHelper.getScore(REMEMBER_PRACTICE_SCORE);
 
         if (isFinish) {//已练习过,不再记录积分和错误次数
             tvScore.setVisibility(View.GONE);
         } else {//未练习过或积分大于等于0
             tvScore.setVisibility(View.VISIBLE);
-            tvScore.setText("错误次数:" + totalScore);
+            tvScore.setText("错误次数:" + errorNumber);
         }
 
 

@@ -122,7 +122,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     private void getRawMediaResource() {
         mAssetManager = getAssets();
         try {
-            for (int i = 1; i < 4; i++) {
+            for (int i = 1; i < 1; i++) {
 
                 String musicName = "music" + i + ".mp3";
                 AssetFileDescriptor fileDescriptor = mAssetManager.openFd(musicName);

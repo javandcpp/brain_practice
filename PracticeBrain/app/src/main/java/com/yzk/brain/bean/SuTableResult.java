@@ -25,6 +25,8 @@ public class SuTableResult implements Serializable {
     public class TableEntity implements Serializable{
 
        public ArrayList<Table> fiveContentView;
+        public int errorNumber;
+        public int fiveScore;
 
         @Override
         public String toString() {

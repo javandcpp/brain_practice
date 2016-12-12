@@ -52,6 +52,7 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity impl
     private ArrayList<ImageResult.Image> list;
     private ImagePracticeEnterAdapter imagePracticeEnterAdapter;
     private List<ImageResult.Image> tempList=new ArrayList<>();
+    private ImageResult imageResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +64,12 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity impl
     public void click(View view) {
         switch (view.getId()) {
             case R.id.begin:
-                Intent intent = new Intent(this, ImageRemeberPracticeActivity.class);
-                intent.putExtra("data",list);
-                startActivity(intent);
+                if (tempList.size()>0) {
+                    Intent intent = new Intent(this, ImageRemeberPracticeActivity.class);
+                    intent.putExtra("data", list);
+                    intent.putExtra("entity",imageResult.data);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rule:
                 RuleDialog.Builder builder = new RuleDialog.Builder(this, "4");
@@ -136,7 +140,7 @@ public class ImageRemeberPracticeEnterActivity extends BaseFragmentActivity impl
                 if (null!=circularProgressView) {
                     circularProgressView.setVisibility(View.GONE);
                 }
-                ImageResult imageResult = ParseJson.parseJson(data, ImageResult.class);
+                imageResult = ParseJson.parseJson(data, ImageResult.class);
                 if (null != imageResult && null != imageResult.data && null != imageResult.data.list) {
                     list = (ArrayList<ImageResult.Image>) imageResult.data.list;
                     tempList.addAll(list);

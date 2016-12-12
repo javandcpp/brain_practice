@@ -110,7 +110,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     private SVG svg;
     public Path svgparsdtopath;
     public boolean tocaMusica;
-    private int totalScore;
+    private int totalScore=10;
 
     private final String AREA01 = "ff00ff00";//x=108,y=108
     private final String AREA02 = "ff0000ff";//x=236,y=94
@@ -139,7 +139,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     @Bind(R.id.tvScore)
     TextView tvScore;
     private boolean mandala_finish;
-    private int mandalascore;
+//    private int mandalascore=10;
 
 
     @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen, R.id.finish, R.id.rule})
@@ -335,7 +335,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                 }
 
 
-                PreferenceHelper.writeBool("mandala_finish", true);//记录第一次
+//                PreferenceHelper.writeBool("mandala_finish", true);//记录第一次
             } else if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
 
@@ -569,12 +569,11 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 //        this.efectos = this.prefs.getEfectos();
         prenderEfectos();
         mandala_finish = PreferenceHelper.getBool("mandala_finish");
-        mandalascore = PreferenceHelper.getScore("mandalascore");
+//        mandalascore = PreferenceHelper.getScore("mandalascore");
 
-        totalScore=mandalascore;
+//        totalScore=mandalascore;
         initView();
 
-        Log.e("TAG","是否完成:"+mandala_finish+",积分:"+mandalascore);
 
         if (mandala_finish) {//已练习过,不再记录积分和错误次数
             tvScore.setVisibility(View.GONE);

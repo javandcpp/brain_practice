@@ -50,6 +50,7 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
     GridView gridView;
     private ArrayList<RemberPracticeResult.Practice> tempList = new ArrayList<>();
     private boolean isTest;
+    private RemberPracticeResult remberPracticeResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
                     intent = new Intent(this, RemeberPracticeActivity.class);
                     intent.putExtra("isTest",isTest);
                     intent.putExtra("data", tempList);
+                    intent.putExtra("entity",remberPracticeResult.data);
                     startActivity(intent);
                 }
                 break;
@@ -112,7 +114,7 @@ public class RemeberPracticeEnterActivity extends BaseFragmentActivity implement
                 if (null!=loading) {
                     loading.setVisibility(View.GONE);
                 }
-                RemberPracticeResult remberPracticeResult = ParseJson.parseJson(data, RemberPracticeResult.class);
+                remberPracticeResult = ParseJson.parseJson(data, RemberPracticeResult.class);
                 if (null != remberPracticeResult && null != remberPracticeResult.data && null != remberPracticeResult.data.memoryTrainWordsView) {
                     tempList.clear();
                     tempList.addAll(remberPracticeResult.data.memoryTrainWordsView);

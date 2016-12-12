@@ -70,6 +70,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
 
     private Handler mHanlder = new Handler();
     private boolean isFinish;
+    private int errorNumber;
 
     @OnClick({R.id.rule})
     public void click(View view) {
@@ -92,7 +93,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
     protected void uIViewInit() {
 
         isFinish = PreferenceHelper.getBool(SuTable_FINISH);
-        totalScore = PreferenceHelper.getScore(STUTABLE_SCORE);
+//        totalScore = PreferenceHelper.getScore(STUTABLE_SCORE);
 
         if (isFinish) {//已练习过,不再记录积分和错误次数
             tvScore.setVisibility(View.GONE);
@@ -156,14 +157,14 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         }
                     }
                 } else {
-                    if (totalScore < 0) {
+                    if (errorNumber < 0) {
                         HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
                         HintDialog hintDialog = builder.setStatus(0).create();
                         hintDialog.show();
                         if (1 == Setting.getVoice()) {
                             SoundEffect.getInstance().play(SoundEffect.FAILURE);
                         }
-                        PreferenceHelper.writeBool(SuTable_FINISH, true);//记录第一次
+//                        PreferenceHelper.writeBool(SuTable_FINISH, true);//记录第一次
                     } else if (o.value.equals(table.value)) {
                         backGround.setBackgroundResource(R.drawable.home_bgview_blue);
                         if (index == sortTempList.size() - 1) {
@@ -173,7 +174,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             }
 
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                            HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                            HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore-errorNumber).create();
                             hintDialog.show();
 
                             forEachList();
@@ -181,7 +182,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             //上传积分
                             if (NetworkUtils.isConnected(SuTablePracticeActivity.this)) {
 //                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
-                                String params = "&score=" + totalScore + "&whichDay=1" + "&type=1" + "&device=" + PhoneUtils.getPhoneIMEI(SuTablePracticeActivity.this);
+                                String params = "&score=" + (totalScore-errorNumber)+ "&whichDay=1" + "&type=1" + "&device=" + PhoneUtils.getPhoneIMEI(SuTablePracticeActivity.this);
                                 HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
                                     @Override
                                     public void onDataDelivered(int taskId, String data) {
@@ -204,28 +205,38 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         }
                         ++index;
                     } else {
-                        Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                        --totalScore;
-                        backGround.setBackgroundResource(R.drawable.home_bgview_green);
-                        if (1 == Setting.getVoice()) {
-                            SoundEffect.getInstance().play(SoundEffect.FAIL);
+                        --errorNumber;
+                        if (errorNumber>=0) {
+                            Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            backGround.setBackgroundResource(R.drawable.home_bgview_green);
+                            if (1 == Setting.getVoice()) {
+                                SoundEffect.getInstance().play(SoundEffect.FAIL);
+                            }
+                            mHanlder.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    backGround.setBackgroundResource(R.drawable.home_bgview_white);
+                                }
+                            }, 100);
                         }
-                        if (totalScore < 0) {
-                            totalScore = -1;
+                        if (errorNumber < 0) {
+                            errorNumber = -1;
+
+                            HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
+                            HintDialog hintDialog = builder.setStatus(0).create();
+                            hintDialog.show();
+                            if (1 == Setting.getVoice()) {
+                                SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                            }
                         }
-                        int score = totalScore >= 0 ? totalScore : 0;
+                        int score = errorNumber >= 0 ? errorNumber : 0;
                         tvScore.setText("错误次数:" + score);
 
-                        mHanlder.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                backGround.setBackgroundResource(R.drawable.home_bgview_white);
-                            }
-                        }, 100);
+
                     }
-                    PreferenceHelper.writeInt(STUTABLE_SCORE, totalScore);//每次错误记录分数
+                    PreferenceHelper.writeInt(STUTABLE_SCORE, errorNumber);//每次错误记录分数
 
                 }
             }
@@ -299,6 +310,8 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                 sortTempList.clear();
                 SuTableResult suTableResult = ParseJson.parseJson(data, SuTableResult.class);
                 if (null != suTableResult && null != suTableResult.data && suTableResult.data.fiveContentView.size() > 0) {
+                    errorNumber = suTableResult.data.errorNumber;
+                    totalScore=suTableResult.data.fiveScore;
                     sortTempList.addAll(suTableResult.data.fiveContentView);
 
                     randomList = randomList(suTableResult.data.fiveContentView);

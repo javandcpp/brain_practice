@@ -290,6 +290,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
         for (SuTableResult.Table table :
                 randomList) {
             table.flag = false;
+            table.clicked=false;
         }
         index = 0;
         gridView.setEnabled(true);

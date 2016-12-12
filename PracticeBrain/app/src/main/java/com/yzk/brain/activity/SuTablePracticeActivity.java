@@ -177,7 +177,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         backGround.setClickable(false);
 
                         if (index == sortTempList.size() - 1) {
-                            Toast.makeText(SuTablePracticeActivity.this, "闯关成功", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(SuTablePracticeActivity.this, "闯关成功", Toast.LENGTH_SHORT).show();
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                             }
@@ -208,7 +208,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             return;
                         }else {
                             if (1 == Setting.getVoice()) {
-                                Toast.makeText(SuTablePracticeActivity.this, "正确", Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(SuTablePracticeActivity.this, "正确", Toast.LENGTH_SHORT).show();
                                 SoundEffect.getInstance().play(SoundEffect.CORRECT);
                             }
                         }

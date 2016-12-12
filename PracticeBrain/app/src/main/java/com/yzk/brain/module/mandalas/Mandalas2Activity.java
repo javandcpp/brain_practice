@@ -39,6 +39,7 @@ import com.caverock.androidsvg.SVGParseException;
 import com.yzk.brain.R;
 import com.yzk.brain.application.GlobalApplication;
 import com.yzk.brain.base.BaseFragmentActivity;
+import com.yzk.brain.bean.MandalaResult;
 import com.yzk.brain.config.Config;
 import com.yzk.brain.log.LogUtil;
 import com.yzk.brain.network.HttpRequestUtil;
@@ -110,7 +111,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     private SVG svg;
     public Path svgparsdtopath;
     public boolean tocaMusica;
-    private int totalScore=10;
+    private int totalScore;
 
     private final String AREA01 = "ff00ff00";//x=108,y=108
     private final String AREA02 = "ff0000ff";//x=236,y=94
@@ -139,7 +140,11 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
     @Bind(R.id.tvScore)
     TextView tvScore;
     private boolean mandala_finish;
-//    private int mandalascore=10;
+    private MandalaResult.Mandala mandalaResult;
+    //    private int mandalascore=10;
+
+    private int errorNumber;
+    private int errorCount;
 
 
     @OnClick({R.id.redPen, R.id.greenPen, R.id.yellowPen, R.id.bluePen, R.id.finish, R.id.rule})
@@ -325,7 +330,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         } else {//未练习
 
 
-            if (totalScore < 0) {
+            if (errorNumber < 0) {
                 HintDialog.Builder builder = new HintDialog. Builder(Mandalas2Activity.this);
                 HintDialog hintDialog = builder.setStatus(0).create();
                 hintDialog.show();
@@ -340,12 +345,12 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
 
                 HintDialog.Builder builder = new HintDialog. Builder(Mandalas2Activity.this);
-                HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
+                HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore-errorCount).create();
                 hintDialog.show();
                 //上传积分
                 if (NetworkUtils.isConnected(this)){
 //                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
-                    String params="&score="+totalScore+"&whichDay=1"+"&type=2"+"&device="+ PhoneUtils.getPhoneIMEI(this);
+                    String params="&score="+(totalScore-errorCount)+"&whichDay=1"+"&type=2"+"&device="+ PhoneUtils.getPhoneIMEI(this);
                     HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE+params,this,REQUEST_COMMIT_TASK);
                 }
 
@@ -353,15 +358,27 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
                     SoundEffect.getInstance().play(SoundEffect.SUCCESS);
                 }
                 PreferenceHelper.writeBool("mandala_finish", true);//记录第一次
-            } else if (totalScore >= 0) {
-                Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                --totalScore;
-                if (totalScore < 0) {
-                    totalScore = -1;
+            } else {
+
+                --errorNumber;
+                ++errorCount;
+                if (errorNumber>=0){
+                    Toast toast = Toast.makeText(this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
-                int score = totalScore >= 0 ? totalScore : 0;
+                if (errorNumber < 0) {
+                    errorNumber = -1;
+
+                    HintDialog.Builder builder = new HintDialog. Builder(Mandalas2Activity.this);
+                    HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).create();
+                    hintDialog.show();
+
+                    if (1 == Setting.getVoice()) {
+                        SoundEffect.getInstance().play(SoundEffect.FAILURE);
+                    }
+                }
+                int score = errorNumber >= 0 ? errorNumber : 0;
                 tvScore.setText("错误次数:" + score);
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FILL_ERROR);
@@ -563,6 +580,10 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mandalaResult = (MandalaResult.Mandala) getIntent().getSerializableExtra("entity");
+
+        totalScore=mandalaResult.score;
+        errorNumber=mandalaResult.errorNumber;
         Log.e("TAG", "------------------------------>>" + "onCreate");
         this.setContentView(R.layout.activity_mandalas2);
 //        this.prefs = new GrabarPreferencias(((Context) this));
@@ -575,11 +596,14 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         initView();
 
 
+
+
+
         if (mandala_finish) {//已练习过,不再记录积分和错误次数
             tvScore.setVisibility(View.GONE);
         }else {//未练习过或积分大于等于0
             tvScore.setVisibility(View.VISIBLE);
-            tvScore.setText("错误次数:" + totalScore);
+            tvScore.setText("错误次数:" + mandalaResult.errorNumber);
         }
 
         this.imagen = (ImageView) this.findViewById(R.id.imagen2);

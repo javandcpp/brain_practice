@@ -7,6 +7,12 @@ import java.io.Serializable;
  */
 public class MandalaResult implements Serializable {
     public int whichDay;
-    public int errorNumber;
-    public int score;
+    public Mandala data;
+
+
+    public class Mandala implements Serializable{
+        public int errorNumber;
+        public int score;
+    }
+
 }

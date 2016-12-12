@@ -19,10 +19,10 @@ public class Config {
     public static final String SUTABLE_PRACTICE_URL=BaseUrl+"/kujisoftware/questionFive/findFiveByExerciseAndWhichDayAndType?exerciseId=1000&Type=1&whichDay=1";
 
     //记忆训练
-    public static final String REMEBER_PRACTICE_URL=BaseUrl+"/kujisoftware/memoryTrain/findMemoryTrainByExerciseAndWhichDayAndType?exerciseId=1001&whichDay=1&type=2";
+    public static final String REMEBER_PRACTICE_URL=BaseUrl+"/kujisoftware/memoryTrain/findMemoryTrainByExerciseAndWhichDayAndType?exerciseId=1000&whichDay=1&type=2";
 
     //测试记忆训练
-    public static final String TEST_REMEBER_PRACTICE_URL=BaseUrl+"/kujisoftware/memoryTrain/findMemoryTrainByExerciseAndWhichDayAndType?exerciseId=1001&whichDay=c1&type=2";
+    public static final String TEST_REMEBER_PRACTICE_URL=BaseUrl+"/kujisoftware/memoryTrain/findMemoryTrainByExerciseAndWhichDayAndType?exerciseId=1000&whichDay=c1&type=2";
 
     //规则
     public static final String RULE=BaseUrl+"/kujisoftware/typeRules/findTypeRulesById?id=";

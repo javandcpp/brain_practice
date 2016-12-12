@@ -31,5 +31,10 @@ android {
 
 
 }
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
 apply from: 'rules.gradle'
 

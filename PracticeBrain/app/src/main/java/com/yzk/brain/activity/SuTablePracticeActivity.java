@@ -71,6 +71,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
     private Handler mHanlder = new Handler();
     private boolean isFinish;
     private int errorNumber;
+    private int errorCount;
 
     @OnClick({R.id.rule})
     public void click(View view) {
@@ -130,7 +131,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         backGround.setBackgroundResource(R.drawable.home_bgview_blue);
                         if (index == sortTempList.size() - 1) {
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                            HintDialog hintDialog = builder.setStatus(0).setTvScore(totalScore).create();
+                            HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTvScore(totalScore).create();
                             hintDialog.show();
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.SUCCESS);
@@ -163,8 +164,8 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                     }
                 } else {
                     if (errorNumber < 0) {
-                        HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                        HintDialog hintDialog = builder.setStatus(0).create();
+                        HintDialog.Builder builder = new HintDialog. Builder(SuTablePracticeActivity.this);
+                        HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).create();
                         hintDialog.show();
                         if (1 == Setting.getVoice()) {
                             SoundEffect.getInstance().play(SoundEffect.FAILURE);
@@ -182,7 +183,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             }
 
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                            HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore-errorNumber).create();
+                            HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(1).setTvScore(totalScore-errorCount).create();
                             hintDialog.show();
 
                             forEachList();
@@ -190,7 +191,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             //上传积分
                             if (NetworkUtils.isConnected(SuTablePracticeActivity.this)) {
 //                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
-                                String params = "&score=" + (totalScore-errorNumber)+ "&whichDay=1" + "&type=1" + "&device=" + PhoneUtils.getPhoneIMEI(SuTablePracticeActivity.this);
+                                String params = "&score=" + (totalScore-errorCount)+ "&whichDay=1" + "&type=1" + "&device=" + PhoneUtils.getPhoneIMEI(SuTablePracticeActivity.this);
                                 HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
                                     @Override
                                     public void onDataDelivered(int taskId, String data) {
@@ -214,8 +215,9 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         o.clicked=true;
                         ++index;
                     } else {
-
                         --errorNumber;
+                        ++errorCount;
+
                         if (errorNumber>=0) {
                             Toast toast = Toast.makeText(SuTablePracticeActivity.this, "还是不对，再检查下吧", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER, 0, 0);
@@ -235,7 +237,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                             errorNumber = -1;
 
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                            HintDialog hintDialog = builder.setStatus(0).create();
+                            HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).create();
                             hintDialog.show();
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.FAILURE);

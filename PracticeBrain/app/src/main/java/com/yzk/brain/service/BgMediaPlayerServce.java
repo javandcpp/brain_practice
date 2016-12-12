@@ -53,6 +53,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
     public boolean playSdcard=true;
     private Handler mHandler;
 
+
     private void initMediaPlayer() {
         if (mMediaPlayer != null) {
             mMediaPlayer.reset();
@@ -103,6 +104,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
         LogUtil.d(BgMediaPlayerServce.class.getSimpleName() + " onCreate");
         mMedaiList = new ArrayList<>();
         sdCardMusic = new ArrayList<>();
+
         if (playSdcard && getSdMusic()) {//如果从SD开始播放,加载数据
             playSdcard = true;
             LogUtil.e("playsdcard:" + getSdMusic() + ":" + playSdcard);
@@ -131,6 +133,20 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
             e.printStackTrace();
         }
     }
+    private boolean sdMusicIsEmpty(){
+        File sdDir = new File(Constants.MUSIC_PATH);
+        if (!sdDir.exists()) {
+            return false;
+        }
+        File[] files = sdDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String s) {
+                return null != s ? s.endsWith(".mp3") : false;
+            }
+        });
+        return files.length > 1;
+    }
+
 
     /**
      * 获取sdcard下音乐
@@ -150,7 +166,9 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
             for (File file : files
                     ) {
                 LogUtil.e("sdmusic file------------>" + file.getAbsolutePath());
-                sdCardMusic.add(file);
+                if (sdCardMusic.contains(file)) {
+                    sdCardMusic.add(file);
+                }
             }
         }
         return files.length > 1;
@@ -187,7 +205,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (getSdMusic()) {//如果从SD开始播放,加载数据
+                        if (sdMusicIsEmpty()) {//如果从SD开始播放,加载数据
                             playSdcard = true;
                         } else {//否则加载APK资源
                             playSdcard = false;

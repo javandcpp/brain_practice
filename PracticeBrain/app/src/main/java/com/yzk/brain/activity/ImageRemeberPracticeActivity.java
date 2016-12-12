@@ -68,6 +68,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
     private ImagePracticeRightAdapter rightAdapter;
     private ImagePracticeLeftAdapter leftAdapter;
     private int errorNumber;
+    private int errorCount;
 
     @OnClick(R.id.rule)
     public void click(View view) {
@@ -126,13 +127,17 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
             return;
         }
         ImageResult.Image o = randomList.get(position);
+        if (o.clicked){
+            return;
+        }
         ImageResult.Image target = sortDataList.get(index);
 
         if (isFinish) {
             if (o.key.equals(target.key)) {
+                o.clicked=true;
                 if (index == sortDataList.size() - 1) {
-                    HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(0).setTvScore(totalScore).create();
+                    HintDialog.Builder builder = new HintDialog. Builder(ImageRemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTvScore(totalScore).create();
                     hintDialog.show();
                     if (1 == Setting.getVoice()) {
                         SoundEffect.getInstance().play(SoundEffect.SUCCESS);
@@ -154,15 +159,15 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
         } else {
             if (errorNumber < 0) {
-                HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
-                HintDialog hintDialog = builder.setStatus(0).create();
+                HintDialog.Builder builder = new HintDialog. Builder(ImageRemeberPracticeActivity.this);
+                HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).create();
                 hintDialog.show();
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FAILURE);
                 }
 //                PreferenceHelper.writeBool(IMAGE_PRACTICE_FINISH, true);//记录第一次
             } else if (o.key.equals(target.key)) {
-
+                o.clicked=true;
                 if (null == leftAdapter) {
                     leftAdapter = new ImagePracticeLeftAdapter();
                     leftGrid.setAdapter(leftAdapter);
@@ -172,8 +177,8 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
                 if (index == sortDataList.size() - 1) {
 
-                    HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore-errorNumber).create();
+                    HintDialog.Builder builder = new HintDialog. Builder(ImageRemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(1).setTvScore(totalScore-errorCount).create();
                     hintDialog.show();
 
                     if (1 == Setting.getVoice()) {
@@ -182,7 +187,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
                     //上传积分
                     if (NetworkUtils.isConnected(this)) {
 //                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
-                        String params = "&score=" + (totalScore-errorNumber) + "&whichDay=1" + "&type=4" + "&device=" + PhoneUtils.getPhoneIMEI(this);
+                        String params = "&score=" + (totalScore-errorCount) + "&whichDay=1" + "&type=4" + "&device=" + PhoneUtils.getPhoneIMEI(this);
                         HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
                             @Override
                             public void onDataDelivered(int taskId, String data) {
@@ -204,8 +209,8 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
                 }
                 ++index;
             } else {
-
                 --errorNumber;
+                ++errorCount;
                 if (errorNumber>=0){
                     if (1 == Setting.getVoice()) {
                         SoundEffect.getInstance().play(SoundEffect.FAIL);
@@ -217,8 +222,8 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
 
                 if (errorNumber < 0) {
                     errorNumber = -1;
-                    HintDialog.Builder builder = new HintDialog.Builder(ImageRemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(0).create();
+                    HintDialog.Builder builder = new HintDialog. Builder(ImageRemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).create();
                     hintDialog.show();
                     if (1 == Setting.getVoice()) {
                         SoundEffect.getInstance().play(SoundEffect.FAILURE);
@@ -277,8 +282,11 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         prsientDataList.addAll(dataList);
         randomList.addAll(prsientDataList);
         randomList = randomList(prsientDataList);
-        rightAdapter.setData(randomList);
 
+        for (ImageResult.Image image:randomList){
+           image .clicked=false;
+        }
+        rightAdapter.setData(randomList);
         if (null != leftAdapter) {
             leftList.clear();
             leftAdapter.setData(leftList);

@@ -98,6 +98,9 @@ public class HintDialog extends Dialog {
                 public void onClick(View view) {
                     if (null != ruleDialog && ruleDialog.isShowing()) {
                         tvScore.setText("");
+                        mVisible=0;
+                        mStatus=0;
+
                         Intent intent = null;
                         if (mTest) {
                             intent = new Intent(mContext, TwentyOnePracticeActivity.class);

@@ -72,6 +72,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
     private boolean isFinish;
     private RemberPracticeResult.PracticeEntity practiceEntity;
     private int errorNumber;
+    private int errorCount;
 
     @OnClick({R.id.rule})
     public void click(View view) {
@@ -104,11 +105,14 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
             return;
         }
         RemberPracticeResult.Practice o = randomList.get(i);
+        if (o.clicked){
+            return;
+        }
         RemberPracticeResult.Practice target = sortDataList.get(index);
 
         if (isFinish) {
-            if (o.value.equals(target.value)) {
-
+            if (o.key.equals(target.key)) {
+                o.clicked=true;
                 if (null == leftAdapter) {
                     leftAdapter = new RemberPracticeLeftAdapter();
                     leftGrid.setAdapter(leftAdapter);
@@ -117,8 +121,8 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 leftAdapter.setData(leftList);
 
                 if (index == sortDataList.size() - 1) {
-                    HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(0).setTest(isTest).setTvScore(totalScore).create();
+                    HintDialog.Builder builder = new HintDialog. Builder(RemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTest(isTest).setTvScore(totalScore-errorCount).create();
                     hintDialog.show();
                     if (isTest) {
                         PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
@@ -145,16 +149,17 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
             }
         } else {
             if (errorNumber < 0) {
-                HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
-                HintDialog hintDialog = builder.setStatus(0).setTest(isTest).create();
+                HintDialog.Builder builder = new HintDialog. Builder(RemeberPracticeActivity.this);
+                HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).setTest(isTest).create();
                 hintDialog.show();
                 if (1 == Setting.getVoice()) {
                     SoundEffect.getInstance().play(SoundEffect.FAILURE);
                 }
 //                PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记
 
-            } else if (o.value.equals(target.value)) {
+            } else if (o.key.equals(target.key)) {
 
+                o.clicked=true;
                 if (null == leftAdapter) {
                     leftAdapter = new RemberPracticeLeftAdapter();
                     leftGrid.setAdapter(leftAdapter);
@@ -163,16 +168,14 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 leftAdapter.setData(leftList);
 
                 if (index == sortDataList.size() - 1) {
-
-
-                    HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setTest(isTest).setTvScore(totalScore-errorNumber).create();
+                    HintDialog.Builder builder = new HintDialog. Builder(RemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(1).setTest(isTest).setTvScore(totalScore-errorCount).create();
                     hintDialog.show();
 
                     //上传积分
                     if (NetworkUtils.isConnected(this)) {
 //                    score=90&exerciseId=1000&whichDay=1&device=asd123&type=2
-                        String params = "&score=" +( totalScore-errorNumber) + "&whichDay=1" + "&type=2" + "&device=" + PhoneUtils.getPhoneIMEI(this);
+                        String params = "&score=" +( totalScore-errorCount) + "&whichDay=1" + "&type=2" + "&device=" + PhoneUtils.getPhoneIMEI(this);
                         HttpRequestUtil.HttpRequestByGet(Config.COMMIT_SCORE + params, new ResponseStringDataListener() {
                             @Override
                             public void onDataDelivered(int taskId, String data) {
@@ -202,6 +205,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 ++index;
             } else {
                 --errorNumber;
+                ++errorCount;
                 if (errorNumber>=0) {
                   if (1 == Setting.getVoice()){
                     SoundEffect.getInstance().play(SoundEffect.FAIL);
@@ -212,8 +216,8 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                 }
                 if (errorNumber < 0) {
                     errorNumber = -1;
-                    HintDialog.Builder builder = new HintDialog.Builder(RemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(0).setTest(isTest).create();
+                    HintDialog.Builder builder = new HintDialog. Builder(RemeberPracticeActivity.this);
+                    HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).setTest(isTest).create();
                     hintDialog.show();
                     if (1 == Setting.getVoice()) {
                         SoundEffect.getInstance().play(SoundEffect.FAILURE);
@@ -273,8 +277,6 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
         switch (view.getId()) {
             case R.id.retry:
                 retry();
-
-
                 break;
             case R.id.back:
                 if (isTest) {
@@ -309,8 +311,11 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
         prsientDataList.addAll(dataList);
         randomList.addAll(prsientDataList);
         randomList = randomList(prsientDataList);
-        rightAdapter.setData(randomList);
 
+        for (RemberPracticeResult.Practice practice:randomList){
+                practice.clicked=false;
+        }
+        rightAdapter.setData(randomList);
 
         if (null != leftAdapter) {
             leftList.clear();

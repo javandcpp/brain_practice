@@ -308,7 +308,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
         if (mandala_finish) {//已练习
             if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
-                HintDialog.Builder builder = new HintDialog.Builder(Mandalas2Activity.this);
+                HintDialog.Builder builder = new HintDialog. Builder(Mandalas2Activity.this);
                 HintDialog hintDialog = builder.setStatus(0).setScoreVisiblle(0).setTvScore(totalScore).create();
                 hintDialog.show();
                 if (1 == Setting.getVoice()) {
@@ -326,7 +326,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
 
 
             if (totalScore < 0) {
-                HintDialog.Builder builder = new HintDialog.Builder(Mandalas2Activity.this);
+                HintDialog.Builder builder = new HintDialog. Builder(Mandalas2Activity.this);
                 HintDialog hintDialog = builder.setStatus(0).create();
                 hintDialog.show();
 
@@ -339,7 +339,7 @@ public class Mandalas2Activity extends BaseFragmentActivity implements Animation
             } else if (area01_value.equals(AREA01) && area02_value.equals(AREA02) && area03_value.equals(AREA03) && area04_value.equals(AREA04) && area05_value.equals(AREA05) && area06_value.equals(AREA06)
                     && area07_value.equals(AREA07) && area08_value.equals(AREA08) && area09_value.equals(AREA09)) {
 
-                HintDialog.Builder builder = new HintDialog.Builder(Mandalas2Activity.this);
+                HintDialog.Builder builder = new HintDialog. Builder(Mandalas2Activity.this);
                 HintDialog hintDialog = builder.setStatus(1).setTvScore(totalScore).create();
                 hintDialog.show();
                 //上传积分

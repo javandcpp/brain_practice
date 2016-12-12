@@ -42,4 +42,6 @@ public class Config {
     //帮助说明
     public static final String HELP_URL=BaseUrl+"/kujisoftware/help/findHelpByExerciseId?whichExercise=1000";
 
+    //曼陀罗
+    public static final String MANDALA=BaseUrl+"/kujisoftware/mandara/findMandaraByExerciseAndWhichDayAndType?exerciseId=1000&whichDay=1&type=5";
 }

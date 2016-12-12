@@ -17,6 +17,7 @@ import com.yzk.brain.module.mandalas.Mandalas2Activity;
 import com.yzk.brain.ui.Controller;
 import com.yzk.brain.ui.RuleDialog;
 import com.yzk.brain.utils.ImageUtils;
+import com.yzk.brain.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -88,6 +89,16 @@ public class MandalaEnterActivity extends BaseFragmentActivity implements Contro
     @Override
     protected void uIViewDataApply() {
 
+        getDataFromNet();
+
+    }
+
+    private void getDataFromNet() {
+        if (NetworkUtils.isConnected(this)){
+
+        }else{
+
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

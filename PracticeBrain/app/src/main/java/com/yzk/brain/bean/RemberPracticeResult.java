@@ -44,6 +44,7 @@ public class RemberPracticeResult implements Serializable {
 
     public class Practice implements Serializable {
         public String key;
+        public boolean clicked;
 
         @Override
         public String toString() {

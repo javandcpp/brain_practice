@@ -18,6 +18,7 @@ public class ImageResult implements Serializable {
     public class Image implements Serializable{
         public String key;
         public String url;
+        public boolean clicked;
     }
 
     public class PictureMemory implements Serializable{

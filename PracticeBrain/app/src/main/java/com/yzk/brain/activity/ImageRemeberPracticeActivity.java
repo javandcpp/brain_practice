@@ -135,6 +135,13 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         if (isFinish) {
             if (o.key.equals(target.key)) {
                 o.clicked=true;
+                if (null == leftAdapter) {
+                    leftAdapter = new ImagePracticeLeftAdapter();
+                    leftGrid.setAdapter(leftAdapter);
+                }
+                leftList.add(target);
+                leftAdapter.setData(leftList);
+
                 if (index == sortDataList.size() - 1) {
                     HintDialog.Builder builder = new HintDialog. Builder(ImageRemeberPracticeActivity.this);
                     HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).create();
@@ -281,10 +288,10 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
         prsientDataList.clear();
         prsientDataList.addAll(dataList);
         randomList.addAll(prsientDataList);
-        randomList = randomList(prsientDataList);
+        randomList = randomList(randomList);
 
         for (ImageResult.Image image:randomList){
-           image .clicked=false;
+           image.clicked=false;
         }
         rightAdapter.setData(randomList);
         if (null != leftAdapter) {

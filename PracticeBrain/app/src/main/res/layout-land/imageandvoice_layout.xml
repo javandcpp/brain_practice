@@ -30,7 +30,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
+                fresco:actualImageScaleType="fitXY"
                 android:padding="35dp"
+                fresco:placeholderImageScaleType="fitXY"
                 fresco:placeholderImage="@drawable/loading" />
 
             <!--fresco:fadeDuration="300"-->

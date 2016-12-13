@@ -349,7 +349,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
 
     private void initMediaPlayer() {
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setLooping(true);
+
         mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         // 获取最大音乐音量
@@ -425,11 +425,13 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        isPlay=false;
+        play.setSelected(false);
     }
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+
         return false;
     }
 

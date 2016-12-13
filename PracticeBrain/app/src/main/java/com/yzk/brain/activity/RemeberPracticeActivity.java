@@ -42,6 +42,7 @@ import butterknife.OnClick;
 public class RemeberPracticeActivity extends BaseFragmentActivity implements Controller.ControllerCallBack {
 
     private static final int REQUEST_COMMIT_TASK = 0x1;
+    private static final String REMEBER_TEST_PRACTICE_FINISH ="test" ;
     @Bind(R.id.controlPanel)
     Controller controllPanel;
 
@@ -58,7 +59,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     private ArrayList<RemberPracticeResult.Practice> prsientDataList = new ArrayList<>();
     private List<RemberPracticeResult.Practice> sortDataList = new ArrayList<>();
-    private List<RemberPracticeResult.Practice> randomList = new ArrayList<>();
+    private ArrayList<RemberPracticeResult.Practice> randomList = new ArrayList<>();
     private List<RemberPracticeResult.Practice> leftList = new ArrayList<>();
 
     private RemberPracticeRightAdapter rightAdapter;
@@ -188,7 +189,11 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
                             }
                         }, REQUEST_COMMIT_TASK);
                     }
-                    PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记录第一次
+                    if (isTest) {
+                        PreferenceHelper.writeBool(REMEBER_TEST_PRACTICE_FINISH, true);//记录第一次
+                    }else{
+                        PreferenceHelper.writeBool(REMEBER_PRACTICE_FINISH, true);//记录第一次
+                    }
 
                     if (isTest) {
                         PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
@@ -234,8 +239,13 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
     @Override
     protected void uIViewInit() {
+        if (isTest) {
+            isFinish = PreferenceHelper.getBool(REMEBER_TEST_PRACTICE_FINISH);
+        }else{
+            isFinish = PreferenceHelper.getBool(REMEBER_PRACTICE_FINISH);
+        }
 
-        isFinish = PreferenceHelper.getBool(REMEBER_PRACTICE_FINISH);
+
 //        totalScore = PreferenceHelper.getScore(REMEMBER_PRACTICE_SCORE);
 
         if (isFinish) {//已练习过,不再记录积分和错误次数
@@ -310,7 +320,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
         prsientDataList.clear();
         prsientDataList.addAll(dataList);
         randomList.addAll(prsientDataList);
-        randomList = randomList(prsientDataList);
+        randomList = randomList(randomList);
 
         for (RemberPracticeResult.Practice practice:randomList){
                 practice.clicked=false;

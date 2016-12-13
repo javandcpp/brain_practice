@@ -82,12 +82,10 @@ public class HintDialog extends Dialog {
             }
 
             if (1 == mStatus) {
-                tvScore.setVisibility(View.VISIBLE);
                 tvScore.setText("获得" + String.valueOf(mScore) + "分");
                 button.setBackgroundResource(R.drawable.home_white);
                 root.setBackgroundResource(R.drawable.home_victory);
             } else {
-                tvScore.setVisibility(View.GONE);
                 tvScore.setText("");
                 button.setBackgroundResource(R.drawable.home_grey);
                 root.setBackgroundResource(R.drawable.home_go_burst);

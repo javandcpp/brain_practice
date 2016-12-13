@@ -122,7 +122,7 @@ public class RemeberPracticeActivity extends BaseFragmentActivity implements Con
 
                 if (index == sortDataList.size() - 1) {
                     HintDialog.Builder builder = new HintDialog. Builder(RemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTest(isTest).setTvScore(totalScore-errorCount).create();
+                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTest(isTest).create();
                     hintDialog.show();
                     if (isTest) {
                         PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);

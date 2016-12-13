@@ -131,7 +131,7 @@ public class SuTablePracticeActivity extends BaseFragmentActivity implements Con
                         backGround.setBackgroundResource(R.drawable.home_bgview_blue);
                         if (index == sortTempList.size() - 1) {
                             HintDialog.Builder builder = new HintDialog.Builder(SuTablePracticeActivity.this);
-                            HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTvScore(totalScore).create();
+                            HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).create();
                             hintDialog.show();
                             if (1 == Setting.getVoice()) {
                                 SoundEffect.getInstance().play(SoundEffect.SUCCESS);

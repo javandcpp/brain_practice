@@ -137,7 +137,7 @@ public class ImageRemeberPracticeActivity extends BaseFragmentActivity implement
                 o.clicked=true;
                 if (index == sortDataList.size() - 1) {
                     HintDialog.Builder builder = new HintDialog. Builder(ImageRemeberPracticeActivity.this);
-                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).setTvScore(totalScore).create();
+                    HintDialog hintDialog = builder.setStatus(1).setScoreVisiblle(0).create();
                     hintDialog.show();
                     if (1 == Setting.getVoice()) {
                         SoundEffect.getInstance().play(SoundEffect.SUCCESS);

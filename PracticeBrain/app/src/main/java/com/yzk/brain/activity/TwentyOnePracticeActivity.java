@@ -48,7 +48,6 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
     }
 
     private void gridDataRefresh() {
-
         if (null == gridAdapter) {
             gridAdapter = new GridAdapter(this);
             gridView.setAdapter(gridAdapter);
@@ -64,6 +63,7 @@ public class TwentyOnePracticeActivity extends BaseFragmentActivity {
     }
 
     private void gridViewData() {
+        gridData.clear();
         for (int x = 0; x < 22; x++) {
             if (x > 0 && x == 8) {
                 gridData.add(getResource(0, x));

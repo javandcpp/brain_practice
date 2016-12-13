@@ -48,7 +48,7 @@ public class RemberPracticeRightAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (null == view) {
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(GlobalApplication.instance).inflate(R.layout.remember_practice_grid_enter_layout, null);
+            view = LayoutInflater.from(GlobalApplication.instance).inflate(R.layout.remember_practice_grid_right_layout, null);
             viewHolder.textView = (TextView) view.findViewById(R.id.tvText);
             view.setTag(viewHolder);
         } else {

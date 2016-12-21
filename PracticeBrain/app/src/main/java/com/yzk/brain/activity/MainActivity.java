@@ -61,7 +61,7 @@ public class MainActivity extends BaseFragmentActivity implements ResponseString
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        PreferenceHelper.writeInt(Constants.TWENTY_ONE, 0);
+//        PreferenceHelper.writeInt(Constants.TWENTY_ONE, 1);
 
 
         playBackgroundMusic();

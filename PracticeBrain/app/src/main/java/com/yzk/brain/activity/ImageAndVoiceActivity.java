@@ -11,6 +11,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -307,6 +308,7 @@ public class ImageAndVoiceActivity extends BaseFragmentActivity implements Contr
 
     @Override
     public void onDataDelivered(int taskId, String data) {
+        LogUtil.d(data);
         switch (taskId) {
             case REQUEST_DATA:
                 ExplainResult explainResult = ParseJson.parseJson(data, ExplainResult.class);

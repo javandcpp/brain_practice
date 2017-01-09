@@ -92,7 +92,7 @@ public class BgMediaPlayerServce extends Service implements MediaPlayer.OnComple
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             Notification.Builder builder = new Notification.Builder(this);
-            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setSmallIcon(R.mipmap.app_icon);
             startForeground(250, builder.build());
             startService(new Intent(this, DaemonService.class));
         } else {

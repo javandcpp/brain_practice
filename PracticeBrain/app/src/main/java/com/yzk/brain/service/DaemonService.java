@@ -22,7 +22,7 @@ public class DaemonService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.mipmap.app_icon);
         startForeground(250, builder.build());
         new Thread(new Runnable() {
             @Override
